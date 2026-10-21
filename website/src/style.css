@@ -1,0 +1,465 @@
+/* ==========================================================================
+   COLORI
+   ========================================================================== */
+:root {
+    --bg-body: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-sidebar: #2e1065;
+    --text-sidebar: #f5f3ff;
+    --text-sidebar-muted: #c4b5fd;
+    --text-main: #1e293b;
+    --text-muted: #475569;
+    --primary: #5d3a9b;
+    --accent-bg: #f5f3ff;
+    --border-color: #e2e8f0;
+    --success-bg: #dcfce7;
+    --success-text: #166534;
+    --notstarted-bg: #fee2e2;
+    --notstarted-text: #991b1b;
+    --inprogress-bg: #fef3c7;
+    --inprogress-text: #78350f;
+    --sidebar-hover-bg: rgba(255, 255, 255, 0.1);
+    --sidebar-border: rgba(255, 255, 255, 0.15);
+    --btn-outline-border: rgba(255, 255, 255, 0.3);
+    --radius-md: 10px;
+    --radius-sm: 6px;
+    --shadow-sm: 0 1px 3px rgba(46, 16, 101, 0.06), 0 1px 2px rgba(46, 16, 101, 0.04);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--text-main);
+    background-color: var(--bg-body);
+    line-height: 1.5;
+}
+
+body {
+    display: grid;
+    grid-template-columns: 290px 1fr;
+    min-height: 100vh;
+}
+
+a:focus-visible,
+summary:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   SIDEBAR
+   ========================================================================== */
+.sidebar {
+    background-color: var(--bg-sidebar);
+    color: var(--text-sidebar);
+    padding: 2rem 1.5rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-y: auto;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+.logo {
+    width: 100px;
+    height: 100px;
+}
+
+.group-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.course-tag {
+    font-size: 0.8rem;
+    color: var(--text-sidebar-muted);
+}
+
+.main-nav {
+    margin-bottom: auto;
+}
+
+.nav-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-sidebar-muted);
+    margin: 1.25rem 0 0.5rem;
+    font-weight: 600;
+}
+
+.main-nav ul {
+    list-style: none;
+}
+
+.main-nav li {
+    margin-bottom: 0.25rem;
+}
+
+.main-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.75rem;
+    color: var(--text-sidebar);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.92rem;
+    transition: background-color 0.15s ease;
+}
+
+.main-nav a:hover {
+    background-color: var(--sidebar-hover-bg);
+}
+
+.step-num {
+    font-size: 0.75rem;
+    font-family: monospace;
+    background-color: var(--sidebar-border);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+}
+
+.sidebar-footer {
+    border-top: 1px solid var(--sidebar-border);
+    padding-top: 1.25rem;
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.meta-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.meta-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    color: var(--text-sidebar-muted);
+}
+
+.meta-value {
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+.external-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.btn-outline {
+    text-align: center;
+    padding: 0.45rem 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-sidebar);
+    border: 1px solid var(--btn-outline-border);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-outline:hover {
+    background-color: var(--sidebar-border);
+    border-color: var(--bh-surface);
+}
+
+/* ==========================================================================
+   CONTENUTI PRINCIPALI
+   ========================================================================== */
+.content {
+    padding: 2.5rem 3rem;
+    max-width: 1140px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.hero-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.hero-card h2 {
+    font-size: 1.75rem;
+    margin: 0.5rem 0;
+    letter-spacing: -0.02em;
+}
+
+.hero-desc {
+    color: var(--text-muted);
+    max-width: 75ch;
+}
+
+/* ==========================================================================
+   MILESTONE E CARD
+   ========================================================================== */
+.milestone-section {
+    margin-bottom: 3rem;
+    scroll-margin-top: 2rem;
+}
+
+.milestone-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.milestone-tag {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--primary);
+    letter-spacing: 0.05em;
+}
+
+.milestone-header h2 {
+    font-size: 1.4rem;
+    letter-spacing: -0.01em;
+}
+
+.milestone-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   BADGE E LISTA DOCUMENTI
+   ========================================================================== */
+.badge {
+    padding: 0.25rem 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+}
+
+.badge-active {
+    background-color: var(--accent-bg);
+    color: var(--primary);
+}
+
+.badge-success {
+    background-color: var(--success-bg);
+    color: var(--success-text);
+}
+
+.badge-inprogress {
+    background-color: var(--inprogress-bg);
+    color: var(--inprogress-text);
+}
+
+.badge-notstarted {
+    background-color: var(--notstarted-bg);
+    color: var(--notstarted-text);
+}
+
+.doc-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.doc-list a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 500;
+    font-size: 0.92rem;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.doc-list a:hover {
+    border-color: var(--primary);
+    background-color: var(--accent-bg);
+}
+
+.doc-version {
+    font-family: monospace;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    background-color: var(--bg-body);
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.no-docs {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin: 0.2rem 0 0.65rem;
+}
+
+/* ==========================================================================
+   ACCORDION VERBALI
+   ========================================================================== */
+.accordion {
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.75rem;
+    background-color: var(--bg-body);
+}
+
+.accordion:last-child {
+    margin-bottom: 0;
+}
+
+.accordion summary {
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accordion summary::-webkit-details-marker {
+    display: none;
+}
+
+.accordion summary::after {
+    content: "+";
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+.accordion[open] summary::after {
+    content: "−";
+}
+
+.accordion[open] summary {
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--bg-surface);
+}
+
+.doc-list.compact {
+    padding: 0.75rem;
+    background-color: var(--bg-surface);
+}
+
+/* ==========================================================================
+   TEAM E FOOTER
+   ========================================================================== */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 1rem;
+}
+
+.member-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.15rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.member-name {
+    font-weight: 600;
+    font-size: 0.98rem;
+}
+
+.member-id {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin: 0.2rem 0 0.65rem;
+}
+
+.member-link {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.member-link:hover {
+    text-decoration: underline;
+}
+
+.site-footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+#copyright {
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+@media (max-width: 960px) {
+
+    body {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: relative;
+        height: auto;
+        padding: 1.5rem;
+    }
+
+    .content {
+        padding: 1.5rem;
+    }
+
+    .milestone-grid {
+        grid-template-columns: 1fr;
+    }
+}
