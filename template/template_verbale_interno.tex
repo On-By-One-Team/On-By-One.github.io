@@ -1,0 +1,177 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PACCHETTI ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
+\usepackage{graphicx}               % Per inserire il logo
+\usepackage{tabularx}               % Per tabelle larghe quanto la pagina
+\usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
+\usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
+\usepackage{lmodern}      % Rende i font scalabili all'infinito
+\usepackage{anyfontsize}  % Permette di usare dimensioni personalizzate
+
+\begin{document}
+
+% ==============================================================================
+% FRONTESPIZIO
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+
+    % LOGO
+    \includegraphics[width=0.5\textwidth]{img/logo.png}\par
+    \vspace{0.2cm}
+
+    % NOME DEL GRUPPO
+    {\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par} 
+    \vspace{1.5cm}
+
+    % TITOLO DEL VERBALE
+    {\huge \bfseries Verbale interno [YYYY/MM/DD] \par}
+    \vspace{2cm}
+
+    % MEMBRI DEL GRUPPO
+    {\large
+    \textbf{On-By-One}:\par
+    \vspace{0.3cm}
+    Sara Ballardin, Shuhui Chen, Simone Giuliano, Alvise Greggio,
+    
+    Daniele Nuzzaci, Federico Temporin, Tommaso Zorzetto 
+    
+    (2101048, 2138001, 2145591, 2141004, 2139039, 2146764, 2148629)
+    \par}
+
+    \vfill
+
+    % TABELLA INFORMAZIONI DOCUMENTO 
+    \begin{table}[h]
+        \centering
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabularx}{\textwidth}{|c|c|c|X|}
+            \hline
+            \rowcolor{gray!20} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
+            \hline
+            \rowcolor{gray!20} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+            \hline
+            [X.X.X] & [YYYY/MM/DD] & [Bozza/Approvato] & On-By-One, prof. Tullio Vardanega, prof. Riccardo Cardin \\
+            \hline
+        \end{tabularx}
+    \end{table}
+
+    \vspace{1cm}
+    
+    % CONTATTI
+    {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
+    
+\end{titlepage}
+
+\newpage
+
+% ==============================================================================
+% INDICE
+% ==============================================================================
+\tableofcontents
+\newpage
+
+% ==============================================================================
+% INFORMAZIONI GENERALI
+% ==============================================================================
+\section{Informazioni generali}
+
+    \begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|>{\centering\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!20} \multicolumn{2}{|c|}{\textbf{Dettagli della riunione}} \\
+        \hline
+        \textbf{Data} & [YYYY/MM/DD] \\ \hline
+        \textbf{Ora inizio} & [HH:MM] \\ \hline
+        \textbf{Ora fine} & [HH:MM] \\ \hline
+        \textbf{Modalità} & [Discord / In presenza] \\ \hline
+    \end{tabularx}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!20} \multicolumn{3}{|c|}{\textbf{Partecipanti}} \\
+        \hline
+        \rowcolor{gray!20} \textbf{Nome e cognome} & \textbf{Ruolo} & \textbf{Presenza} \\
+        \hline
+        Sara Ballardin & [Ruolo] & Presente \\ \hline
+        Shuhui Chen & [Ruolo] & Presente \\ \hline
+        Simone Giuliano & [Ruolo] & Presente \\ \hline
+        Alvise Greggio & [Ruolo] & Presente \\ \hline
+        Daniele Nuzzaci & [Ruolo] & Presente \\ \hline
+        Federico Temporin & [Ruolo] & Presente \\ \hline
+        Tommaso Zorzetto & [Ruolo] & Presente \\ \hline
+    \end{tabularx}
+\end{table}
+
+% ==============================================================================
+% CORPO DEL VERBALE
+% ==============================================================================
+
+\section{Ordine del giorno}
+\begin{itemize}
+    \item Punto 1 dell'ordine del giorno
+    \item Punto 2 dell'ordine del giorno
+    \item Punto 3 dell'ordine del giorno
+\end{itemize}
+
+\section{Discussioni}
+[Riassunto delle discussioni affrontate per ogni punto dell'ordine del giorno.]
+
+\section{Decisioni}
+\begin{itemize}
+    \item \textbf{[VI-YYYY-MM-DD.1]} [Decisione 1.]
+    \item \textbf{[VI-YYYY-MM-DD.2]} [Decisione 2.]
+\end{itemize}
+
+\section{To-do}
+\begin{center}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|X|c|c|}
+        \hline
+        \rowcolor{gray!20} 
+        \multicolumn{1}{|c|}{\textbf{ID issue}} & 
+        \multicolumn{1}{c|}{\textbf{Task}} & 
+        \multicolumn{1}{c|}{\textbf{Assegnatario}} & 
+        \multicolumn{1}{c|}{\textbf{Scadenza}} \\
+        \hline
+        [- o \#numero] & [Descrizione] & [Nome e cognome] & [YYYY/MM/DD] \\
+        \hline
+        [- o \#numero] & [Descrizione] & [Nome e cognome] & [YYYY/MM/DD] \\
+        \hline
+    \end{tabularx}
+\end{center}
+
+% ==============================================================================
+% REGISTRO DELLE MODIFICHE
+% ==============================================================================
+\section{Registro delle modifiche}
+\begin{center}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
+        \hline
+        \rowcolor{gray!20} 
+        \multicolumn{1}{|c|}{\textbf{Versione}} & 
+        \multicolumn{1}{c|}{\textbf{Data}} & 
+        \multicolumn{1}{c|}{\textbf{Autore}} & 
+        \multicolumn{1}{c|}{\textbf{Descrizione}} & 
+        \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        [1.X.X] & [YYYY/MM/DD] & [Nome e cognome] & [Descrizione] & [Nome e cognome] \\
+        \hline
+        [0.1.0] & [YYYY/MM/DD] & [Nome e cognome] & [Descrizione] & [Nome e cognome] \\
+        \hline
+        
+    \end{tabularx}
+\end{center}
+
+\end{document}
