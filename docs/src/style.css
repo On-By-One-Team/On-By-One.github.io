@@ -211,7 +211,6 @@ summary:focus-visible {
 
 .hero-desc {
     color: var(--text-muted);
-    max-width: 75ch;
 }
 
 /* ==========================================================================
