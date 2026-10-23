@@ -168,6 +168,9 @@ summary:focus-visible {
 }
 
 .btn-outline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     padding: 0.45rem 0.5rem;
     font-size: 0.8rem;
