@@ -1,13 +1,16 @@
 <div align="center">
 <img src="docs/src/On-By-One.png" width="200">
 </div>
-<h1 align="center">On By One</h1>
+<h1 align="center">On-By-One</h1>
 <h2>📖 Documentazione 📖</h2>
-<p>Questa repository ospita i sorgenti della documentazione del gruppo <strong>On By One</strong> (Gruppo 1) del primo lotto del corso di Ingegneria del Software.
+<p>Questa repository ospita i sorgenti della documentazione del gruppo <strong>On-By-One</strong> (Gruppo 1) del primo lotto del corso di Ingegneria del Software.
 <p>A.A. 2026/27, Università degli Studi di Padova.</p>
 
 <h2>Consultazione dei documenti</h2>
-<p>Puoi consultare i nostri documenti tramite il nostro <a href="https://on-by-one-team.github.io/On-By-One.github.io/">sito internet</a>.</p>
+<p>I nostri documenti possono essere consultati tramite il nostro <a href="https://on-by-one-team.github.io/On-By-One.github.io/">sito internet</a>.</p>
+
+<h2>📩 Contattaci 📩</h2>
+Puoi contattarci all'indirizzo email <a href="mailto:onbyone.swe@gmail.com">onbyone.swe@gmail.com</a>
 
 <h2>👤 Componenti del gruppo 👤</h2>
 <table>
