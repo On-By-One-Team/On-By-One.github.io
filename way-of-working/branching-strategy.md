@@ -2,20 +2,20 @@
 
 ## 1. Scopo
 
-Questo documento definisce la strategia di branching adottata dal team per gestire lo sviluppo, la correzione e la manutenzione della parte documentativa del progetto.
+Questo documento definisce la strategia di *branching* adottata dal team per gestire lo sviluppo, la correzione e la manutenzione della parte documentativa del progetto.
 
-L'obiettivo è mantenere una cronologia Git leggibile, facilitare la collaborazione e garantire che le modifiche siano revisionate prima di essere integrate nel branch principale.
+L'obiettivo è mantenere una cronologia Git leggibile, facilitare la collaborazione e garantire che le modifiche siano revisionate prima di essere integrate nel *branch* principale.
 
 ## 2. Branch principale
 
-Il branch `main` rappresenta la versione principale della repository.
+Il branch `main` rappresenta la versione principale della *repository*.
 
 Le seguenti regole si applicano a `main`:
 
 - Deve contenere modifiche revisionate e approvate.
-- Non è consentito effettuare push diretti, salvo eccezioni esplicitamente concordate dal team.
-- Le modifiche devono essere integrate tramite Pull Request.
-- Le verifiche automatiche previste dal repository ([workflows](../.github/workflows/)) devono essere superate prima del merge.
+- Non è consentito effettuare *push* diretti, salvo eccezioni esplicitamente concordate dal team.
+- Le modifiche devono essere integrate tramite *Pull Request*.
+- Le [verifiche automatiche](../.github/workflows/) previste dal repository devono essere superate prima del *merge*.
 
 ## 3. Creazione dei branch
 
@@ -35,7 +35,7 @@ I tipi di branch previsti sono:
 | `docs/` | Attività di documentazione | `docs/24-aggiornamento-readme` |
 | `website/` | Sviluppo sito web | `website/35-modifica-etichetta-proponente` |
 
-Il numero dell'issue deve essere incluso quando l'attività è associata a un'issue GitHub. Per attività minori non associate a un'issue, il numero può essere omesso.
+Il numero dell'*issue* deve essere incluso quando l'attività è associata a un'issue GitHub. Per attività minori non associate a un'issue, il numero può essere omesso.
 
 ## 4. Flusso di lavoro
 
@@ -45,7 +45,7 @@ Il flusso di lavoro standard è il seguente:
 2. Aggiornare il branch locale `main`.
 3. Creare un branch dedicato all'attività.
 4. Implementare le modifiche ed eseguire le verifiche pertinenti.
-5. Registrare le modifiche tramite commit conformi alle convenzioni del repository ([commit-guidelines](commit-guidelines.md)).
+5. Registrare le modifiche tramite *commit* conformi alle [convenzioni del repository](commit-guidelines.md).
 6. Aprire una Pull Request verso `main`.
 7. Attendere la revisione e il completamento dei controlli automatici.
 8. Integrare le modifiche dopo aver soddisfatto i requisiti di approvazione.
@@ -68,11 +68,11 @@ Ogni Pull Request deve:
 - Avere un titolo chiaro e descrittivo.
 - Descrivere le modifiche introdotte e la loro motivazione.
 - Fare riferimento all'issue associata, se presente.
-- Essere sottoposta a code review secondo la policy del repository ([code-review-policy](code-review-policy.md)).
+- Essere sottoposta a *code review* secondo la [policy del repository](code-review-policy.md).
 - Superare i controlli automatici richiesti.
 - Non presentare conflitti irrisolti con il branch di destinazione.
 
-La strategia di merge adottata è *Squash and merge*: tutti i commit della Pull Request vengono riuniti in un unico commit sul branch `main`. Questa modalità è particolarmente adatta alla documentazione del progetto, poiché consente di mantenere una cronologia delle modifiche sintetica e leggibile, anche in presenza di numerosi commit intermedi, ad esempio durante la revisione dei documenti.
+La strategia di merge adottata è ***Squash and merge***: tutti i commit della Pull Request vengono riuniti in un unico commit sul branch `main`. Questa modalità è particolarmente adatta alla documentazione del progetto, poiché consente di mantenere una cronologia delle modifiche sintetica e leggibile, anche in presenza di numerosi commit intermedi, ad esempio durante la revisione dei documenti.
 
 ## 7. Eccezioni
 
