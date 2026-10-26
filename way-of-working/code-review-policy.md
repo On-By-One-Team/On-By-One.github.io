@@ -2,19 +2,19 @@
 
 ## 1. Scopo
 
-Questo documento definisce le regole per la revisione delle modifiche proposte nella *repository*.
+Questo documento definisce le regole per la revisione delle modifiche proposte nel *repository*.
 
 L'obiettivo della *code review* è garantire la correttezza, la coerenza, la leggibilità e la manutenibilità dei contenuti, favorendo la collaborazione tra i membri del team e riducendo il rischio di introdurre errori nel *branch* principale.
 
 ## 2. Ambito di applicazione
 
-La code review si applica alle *Pull Request* che introducono modifiche alla repository, inclusi:
+La code review si applica alle *Pull Request* che introducono modifiche al repository, inclusi:
 
 - Documenti in formato Markdown e LaTeX.
 - Verbali delle riunioni e documentazione relativa al progetto.
 - File di configurazione e *workflow* GitHub Actions.
 - Sito web e relativi file HTML e CSS.
-- Altri materiali e strumenti di supporto presenti nella repository.
+- Altri materiali e strumenti di supporto presenti nel repository.
 
 L'intensità della revisione deve essere proporzionata alla natura e alla complessità delle modifiche proposte.
 
@@ -46,7 +46,7 @@ Durante la code review devono essere considerati, quando pertinenti, i seguenti 
 - Il testo è chiaro, comprensibile e grammaticalmente corretto.
 - La terminologia è utilizzata in modo coerente.
 - La struttura dei documenti è appropriata e facilita la consultazione.
-- La formattazione rispetta le [convenzioni generali](formatting.md) e, per i documenti LaTeX, le indicazioni specifiche contenute nelle [configurazioni condivise](../docs/tex/config/) e nei [template](../docs/tex/templates/).
+- La formattazione rispetta le [convenzioni generali](formatting.md) e, per i documenti LaTeX, le indicazioni specifiche contenute nelle [configurazioni condivise](../docs/tex/config/) e nei [*template*](../docs/tex/templates/).
 
 ### 4.3. File tecnici e configurazioni
 

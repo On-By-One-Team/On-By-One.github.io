@@ -8,7 +8,7 @@ L'obiettivo è mantenere una cronologia Git leggibile, facilitare la collaborazi
 
 ## 2. Branch principale
 
-Il branch `main` rappresenta la versione principale della *repository*.
+Il branch `main` rappresenta la versione principale del *repository*.
 
 Le seguenti regole si applicano a `main`:
 
@@ -59,7 +59,7 @@ Quando necessario, il branch di lavoro deve essere aggiornato con le modifiche p
 
 Eventuali conflitti devono essere risolti e verificati dall'autore prima di richiedere il merge.
 
-Non devono essere integrate modifiche che introducano conflitti irrisolti o compromettano la correttezza e la coerenza dei contenuti e dei materiali presenti nella repository.
+Non devono essere integrate modifiche che introducano conflitti irrisolti o compromettano la correttezza e la coerenza dei contenuti e dei materiali presenti nel repository.
 
 ## 6. Pull Request e merge
 
