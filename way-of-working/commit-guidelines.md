@@ -41,7 +41,7 @@ I messaggi dei commit devono rispettare le seguenti convenzioni:
 
 ## 5. Riferimento alle issue
 
-Quando il commit è associato a un'*issue*, è possibile includerne il riferimento nel messaggio, ad esempio:
+Quando il commit è associato a un'*issue*, si deve includere il riferimento nel messaggio, ad esempio:
 
 `docs: aggiornate le convenzioni di formattazione (#24)`
 
@@ -74,7 +74,7 @@ Prima di aprire una Pull Request, l'autore deve verificare che i commit siano co
 
 Quando necessario, i commit possono essere riorganizzati prima dell'integrazione, nel rispetto del flusso di revisione definito nella [policy di code review](code-review-policy.md).
 
-L'integrazione nel branch `main` avviene secondo la strategia ***Squash and merge***, come descritto nella [strategia di branching](branching-strategy.md).
+L'integrazione nel branch `main` avviene secondo la strategia ***Standard merge***, come descritto nella [strategia di branching](branching-strategy.md).
 
 ## 8. Revisione del documento
 

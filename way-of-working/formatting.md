@@ -14,7 +14,8 @@ Si adottano le seguenti convenzioni generali:
 
 - **Grassetto**: utilizzare per evidenziare concetti importanti o termini che richiedono particolare attenzione, evitando un uso eccessivo.
 - *Corsivo*: utilizzare alla prima occorrenza di termini stranieri poco comuni o specialistici. Evitare il corsivo per termini stranieri entrati nell'uso comune italiano, ad esempio team e file.
-- ~~Barrato~~: utilizzare per indicare contenuti eliminati o non più validi, quando è utile mantenerli visibili.
+- Sottolineato: non utilizzare.
+- ~~Barrato~~: non utilizzare.
 - `Codice inline`: utilizzare per nomi di file e directory, *branch*, comandi, identificatori e brevi frammenti di codice.
 
 È preferibile evitare l'uso simultaneo o eccessivo di diversi stili di formattazione all'interno dello stesso contenuto.
@@ -26,7 +27,7 @@ I documenti dello stesso tipo devono mantenere, per quanto possibile, uno stile 
 La formattazione deve essere adeguata al formato utilizzato. In particolare:
 
 - Nei documenti Markdown, utilizzare le funzionalità di formattazione supportate dal formato.
-- Nei documenti LaTeX, utilizzare i [*template*](../docs/tex/templates/) e i [file di configurazione condivisi](../docs/tex/config/) presenti nel repository, evitando personalizzazioni non necessarie.
+- Nei documenti LaTeX, utilizzare i [*template*](../docs/tex/templates/) presenti nel repository, evitando personalizzazioni non necessarie.
 - Nei contenuti del sito web, mantenere coerenza con gli stili definiti nei file CSS condivisi.
 
 ## 4. Revisione del documento

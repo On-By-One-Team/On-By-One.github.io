@@ -13,7 +13,7 @@ Il branch `main` rappresenta la versione principale del *repository*.
 Le seguenti regole si applicano a `main`:
 
 - Deve contenere modifiche revisionate e approvate.
-- Non è consentito effettuare *push* diretti, salvo eccezioni esplicitamente concordate dal team.
+- Non è consentito effettuare *push* diretti sul branch `main`.
 - Le modifiche devono essere integrate tramite *Pull Request*.
 - Le [verifiche automatiche](../.github/workflows/) previste dal repository devono essere superate prima del *merge*.
 
@@ -41,7 +41,7 @@ Il numero dell'*issue* deve essere incluso quando l'attività è associata a un'
 
 Il flusso di lavoro standard è il seguente:
 
-1. Identificare o creare un'issue che descriva l'attività.
+1. Identificare un'issue, creata dal responsabile, che descriva l'attività.
 2. Aggiornare il branch locale `main`.
 3. Creare un branch dedicato all'attività.
 4. Implementare le modifiche ed eseguire le verifiche pertinenti.
@@ -72,7 +72,7 @@ Ogni Pull Request deve:
 - Superare i controlli automatici richiesti.
 - Non presentare conflitti irrisolti con il branch di destinazione.
 
-La strategia di merge adottata è ***Squash and merge***: tutti i commit della Pull Request vengono riuniti in un unico commit sul branch `main`. Questa modalità è particolarmente adatta alla documentazione del progetto, poiché consente di mantenere una cronologia delle modifiche sintetica e leggibile, anche in presenza di numerosi commit intermedi, ad esempio durante la revisione dei documenti.
+La strategia di merge adottata è ***Standard merge***: tutti i commit della Pull Request vengono replicati sul branch `main` e si effettua un ulteriore commit rappresentante il merge. Questa modalità è particolarmente adatta per preservare lo storico dei commit e la loro integrazione in `main` una volta eliminati i branch di lavoro.
 
 ## 7. Eccezioni
 

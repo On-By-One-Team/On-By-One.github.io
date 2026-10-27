@@ -62,7 +62,7 @@ Quando la Pull Request riguarda file tecnici, il revisore deve verificare, per q
 
 Il revisore deve verificare che i controlli automatici previsti per la Pull Request siano stati completati con esito positivo.
 
-Se un controllo fallisce, la causa deve essere esaminata e risolta prima del *merge*, salvo eccezioni motivate e concordate dal team.
+Se un controllo fallisce, la causa deve essere esaminata e risolta prima del *merge*.
 
 ## 5. Gestione dei commenti
 
@@ -77,6 +77,8 @@ L'autore deve rispondere alle osservazioni ricevute e apportare le correzioni ne
 
 I commenti bloccanti devono essere risolti prima del merge e il revisore deve verificarne la risoluzione. I commenti non bloccanti possono essere accolti nella Pull Request corrente oppure registrati per un'attività successiva, in accordo con il revisore.
 
+I commenti non bloccanti prevedono un'impegno preso da parte dell'autore col fine di integrare i miglioramenti elencati.
+
 ## 6. Approvazione e merge
 
 Una Pull Request può essere integrata nel branch `main` quando sono soddisfatte tutte le seguenti condizioni:
@@ -87,15 +89,13 @@ Una Pull Request può essere integrata nel branch `main` quando sono soddisfatte
 - Tutti i commenti bloccanti sono stati risolti.
 - Le modifiche rispettano le convenzioni e le regole organizzative del repository.
 
-L'integrazione deve avvenire secondo la strategia ***Squash and merge***, come definito nella [strategia di *branching*](branching-strategy.md).
+L'integrazione deve avvenire secondo la strategia ***Standard merge***, come definito nella [strategia di *branching*](branching-strategy.md).
 
 L'approvazione della Pull Request non sostituisce la responsabilità dell'autore di verificare la correttezza delle modifiche.
 
 ## 7. Nuove modifiche dopo l'approvazione
 
 Se, dopo l'approvazione, vengono introdotte modifiche sostanziali alla Pull Request, il revisore deve verificare nuovamente le parti interessate.
-
-Quando tali modifiche incidono sugli aspetti già revisionati o introducono nuovi elementi rilevanti, deve essere richiesta una nuova approvazione prima del merge.
 
 ## 8. Eccezioni
 
