@@ -46,7 +46,7 @@ Durante la code review devono essere considerati, quando pertinenti, i seguenti 
 - Il testo è chiaro, comprensibile e grammaticalmente corretto.
 - La terminologia è utilizzata in modo coerente.
 - La struttura dei documenti è appropriata e facilita la consultazione.
-- La formattazione rispetta le [convenzioni generali](formatting.md) e, per i documenti LaTeX, le indicazioni specifiche contenute nelle [configurazioni condivise](../docs/tex/config/) e nei [*template*](../docs/tex/templates/).
+- La formattazione rispetta le [convenzioni generali](formatting.md) e, per i documenti LaTeX, la struttura definita dai [template](../docs/tex/templates/), ove applicabili.
 
 ### 4.3. File tecnici e configurazioni
 
