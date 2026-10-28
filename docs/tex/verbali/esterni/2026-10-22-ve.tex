@@ -20,10 +20,10 @@
     \centering
     \vspace*{0.5cm}
 
-    % LOGHI
-    \includegraphics[width=0.45\textwidth]{img/logo_unipd.jpg}
+     % LOGHI
+    \includegraphics[width=0.45\textwidth]{../../../../assets//logo_unipd.jpg}
     \hfill
-    \includegraphics[width=0.45\textwidth]{img/logo.png}\par
+    \includegraphics[width=0.45\textwidth]{../../../../assets/logo.png}\par
     \vspace{0.5cm}
 
     % NOME DEL GRUPPO
@@ -63,7 +63,7 @@
             \hline
             \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
             \hline
-            0.1.0 & 2026/10/24 & Bozza & 
+            0.1.2 & 2026/10/28 & Bozza & 
             On-By-One \newline 
             Prof. Tullio Vardanega \newline 
             Prof. Riccardo Cardin \newline 
@@ -98,11 +98,12 @@
         \multicolumn{1}{c|}{\textbf{Descrizione}} & 
         \multicolumn{1}{c|}{\textbf{Verificatore}} \\
         \hline
+        0.1.2 & 2026/10/28 & Simone Giuliano & Correzione in seguito a verifica & Sara Ballardin \\
+        \hline
+        0.1.1 & 2026/10/27 & Simone Giuliano & Correzione Stilistica & Sara Ballardin \\
+        \hline
         0.1.0 & 2026/10/24 & Simone Giuliano & Prima stesura & - \\
         \hline
-        0.1.1 & 2026/10/27 & Simone Giuliano & Correzione Stilistica & - \\
-        \hline
-        
     \end{tabularx}
     \arrayrulecolor{black}
 \end{center}
@@ -175,52 +176,52 @@ I referenti Vimar hanno suddiviso le domande emerse dal sondaggio presentato ai 
 
 \subsection{ Architettura e linguaggi}
 \begin{itemize}
-    \item \textbf{Linguaggio e SDK:} Alla richiesta di quale fosse il linguaggio di programmazione da utilizzare, l'azienda garantisce di lasciare libertà ai gruppi, sebbene consigli lo sviluppo in \textbf{Python}. Per quanto riguarda l'\textit{SDK}, si invita all'utilizzo di \textbf{FastMCP} citato anche nel capitolato di presentazione, in quanto permette un supporto migliore da parte dell'azienda. 
+    \item \textbf{Linguaggio e SDK:} Alla richiesta di quale fosse il linguaggio di programmazione da utilizzare, l'azienda garantisce di lasciare libertà ai gruppi, sebbene consigli lo sviluppo in \textit{Python}. Per quanto riguarda l'\textit{SDK}, si invita all'utilizzo di \textit{FastMCP} citato anche nel capitolato di presentazione, in quanto permette un supporto migliore da parte dell'azienda. 
 
-    \item \textbf{Ruolo del Client MCP:} L'azienda proponente specifica che non sarà necessario lo sviluppo di interfacce o applicazioni, poiché sarà sufficiente utilizzare quelle pronte degli \textbf{LLM commerciali} per controllare i dispositivi richiesti. Il ruolo dell'MCP \textit{client} risiede principalmente nei \textbf{test di integrazione}. Per quanto riguarda l'MCP server, si consiglia uno sviluppo \textbf{in locale} per le fasi di \textit{testing} e \textit{debug}. Infine, è di rilevanza durante la fase di progettazione essere in grado di saper dividere la \textbf{gestione degli errori} di server e client.
+    \item \textbf{Ruolo del Client MCP:} L'azienda proponente specifica che non sarà necessario lo sviluppo di interfacce o applicazioni, poiché sarà sufficiente utilizzare quelle pronte degli \textit{LLM} commerciali per controllare i dispositivi richiesti. Il ruolo dell'MCP \textit{client} risiede principalmente nei test di integrazione. Per quanto riguarda l'MCP \textit{server}, si consiglia uno sviluppo in locale per le fasi di \textit{testing} e \textit{debug}. Infine, è di rilevanza durante la fase di progettazione essere in grado di saper dividere la gestione degli errori di server e client.
     
-    \item \textbf{Risorse Cloud:} Per quanto riguarda l'utilizzo di risorse LLM, l'azienda specifica che dovrebbe essere sufficiente l'utilizzo dei \textbf{piani gratuiti} (o di quelli studenteschi) per lo sviluppo richiesto. Nel caso questi dovessero essere insufficienti, sarà possibile richiedere all'azienda dei servizi AWS o una chiave LLM per eseguire delle ulteriori prove. Inoltre, alla consegna del progetto sarà richiesto solamente l'\textbf{esecuzione locale con Docker} dato che l'installazione su AWS avverrà da parte dell'azienda.
+    \item \textbf{Risorse Cloud:} Per quanto riguarda l'utilizzo di risorse LLM, l'azienda specifica che dovrebbe essere sufficiente l'utilizzo dei piani gratuiti (o di quelli studenteschi) per lo sviluppo richiesto. Nel caso questi dovessero essere insufficienti, sarà possibile richiedere all'azienda dei servizi \textit{AWS} o una chiave LLM per eseguire delle ulteriori prove. Inoltre, alla consegna del progetto sarà richiesto solamente l'esecuzione locale con \textit{Docker} dato che l'installazione su AWS avverrà da parte dell'azienda.
     
 \end{itemize}
 
 \subsection{ Protocolli e sicurezza}
 \begin{itemize}
-    \item \textbf{Autenticazione MyVimar:} La proponente conferma la necessità da parte dei membri del gruppo di avere un \textbf{account MyVimar} per poter accedere a uno o più impianti. Specifica inoltre che per ogni account saranno visibili \textbf{solamente gli impianti posseduti} e non sarà possibile visionarne altri. Per poter accedere tramite l'Intelligenza Artificiale, verrà utilizzata un'autorizzazione OAuth2 che collega l'MCP verso le \textit{API} e non permette ai servizi di Intelligenza Artificiale di reperire informazioni riguardanti i \textit{token}. Tutto ciò che riguarda il flusso del \textit{login} è lasciato alla progettazione del gruppo. 
+    \item \textbf{Autenticazione MyVimar:} La proponente conferma la necessità da parte dei membri del gruppo di avere un account MyVimar per poter accedere a uno o più impianti. Specifica inoltre che per ogni account saranno visibili solamente gli impianti posseduti e non sarà possibile visionarne altri. Per poter accedere tramite l'Intelligenza Artificiale, verrà utilizzata un'autorizzazione \textit{OAuth2} che collega l'MCP verso le \textit{API} e non permette ai servizi di Intelligenza Artificiale di reperire informazioni riguardanti i token. Tutto ciò che riguarda il flusso del login è lasciato alla progettazione del gruppo. 
     
-    \item \textbf{Comandi critici:} Dato che le \textit{API} di Vimar non possiedono dei blocchi riguardanti gli LLM, sarà compito del team gestire la sicurezza riguardo ai \textbf{permessi configurabili} e chiedere \textbf{conferme} nel caso di scritture dirette critiche o espresse in modo ambiguo.
+    \item \textbf{Comandi critici:} Dato che le API di Vimar non possiedono dei blocchi riguardanti gli LLM, sarà compito del team gestire la sicurezza riguardo ai permessi configurabili e chiedere conferme nel caso di scritture dirette critiche o espresse in modo ambiguo.
     
-    \item \textbf{Notifiche di stato:} Ai fini del progetto è ritenuta sufficiente l'interrogazione dello stato dei dispositivi tramite architettura a \textit{polling}, come descritto nel capitolato. L'implementazione di \textit{trigger} via \textit{Webhook} o \textit{Subscription} è da considerarsi come \textit{nice-to-have}. Si raccomanda di valutarne lo sviluppo solo in un momento successivo alla chiusura dei \textbf{casi base}.
+    \item \textbf{Notifiche di stato:} Ai fini del progetto è ritenuta sufficiente l'interrogazione dello stato dei dispositivi tramite architettura a \textit{polling}, come descritto nel capitolato. L'implementazione di \textit{trigger} via \textit{Webhook} o \textit{Subscription} è da considerarsi come \textit{nice-to-have}. Si raccomanda di valutarne lo sviluppo solo in un momento successivo alla chiusura dei casi base.
 
-    \item \textbf{Richieste per l'Assistente:} La proponente, riguardo alle frasi a cui deve saper rispondere l'assistente, rimanda ai numerosi esempi presenti nel capitolato, ricordando che questi rappresentano una base di partenza che deve essere completata con \textbf{sinonimi e gestione di richieste ambigue}. Inoltre sarà possibile eventualmente un arricchimento con nuove interazioni pensate dal team, che verrà considerato come un \textit{nice-to-have}.
+    \item \textbf{Richieste per l'Assistente:} La proponente, riguardo alle frasi a cui deve saper rispondere l'assistente, rimanda ai numerosi esempi presenti nel capitolato, ricordando che questi rappresentano una base di partenza che deve essere completata con sinonimi e gestione di richieste ambigue. Inoltre sarà possibile eventualmente un arricchimento con nuove interazioni pensate dal team, che verrà considerato come un nice-to-have.
 \end{itemize}
 
 \subsection{ Sviluppo e test}
 \begin{itemize}
-    \item \textbf{Gestione e utilizzo del Kit:} Il kit d'impianto fisico che l'azienda fornisce si collegherà direttamente al \textit{cloud} Vimar tramite Wi-Fi (senza necessità di USB o VPN). Sarà sufficiente che un solo membro lo possieda. Gli altri membri interagiranno da remoto tramite \textit{API} con un account \textbf{amministratore} fornito dall'azienda.
+    \item \textbf{Gestione e utilizzo del Kit:} Il kit d'impianto fisico che l'azienda fornisce si collegherà direttamente al \textit{cloud} Vimar tramite \textit{Wi-Fi} (senza necessità di \textit{USB} o \textit{VPN}). Sarà sufficiente che un solo membro lo possieda. Gli altri membri interagiranno da remoto tramite API con un account amministratore fornito dall'azienda.
     
-    \item \textbf{Mocking in parallelo:} Per evitare situazioni di collo di bottiglia e permettere lo sviluppo parallelo, è consigliato l'utilizzo di strumenti \textit{open source} come \textbf{Prism} per generare un \textit{mock server} locale partendo dalle specifiche OpenAPI (YAML) di KNX IoT. Per la validazione sarà invece necessario l'utilizzo dell'\textbf{impianto fisico} in quanto il \textit{mock} non replica perfettamente l'impianto. 
+    \item \textbf{Mocking in parallelo:} Per evitare situazioni di collo di bottiglia e permettere lo sviluppo parallelo, è consigliato l'utilizzo di strumenti \textit{open source} come \textit{Prism} per generare un \textit{mock} server locale partendo dalle specifiche \textit{OpenAPI} (\textit{YAML}) di \textit{KNX IoT}. Per la validazione sarà invece necessario l'utilizzo dell'impianto fisico in quanto il mock non replica perfettamente l'impianto. 
     
-    \item \textbf{Test e Continuous Integration:} Per i test automatici di unità e integrazione, l'azienda consiglia di simulare le risposte dell'IA (\textit{mock}) per non avere costi aggiuntivi e mantenere i test \textbf{deterministici}. La copertura del codice richiesta per queste fasi è del \textbf{75\%} (opzionale $>90\%$). I test \textit{End-to-End (E2E)}, invece, andranno validati sul \textit{kit} fisico reale per coprire almeno l'\textbf{80\%} dei requisiti di progetto.
+    \item \textbf{Test e Continuous Integration:} Per i test automatici di unità e integrazione, l'azienda consiglia di simulare le risposte dell'IA (mock) per non avere costi aggiuntivi e mantenere i test deterministici. La copertura del codice richiesta per queste fasi è del 75\% (opzionale $>90\%$). I test \textit{End-to-End (E2E)}, invece, andranno validati sul kit fisico reale per coprire almeno l'80\% dei requisiti di progetto.
 \end{itemize}
 
 \subsection{ Organizzazione e PoC}
 \begin{itemize}
-    \item \textbf{Obiettivi del Proof of Concept (PoC):} Il \textit{PoC} dovrà essere \textbf{essenziale} e dimostrare il funzionamento dell'MCP \textit{server} su \textbf{2-3 casi base}: accesso all'impianto, elenco degli impianti associati, lettura dello stato di una luce.
-    Viene specificato che nessuno dei requisiti etichettati come Opzionali o \textit{nice-to-have} è obbligatorio, ma che tra i due è preferibile lo sviluppo degli ultimi citati.
+    \item \textbf{Obiettivi del Proof of Concept (PoC):} Il \textit{Proof of Concept (PoC)} dovrà essere essenziale e dimostrare il funzionamento dell'MCP server su 2-3 casi base: accesso all'impianto, elenco degli impianti associati, lettura dello stato di una luce.
+    Viene specificato che nessuno dei requisiti etichettati come Opzionali o nice-to-have è obbligatorio, ma che tra i due è preferibile lo sviluppo degli ultimi citati.
     
-    \item \textbf{Incontri e SAL:} L'azienda offre la possibilità di incontri SAL periodici su Microsoft Teams, ma prevede almeno due incontri \textbf{obbligatori in presenza} presso la sede Vimar: uno iniziale (per la consegna del kit) e il collaudo finale (con la restituzione del kit). A metà percorso è prevista una demo tecnica in concomitanza del \textit{PoC} con i referenti aziendali.
+    \item \textbf{Incontri e SAL:} L'azienda offre la possibilità di incontri SAL periodici su Microsoft Teams, ma prevede almeno due incontri obbligatori in presenza presso la sede Vimar: uno iniziale (per la consegna del kit) e il collaudo finale (con la restituzione del kit). A metà percorso è prevista una \textit{demo} tecnica in concomitanza del PoC con i referenti aziendali.
     
 \end{itemize}
 \noindent
 Al termine della presentazione dell'azienda è stato possibile chiarire ulteriori dubbi non emersi dal sondaggio:
 
 \begin{itemize}
-    \item \textbf{Gestione dei limiti nei piani LLM gratuiti:} È stato chiesto se, nel caso in cui i piani gratuiti dei servizi IA non fossero sufficienti per via dell'elevato numero di richieste durante lo sviluppo, sarà necessario richiedere risorse aggiuntive. L'azienda ha suggerito di avvalersi il più possibile dei \textit{mock} e di valutare \textbf{modelli LLM più leggeri}. Tuttavia, in caso di esaurimento delle quote, Vimar ricorda la disponibilità a intervenire fornendo chiavi d'accesso per i servizi AWS.
+    \item \textbf{Gestione dei limiti nei piani LLM gratuiti:} È stato chiesto se, nel caso in cui i piani gratuiti dei servizi IA non fossero sufficienti per via dell'elevato numero di richieste durante lo sviluppo, sarà necessario richiedere risorse aggiuntive. L'azienda ha suggerito di avvalersi il più possibile dei mock e di valutare modelli LLM più leggeri. Tuttavia, in caso di esaurimento delle quote, Vimar ricorda la disponibilità a intervenire fornendo chiavi d'accesso per i servizi AWS.
     
-    \item \textbf{Lingua di sviluppo e interazione:} È stato domandato se le risposte e le descrizioni dei \textit{tool} debbano essere in italiano o in inglese. La proponente ha chiarito che i \textit{prompt} e le interazioni con l'utente finale dovranno avvenire in \textbf{lingua italiana}, mentre le istruzioni, le descrizioni interne dei \textit{tool} e il codice dell'MCP server potranno essere redatti in \textbf{inglese}.
+    \item \textbf{Lingua di sviluppo e interazione:} È stato domandato se le risposte e le descrizioni dei \textit{tool} debbano essere in italiano o in inglese. La proponente ha chiarito che i \textit{prompt} e le interazioni con l'utente finale dovranno avvenire in lingua italiana, mentre le istruzioni, le descrizioni interne dei tool e il codice dell'MCP server potranno essere redatti in inglese.
 \end{itemize}
 
-\section{Note Finali}
+\section{Note finali}
 Al termine della riunione è richiesto ai gruppi di redigere il verbale esterno e inviarlo via email per consentire eventuali commenti e l'approvazione finale con firma digitale da parte di Vimar. Il materiale illustrato durante la riunione verrà inviato dall'azienda ai gruppi tramite email in formato PDF.
 \vfill
 
