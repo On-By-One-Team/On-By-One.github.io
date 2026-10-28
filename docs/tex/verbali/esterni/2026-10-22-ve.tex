@@ -67,7 +67,7 @@
             On-By-One \newline 
             Prof. Tullio Vardanega \newline 
             Prof. Riccardo Cardin \newline 
-            Vimar \\
+            Vimar S.P.A.\\
             \hline
         \end{tabularx}
         \arrayrulecolor{black}
@@ -131,7 +131,7 @@
         \hline
         \textbf{Data} & 2026/10/22 \\ \hline
         \textbf{Ora inizio} & 14:55 \\ \hline
-        \textbf{Ora fine} & 15:50 \\ \hline
+        \textbf{Ora fine} & 15:55 \\ \hline
         \textbf{Modalità} & Teams \\ \hline
     \end{tabularx}
     \arrayrulecolor{black}
@@ -180,13 +180,13 @@ I referenti Vimar hanno suddiviso le domande emerse dal sondaggio presentato ai 
 
     \item \textbf{Ruolo del Client MCP:} L'azienda proponente specifica che non sarà necessario lo sviluppo di interfacce o applicazioni, poiché sarà sufficiente utilizzare quelle pronte degli \textit{LLM} commerciali per controllare i dispositivi richiesti. Il ruolo dell'MCP \textit{client} risiede principalmente nei test di integrazione. Per quanto riguarda l'MCP \textit{server}, si consiglia uno sviluppo in locale per le fasi di \textit{testing} e \textit{debug}. Infine, è di rilevanza durante la fase di progettazione essere in grado di saper dividere la gestione degli errori di server e client.
     
-    \item \textbf{Risorse Cloud:} Per quanto riguarda l'utilizzo di risorse LLM, l'azienda specifica che dovrebbe essere sufficiente l'utilizzo dei piani gratuiti (o di quelli studenteschi) per lo sviluppo richiesto. Nel caso questi dovessero essere insufficienti, sarà possibile richiedere all'azienda dei servizi \textit{AWS} o una chiave LLM per eseguire delle ulteriori prove. Inoltre, alla consegna del progetto sarà richiesto solamente l'esecuzione locale con \textit{Docker} dato che l'installazione su AWS avverrà da parte dell'azienda.
+    \item \textbf{Risorse Cloud:} Per quanto riguarda l'utilizzo di risorse LLM, l'azienda specifica che dovrebbe essere sufficiente l'utilizzo dei piani gratuiti (o di quelli studenteschi) per lo sviluppo richiesto. Nel caso questi dovessero essere insufficienti, sarà possibile richiedere all'azienda dei servizi \textit{AWS} o una chiave LLM per eseguire delle ulteriori prove. Inoltre, alla consegna del progetto sarà richiesto solamente l'esecuzione locale con \textit{Docker} dato che l'installazione su AWS avverrà con il supporto dell'azienda.
     
 \end{itemize}
 
 \subsection{ Protocolli e sicurezza}
 \begin{itemize}
-    \item \textbf{Autenticazione MyVimar:} La proponente conferma la necessità da parte dei membri del gruppo di avere un account MyVimar per poter accedere a uno o più impianti. Specifica inoltre che per ogni account saranno visibili solamente gli impianti posseduti e non sarà possibile visionarne altri. Per poter accedere tramite l'Intelligenza Artificiale, verrà utilizzata un'autorizzazione \textit{OAuth2} che collega l'MCP verso le \textit{API} e non permette ai servizi di Intelligenza Artificiale di reperire informazioni riguardanti i token. Tutto ciò che riguarda il flusso del login è lasciato alla progettazione del gruppo. 
+    \item \textbf{Autenticazione MyVimar:} La proponente conferma la necessità da parte dei membri del gruppo di avere un \textit{account} MyVimar per poter accedere a uno o più impianti. Specifica inoltre che per ogni account saranno visibili solamente gli impianti associati (di cui uno verrà consegnato al momento del \textit{kick-off} del progetto) e non sarà possibile visionarne altri. Per poter accedere tramite l'Intelligenza Artificiale, verrà utilizzata un'autorizzazione \textit{OAuth2} che collega l'MCP verso le \textit{API}. Tutto ciò che riguarda il flusso del login è lasciato alla progettazione del gruppo, con il vincolo rigoroso che non deve essere in alcun modo permesso all'IA di recuperare le credenziali o i token di accesso.
     
     \item \textbf{Comandi critici:} Dato che le API di Vimar non possiedono dei blocchi riguardanti gli LLM, sarà compito del team gestire la sicurezza riguardo ai permessi configurabili e chiedere conferme nel caso di scritture dirette critiche o espresse in modo ambiguo.
     
@@ -199,7 +199,7 @@ I referenti Vimar hanno suddiviso le domande emerse dal sondaggio presentato ai 
 \begin{itemize}
     \item \textbf{Gestione e utilizzo del Kit:} Il kit d'impianto fisico che l'azienda fornisce si collegherà direttamente al \textit{cloud} Vimar tramite \textit{Wi-Fi} (senza necessità di \textit{USB} o \textit{VPN}). Sarà sufficiente che un solo membro lo possieda. Gli altri membri interagiranno da remoto tramite API con un account amministratore fornito dall'azienda.
     
-    \item \textbf{Mocking in parallelo:} Per evitare situazioni di collo di bottiglia e permettere lo sviluppo parallelo, è consigliato l'utilizzo di strumenti \textit{open source} come \textit{Prism} per generare un \textit{mock} server locale partendo dalle specifiche \textit{OpenAPI} (\textit{YAML}) di \textit{KNX IoT}. Per la validazione sarà invece necessario l'utilizzo dell'impianto fisico in quanto il mock non replica perfettamente l'impianto. 
+   \item \textbf{Mocking in parallelo:} Per evitare situazioni di collo di bottiglia o problemi con account utente presenti nell'impianto e permettere lo sviluppo parallelo, è consigliato l'utilizzo di strumenti \textit{open source} come Prism per generare un \textit{mock} server locale partendo dalle specifiche OpenAPI (YAML) di KNX IoT. Per la validazione sarà invece necessario l'utilizzo dell'impianto fisico in quanto il mock non replica l'impianto in maniera perfettamente aderente.
     
     \item \textbf{Test e Continuous Integration:} Per i test automatici di unità e integrazione, l'azienda consiglia di simulare le risposte dell'IA (mock) per non avere costi aggiuntivi e mantenere i test deterministici. La copertura del codice richiesta per queste fasi è del 75\% (opzionale $>90\%$). I test \textit{End-to-End (E2E)}, invece, andranno validati sul kit fisico reale per coprire almeno l'80\% dei requisiti di progetto.
 \end{itemize}
@@ -207,9 +207,9 @@ I referenti Vimar hanno suddiviso le domande emerse dal sondaggio presentato ai 
 \subsection{ Organizzazione e PoC}
 \begin{itemize}
     \item \textbf{Obiettivi del Proof of Concept (PoC):} Il \textit{Proof of Concept (PoC)} dovrà essere essenziale e dimostrare il funzionamento dell'MCP server su 2-3 casi base: accesso all'impianto, elenco degli impianti associati, lettura dello stato di una luce.
-    Viene specificato che nessuno dei requisiti etichettati come Opzionali o nice-to-have è obbligatorio, ma che tra i due è preferibile lo sviluppo degli ultimi citati.
+    Viene specificato che nessuno dei requisiti etichettati come opzionali o nice-to-have è obbligatorio, ma che tra i due è preferibile lo sviluppo degli ultimi citati.
     
-    \item \textbf{Incontri e SAL:} L'azienda offre la possibilità di incontri SAL periodici su Microsoft Teams, ma prevede almeno due incontri obbligatori in presenza presso la sede Vimar: uno iniziale (per la consegna del kit) e il collaudo finale (con la restituzione del kit). A metà percorso è prevista una \textit{demo} tecnica in concomitanza del PoC con i referenti aziendali.
+    \item \textbf{Incontri e SAL:} L'azienda offre la possibilità di incontri SAL periodici su Microsoft Teams, ma prevede almeno due incontri obbligatori in presenza presso la sede Vimar: uno iniziale (per la consegna del kit) e il collaudo finale (con la restituzione del kit). Sono previste a metà percorso e alla fine del collaudo due \textit{demo} tecniche in concomitanza del PoC e del collaudo per l'\textit{MVP(minimum viable product)} con i referenti aziendali.
     
 \end{itemize}
 \noindent
@@ -225,16 +225,5 @@ Al termine della presentazione dell'azienda è stato possibile chiarire ulterior
 Al termine della riunione è richiesto ai gruppi di redigere il verbale esterno e inviarlo via email per consentire eventuali commenti e l'approvazione finale con firma digitale da parte di Vimar. Il materiale illustrato durante la riunione verrà inviato dall'azienda ai gruppi tramite email in formato PDF.
 \vfill
 
-% ==============================================================================
-% APPROVAZIONE
-% ==============================================================================
-\hfill
-\begin{minipage}{0.4\textwidth}
-    \centering
-    \textbf{Firma del revisore esterno}\par
-    \vspace{1.5cm}
-    \rule{\textwidth}{0.4pt} % Solo la linea
-\end{minipage}
 
-\vspace{2cm} 
 \end{document}
