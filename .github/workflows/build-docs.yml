@@ -1,0 +1,68 @@
+name: Compila documenti LaTeX
+
+# Il workflow si attiva solo quando vengono effettuate modifiche ai file .tex 
+# sul branch main (dopo il merge di una Pull Request)
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/tex/**.tex'
+
+# Permessi necessari alla Action per poter fare il commit dei PDF sulla repo
+permissions:
+  contents: write
+
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Scarica tutta la cronologia, essenziale per poter fare il push successivo
+
+      - name: Compila i file LaTeX
+        uses: xu-cheng/latex-action@v4
+        with:
+          entrypoint: /bin/bash
+          args: |
+            -c "
+            # Cerca tutti i file .tex, ma ignora quelli dentro 'templates' perché sono solo modelli
+            find docs/tex -name '*.tex' -not -path 'docs/tex/templates/*' | while read tex_file; do
+              
+              # Calcola dinamicamente la cartella di destinazione (sostituisce 'tex' con 'pdf' nel percorso)
+              # es: docs/tex/verbali/interni -> docs/pdf/verbali/interni
+              outdir=\$(dirname \"\$tex_file\" | sed 's/tex/pdf/')
+              
+              # Crea la cartella di destinazione se non esiste già
+              mkdir -p \"\$outdir\"
+              
+              echo \"Compilando: \$tex_file in \$outdir\"
+              
+              # Compila il file LaTeX dicendogli esplicitamente dove salvare i risultati
+              latexmk -pdf -interaction=nonstopmode -output-directory=\"\$outdir\" \"\$tex_file\"
+            done
+            "
+
+      - name: Pulizia file temporanei di LaTeX
+        run: |
+          # latexmk genera vari file spazzatura (.log, .aux, ecc.). 
+          # Vengono eliminati tutti, salvando solo i .pdf e i .gitkeep
+          find docs/pdf -type f -not -name '*.pdf' -not -name '.gitkeep' -delete
+
+      - name: Commit e push dei PDF generati
+        run: |
+          # Usa l'utente di sistema di GitHub per firmare il commit
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Mette in stage solo la cartella dei PDF
+          git add docs/pdf/
+          
+          # Fa il commit rispettando la nomenclatura imposta da WoW (tipo: descrizione). 
+          # Il tag [skip ci] impedisce a questo commit di far ripartire il workflow in un loop infinito.
+          git commit -m "docs: aggiornamento automatico PDF post-approvazione [skip ci]" || echo "Nessuna modifica al PDF"
+          
+          # Invia il commit al branch main
+          git push origin main
