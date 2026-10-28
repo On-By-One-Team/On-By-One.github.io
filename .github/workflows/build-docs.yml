@@ -6,9 +6,10 @@ name: Compila documenti LaTeX
 on:
   push:
     branches:
-      - 'admin/21-creazione-workflow-pdf'
+      - main
     paths:
       - 'docs/tex/**/*.tex'
+  workflow_dispatch: # Permette di lanciarlo a mano dalla tab Actions (compila tutto)
 
 # Permessi necessari alla Action per poter fare il commit dei PDF sulla repo
 permissions:
@@ -73,5 +74,5 @@ jobs:
           git commit -m "docs: aggiornamento automatico PDF post-approvazione [skip ci]" || echo "Nessuna modifica al PDF"
           
           # Se main è avanzato mentre il job girava, riallinea prima di pushare
-          git pull --rebase origin ${{ github.ref_name }}
-          git push origin HEAD:${{ github.ref_name }}
+          git pull --rebase origin main
+          git push origin HEAD:main
