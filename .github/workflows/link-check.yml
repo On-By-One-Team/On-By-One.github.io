@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - admin/22-creazione-workflow-sito
     paths:
       - 'website/**'
       - 'assets/**'
