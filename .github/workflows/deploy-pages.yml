@@ -1,0 +1,85 @@
+name: CI/CD Sito Web
+
+on:
+  push:
+    branches:
+      - main
+      - admin/22-creazione-workflow-sito
+    paths:
+      - 'website/**'
+      - 'assets/**'
+      - 'docs/pdf/**'
+      - '.github/workflows/deploy-pages.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'website/**'
+      - '.github/workflows/deploy-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  ci-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repository
+        uses: actions/checkout@v4
+
+      - name: Validazione HTML5
+        run: npx --yes htmlhint website/index.html
+
+      - name: Validazione CSS3
+        run: |
+          cat << 'EOF' > .stylelintrc.json
+          {
+            "rules": {
+              "block-no-empty": true,
+              "color-no-invalid-hex": true,
+              "declaration-block-no-duplicate-properties": true,
+              "property-no-unknown": true,
+              "selector-pseudo-class-no-unknown": true,
+              "selector-pseudo-element-no-unknown": true,
+              "selector-type-no-unknown": true,
+              "unit-no-unknown": true,
+              "no-duplicate-selectors": true
+            }
+          }
+          EOF
+          npx --yes stylelint "website/style.css"
+
+  cd-deploy:
+    needs: ci-validate
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout del repository
+        uses: actions/checkout@v4
+
+      - name: Prepara index.html e style.css nella root per il deploy
+        run: |
+          cp website/index.html website/style.css .
+          sed -i 's|\.\./assets/|assets/|g; s|\.\./docs/|docs/|g' index.html
+
+      - name: Configura GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Carica file per GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy su GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
