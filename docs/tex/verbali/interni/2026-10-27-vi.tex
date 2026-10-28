@@ -1,0 +1,166 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PACCHETTI ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
+\usepackage{graphicx}               % Per inserire il logo
+\usepackage{tabularx}               % Per tabelle larghe quanto la pagina
+\usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
+\usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
+\usepackage{lmodern}      % Rende i font scalabili all'infinito
+\usepackage{anyfontsize}  % Permette di usare dimensioni personalizzate
+
+\begin{document}
+
+% ==============================================================================
+% FRONTESPIZIO (PAGINA 1)
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+
+    % LOGHI
+    \includegraphics[width=0.45\textwidth]{../../../../assets/logo_unipd.jpg}
+    \hfill
+    \includegraphics[width=0.45\textwidth]{../../../../assets/logo.png}\par
+    \vspace{0.5cm}
+
+    % NOME DEL GRUPPO
+    {\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par} 
+    \vspace{1cm}
+
+    % TITOLO DEL VERBALE
+    {\huge \bfseries Verbale interno 2026/10/27 \par}
+    
+    \vspace{1.5cm}
+
+    % MEMBRI DEL GRUPPO
+    {\large
+    \textbf{On-By-One}:\par
+    \vspace{0.3cm}
+    \begin{tabular}{l l}
+        Sara Ballardin & 2101048 \\
+        Shuhui Chen & 2138001 \\
+        Simone Giuliano & 2145591 \\
+        Alvise Greggio & 2141004 \\
+        Daniele Nuzzaci & 2139039 \\
+        Federico Temporin & 2146764 \\
+        Tommaso Zorzetto & 2148629 \\
+    \end{tabular}
+    \par}
+
+    \vfill
+
+    % TABELLA INFORMAZIONI DOCUMENTO E DESTINATARI
+    \begin{table}[h]
+        \centering
+        \arrayrulecolor{gray!50}
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabularx}{\textwidth}{|c|c|c|X|}
+            \hline
+            \rowcolor{gray!10} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
+            \hline
+            \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+            \hline
+            - & - & Bozza & 
+            On-By-One \newline 
+            Prof. Tullio Vardanega \newline 
+            Prof. Riccardo Cardin \\
+            \hline
+        \end{tabularx}
+        \arrayrulecolor{black}
+    \end{table}
+    
+    \vspace{0.5cm}
+    
+    % CONTATTI
+    {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
+    
+\end{titlepage}
+
+\newpage
+
+% ==============================================================================
+% REGISTRO DELLE MODIFICHE (PAGINA 2)
+% ==============================================================================
+\section*{Registro delle modifiche}
+
+\vspace{1cm}
+\begin{center}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
+        \hline
+        \rowcolor{gray!10} 
+        \multicolumn{1}{|c|}{\textbf{Versione}} & 
+        \multicolumn{1}{c|}{\textbf{Data}} & 
+        \multicolumn{1}{c|}{\textbf{Autore}} & 
+        \multicolumn{1}{c|}{\textbf{Descrizione}} & 
+        \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        - & 2026/10/28 & Sara Ballardin & Stesura del verbale & - \\
+        \hline
+        0.1.0 & 2026/10/27 & Sara Ballardin & Bozza iniziale & - \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{center}
+\vfill
+\newpage
+
+% ==============================================================================
+% INDICE (PAGINA 3)
+% ==============================================================================
+\tableofcontents
+\newpage
+
+% ==============================================================================
+% INFORMAZIONI GENERALI
+% ==============================================================================
+\section{Ordine del giorno}
+\begin{itemize}
+    \item Definizione e approvazione della strategia di \textit{branching}.
+    \item Definizione e approvazione della policy di \textit{code review}.
+    \item Definizione e approvazione delle convenzioni per i \textit{commit}.
+    \item Definizione e approvazione delle convenzioni di formattazione.
+    \item Regolamentazione della \textit{naming convention} per i file del \textit{repository}.
+    \item Definizione del flusso di verifica e approvazione dei documenti.
+\end{itemize}
+
+\section{Discussioni}
+La riunione è stata indetta con l'obiettivo di definire e formalizzare il \textit{Way of Working} (WoW) del team On-By-One. Si è discusso sulla necessità di stabilire linee guida chiare, condivise e rigorose per la gestione del repository, la stesura dei documenti e le procedure di collaborazione. L'adozione immediata di queste regole garantirà uniformità, tracciabilità ed efficienza nel lavoro del gruppo, semplificando le future fasi di sviluppo e revisione.
+
+\section{Decisioni}
+\begin{itemize}
+    \item \textbf{VI-2026-10-27.1} Approvata la gestione dei branch di sviluppo: la linea principale (\texttt{main}) è protetta e richiede verifiche automatiche. Le linee di lavoro parallele seguiranno il nome \texttt{<tipo>/<numero-attività>-<descrizione>} (tipi consentiti: \texttt{admin/}, \texttt{docs/}, \texttt{website/}) e verranno eliminate una volta unite al progetto principale tramite \textit{Standard merge}.
+    \item \textbf{VI-2026-10-27.2} Approvata la politica di revisione: ogni proposta di modifica (\textit{Pull Request}) deve essere controllata da almeno un membro del gruppo diverso dall'autore. Le correzioni richieste si dividono in \textbf{Bloccanti} (obbligatorie prima di poter unire il lavoro) e \textbf{Non bloccanti} (suggerimenti opzionali o rimandabili).
+    \item \textbf{VI-2026-10-27.3} Approvate le regole per i salvataggi (\textit{commit}): i messaggi seguiranno la struttura \texttt{<tipo>: <descrizione>} in italiano, indicando il numero dell'attività di riferimento (es. \texttt{\#24}).
+    \item \textbf{VI-2026-10-27.4} Approvate le regole di formattazione: uso del \textbf{grassetto} per i concetti chiave, del \textit{corsivo} solo per la prima comparsa di parole straniere non comuni o termini specialistici, e dello stile \texttt{codice} per nomi di file, comandi e branch. È vietato sottolineare o barrare il testo.
+    \item \textbf{VI-2026-10-27.5} Approvate le regole per i nomi dei file: i verbali useranno il formato \texttt{aaaa-mm-dd-vi} per quelli interni e \texttt{aaaa-mm-dd-ve} per quelli esterni. Tutti gli altri documenti avranno nomi in minuscolo, separando le parole con i trattini (es. \texttt{nome-del-file.tex}).
+    \item \textbf{VI-2026-10-27.6} Approvato il processo di validazione dei documenti: chi scrive il testo lo lascia in stato di \textbf{Bozza}, senza data o versione definitiva. Chi verifica, se approva il lavoro, inserisce la versione finale e cambia lo stato in \textbf{Approvato}; se invece ci sono problemi, assegna una versione provvisoria, rifiuta la modifica e segnala gli errori da correggere.
+\end{itemize}
+
+\section{To-do}
+\begin{center}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|X|c|c|}
+        \hline
+        \rowcolor{gray!10} 
+        \multicolumn{1}{|c|}{\textbf{ID issue}} & 
+        \multicolumn{1}{c|}{\textbf{Task}} & 
+        \multicolumn{1}{c|}{\textbf{Assegnatario}} & 
+        \multicolumn{1}{c|}{\textbf{Scadenza}} \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/17}{\#17} & Stesura del documento sulla naming convention e sull'approvazione dei documenti & Federico Temporin & 2026/10/28 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/21}{\#21} & Aggiornamento del \textit{workflow} per la creazione di PDF & Sara Ballardin & 2026/10/28 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/22}{\#22} & Aggiornamento del workflow per il sito web & Daniele Nuzzaci & 2026/10/28 \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{center}
+
+\end{document}
