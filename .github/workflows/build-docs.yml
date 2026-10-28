@@ -25,6 +25,7 @@ jobs:
       - name: Compila i file LaTeX
         uses: xu-cheng/latex-action@v4
         with:
+          root_file: '*.tex'
           entrypoint: /bin/bash
           args: |
             -c "
