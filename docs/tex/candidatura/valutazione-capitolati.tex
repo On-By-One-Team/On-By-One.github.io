@@ -176,6 +176,28 @@ Il capitolato unisce requisiti stringenti a sfide ingegneristiche stimolanti: da
 \subsubsection{Motivazioni dello scarto}
 Il fattore determinante è stato il carico organizzativo e operativo richiesto: il gruppo dovrebbe allestire in autonomia lo store di sviluppo usato come insieme di controllo per i falsi positivi e monitorare costantemente i limiti dei piani gratuiti di \textit{Vercel} e \textit{Supabase}. A ciò si aggiungono le criticità già descritte, che rendono l'opportunità di apprendimento poco spendibile al di fuori di questo specifico ecosistema.
 
+\subsection{C5 - RareCare Navigator}
+\subsubsection{Obiettivo e tecnologie}
+\textbf{RareCare Navigator} è una piattaforma cross-platform con assistente AI progettata per la raccolta dati, il coordinamento e il supporto decisionale nelle malattie rare, a partire dalla Sindrome di Sanfilippo. Lo scopo principale è affiancare la figura umana del Care Navigator e ridurre il carico organizzativo delle famiglie, connettendo in un unico spazio sicuro medici, scuola, terapisti e servizi sociali. \newline
+Il sistema si fonda su un \textit{Core} estendibile ad altre patologie tramite pacchetti di configurazione (Disease Pack) e prevede la validazione sul campo con l'associazione \textbf{Sanfilippo Fighters}. \newline
+Il livello di complessità tecnica del progetto è \textbf{medio-alto} e si articola sui seguenti aspetti:
+
+\begin{itemize}
+    \item \textbf{Tecnologie consigliate (non vincolanti)}: Frontend in Flutter o React Native; backend serverless su AWS in regione UE (API Gateway, Lambda, Step Functions, EventBridge, IaC); database Aurora Serverless v2 (PostgreSQL con pgvector) e bucket S3 cifrati; servizi AI su Amazon Bedrock, Textract e Transcribe (o alternative OpenAI/Hugging Face).
+    \item \textbf{Funzionalità chiave}: Permessi granulari basati su ruolo, relazione con il paziente e attributi del documento (RBAC/ReBAC/ABAC), dashboard collaborativa e fascicolo digitale cifrato (referti, PAI, PEI), workflow per checklist dinamiche e scadenze con notifiche ed escalation, chatbot RAG basato esclusivamente su fonti verificate con citazioni e Guardrails, pipeline NLP/NER per estrarre entità cliniche previa conferma umana obbligatoria e moduli opzionali (assistente vocale, mappa geospaziale e ML predittivo).
+    \item \textbf{Organizzazione e conformità}: Gestione di dati sanitari di minori (art. 9 GDPR) con cifratura TLS 1.3 e AES-256 (KMS), OAuth2/MFA (Cognito), registro di audit immutabile e accessibilità WCAG 2.1 AA; redazione della valutazione d'impatto DPIA, monitoraggio dei consumi per rientrare nel free tier AWS e mantenimento dell'AI entro un perimetro informativo per non ricadere nei vincoli sui dispositivi medici (MDR) e sull'EU AI Act.
+\end{itemize}
+
+L'opportunità di apprendimento risulta molto completa e trasversale, unendo progettazione DDD ed esagonale, sviluppo mobile/web, cloud serverless su AWS, sicurezza avanzata e GenAI in ambito clinico.
+
+\subsubsection{Considerazioni e criticità}
+La documentazione è estremamente chiara e include l'\textbf{Allegato 1}, una guida implementativa che definisce una roadmap incrementale, analizza i trade-off cloud e risolve preventivamente le criticità dei requisiti (come il bilanciamento tra cifratura end-to-end ed elaborazione AI lato server, l'estensione del modello RBAC e il mancato supporto dell'italiano nei servizi medicali AWS). Anche il supporto della proponente si attesta su un livello elevato, offrendo tre referenti dedicati (Cloud/AI, UX/UI e dominio clinico), formazione iniziale, sale riunioni a Padova e Thiene e piena flessibilità nel concordare un perimetro sostenibile per il gruppo. \newline
+A fronte di questi vantaggi, emergono tuttavia alcune criticità: l'elevato onere di analisi normativa e architetturale richiesto dalla tutela dei dati sanitari pediatrici (DPIA, consensi granulari, confini MDR/AI Act), l'assenza di mockup grafici dell'interfaccia e la mancata fornitura diretta di budget o account cloud aziendali, che lascia al gruppo l'onere di presidiare i limiti del piano gratuito di AWS.
+
+\subsubsection{Motivazioni dello scarto}
+Nonostante il forte impatto sociale, l'ottimo supporto multidisciplinare offerto da Miriade e l'interesse per lo stack serverless e GenAI su AWS, il gruppo ha deciso di tenere questo capitolato come seconda opzione. \newline
+Nella scelta finale hanno pesato il considerevole carico normativo e progettuale richiesto dalla gestione dei dati sanitari e dallo sviluppo full-stack multipiattaforma.
+
 \section{Altri capitolati valutati}
 
 \subsection{C0 - AIRA (Sanmarco Informatica)}
@@ -194,13 +216,16 @@ Il fattore determinante è stato il carico organizzativo e operativo richiesto: 
 \subsubsection{Obiettivo}
 \subsubsection{Motivazioni dello scarto}
 
-\subsection{C5 - [Titolo capitolato]}
+\subsection{C6 - Sistema AI di caching semantico e dashboard FinOps (Var Group)}
 \subsubsection{Obiettivo}
-\subsubsection{Motivazioni dello scarto}
+Il progetto proposto da Var Group nasce con l'obiettivo di risolvere due criticità molto diffuse nell'adozione aziendale dell'intelligenza artificiale generativa su larga scala: la ridondanza delle richieste inviate ai modelli e la mancanza di visibilità immediata sui costi di inferenza a consumo, spesso rilevati solo a fine mese con la fattura dei vari provider. \newline
+L'idea consiste nell'estendere LiteLLM, un orchestratore e proxy open source già utilizzato in produzione dall'azienda per instradare le chiamate verso molteplici LLM, integrandovi due nuovi componenti originali.
+Il primo modulo introduce un livello di caching semantico basato su embedding e ricerca di similarità (cosine similarity). A differenza delle cache tradizionali, che richiedono una corrispondenza esatta del testo, questo sistema riconosce domande formulate in modo diverso ma dal significato equivalente e restituisce direttamente la risposta salvata su Redis o database vettoriale (Qdrant o pgvector), registrando i token e la latenza risparmiati. \newline
+Il secondo componente consiste in una dashboard FinOps multi-tenant, realizzata come servizio separato con aggiornamento quasi in tempo reale. L'interfaccia aggrega e isola i consumi per team, progetto e singolo utente, quantifica il risparmio effettivo generato dalla cache semantica e permette di configurare budget con avvisi automatici e previsioni (forecasting) della spesa mensile.
 
-\subsection{C6 - Sistema AI di caching semantico e dashboard FinOps}
-\subsubsection{Obiettivo}
 \subsubsection{Motivazioni dello scarto}
+Il capitolato affronta una problematica aziendale concreta ed è stato apprezzato per la chiarezza della documentazione, la solidità dello stack tecnologico consigliato e il piano di formazione strutturato offerto dalla proponente. \newline
+Tuttavia, è stato scartato perché fortemente incentrato sulla rendicontazione economica dei consumi (FinOps) e sull'estensione di un proxy preesistente, un dominio applicativo che ha suscitato minore interesse nel gruppo rispetto a soluzioni più tangibili, a cui si aggiunge l'onere procedurale richiesto prima dell'implementazione.
 
 \subsection{C7 - Smart Dashboard}
 \subsubsection{Obiettivo}
