@@ -1,7 +1,8 @@
 name: Compila documenti LaTeX
 
-# Il workflow si attiva solo quando vengono effettuate modifiche ai file .tex 
-# sul branch main (dopo il merge di una Pull Request)
+# Il workflow si attiva quando una Pull Request viene mergiata su main
+# (il merge genera un push su main) e sono stati toccati dei file .tex.
+# Compila solo i .tex aggiunti o modificati da quella PR.
 on:
   push:
     branches:
@@ -20,13 +21,27 @@ jobs:
       - name: Checkout del repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Scarica tutta la cronologia, essenziale per poter fare il push successivo
+          fetch-depth: 0 # Scarica tutta la cronologia, serve per il git diff e per il push
 
+      - name: Trova i .tex aggiunti o modificati dalla PR
+        run: |
+          BEFORE="${{ github.event.before }}"
+          # Se non c'è un commit precedente valido (run manuale o primo push), compila tutto
+          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            find docs/tex -name "*.tex" > changed.txt
+          else
+            git diff --name-only --diff-filter=AM "$BEFORE" "${{ github.sha }}" -- 'docs/tex/*.tex' > changed.txt
+          fi
+          echo "File da compilare:"
+          cat changed.txt
+        
       - name: Compila i file LaTeX
         run: |
           docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace ghcr.io/xu-cheng/texlive-alpine:latest sh -c '
-            find docs/tex -name "*.tex" -not -path "docs/tex/templates/*" | while read tex_file; do
-              
+            while read tex_file; do
+              # Ignora i modelli
+              case "$tex_file" in docs/tex/templates/*) continue ;; esac
+             
               # Salta i file che non contengono \documentclass
               grep -q "documentclass" "$tex_file" || continue
               
@@ -36,13 +51,12 @@ jobs:
               
               echo "Compilando: $tex_file in $outdir"
               latexmk -pdf -interaction=nonstopmode -output-directory="$outdir" "$tex_file"
-            done
+            done < changed.txt
           '
 
       - name: Pulizia file temporanei di LaTeX
         run: |
-          # latexmk genera vari file spazzatura (.log, .aux, ecc.). 
-          # Vengono eliminati tutti, salvando solo i .pdf e i .gitkeep
+          # Elimina i file spazzatura di latexmk, tenendo solo .pdf e .gitkeep
           find docs/pdf -type f -not -name '*.pdf' -not -name '.gitkeep' -delete
 
       - name: Commit e push dei PDF generati
@@ -54,9 +68,10 @@ jobs:
           # Mette in stage solo la cartella dei PDF
           git add docs/pdf/
           
-          # Fa il commit rispettando la nomenclatura imposta da WoW (tipo: descrizione). 
-          # Il tag [skip ci] impedisce a questo commit di far ripartire il workflow in un loop infinito.
+          # Fa il commit rispettando la nomenclatura imposta da WoW (tipo: descrizione)
+          # Il tag [skip ci] impedisce a questo commit di far ripartire il workflow
           git commit -m "docs: aggiornamento automatico PDF post-approvazione [skip ci]" || echo "Nessuna modifica al PDF"
           
-          # Invia il commit al branch main
-          git push origin HEAD:${{ github.ref }}
+          # Se main è avanzato mentre il job girava, riallinea prima di pushare
+          git pull --rebase origin ${{ github.ref_name }}
+          git push origin HEAD:${{ github.ref_name }}
