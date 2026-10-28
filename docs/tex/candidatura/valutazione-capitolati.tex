@@ -1,0 +1,213 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PACCHETTI ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
+\usepackage{graphicx}               % Per inserire il logo
+\usepackage{tabularx}               % Per tabelle larghe quanto la pagina
+\usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
+\usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
+\usepackage{lmodern}      % Rende i font scalabili all'infinito
+\usepackage{anyfontsize}  % Permette di usare dimensioni personalizzate
+
+\begin{document}
+
+% ==============================================================================
+% FRONTESPIZIO (PAGINA 1)
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+
+    % LOGHI
+    \includegraphics[width=0.45\textwidth]{img/logo_unipd.jpg}
+    \hfill
+    \includegraphics[width=0.45\textwidth]{img/logo.png}\par
+    \vspace{0.5cm}
+
+    % NOME DEL GRUPPO
+    {\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par} 
+    \vspace{1cm}
+
+    % TITOLO DEL VERBALE
+    {\huge \bfseries Valutazione dei capitolati \par}
+    
+    \vspace{1.5cm}
+
+    % MEMBRI DEL GRUPPO
+    {\large
+    \textbf{On-By-One}:\par
+    \vspace{0.3cm}
+    \begin{tabular}{l l}
+        Sara Ballardin & 2101048 \\
+        Shuhui Chen & 2138001 \\
+        Simone Giuliano & 2145591 \\
+        Alvise Greggio & 2141004 \\
+        Daniele Nuzzaci & 2139039 \\
+        Federico Temporin & 2146764 \\
+        Tommaso Zorzetto & 2148629 \\
+    \end{tabular}
+    \par}
+
+    \vfill
+
+    % TABELLA INFORMAZIONI DOCUMENTO E DESTINATARI
+    \begin{table}[h]
+        \centering
+        \arrayrulecolor{gray!50}
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabularx}{\textwidth}{|c|c|c|X|}
+            \hline
+            \rowcolor{gray!10} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
+            \hline
+            \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+            \hline
+            [X.X.X] & [YYYY/MM/DD] & [Bozza/Approvato] & 
+            On-By-One \newline 
+            Prof. Tullio Vardanega \newline 
+            Prof. Riccardo Cardin \\
+            \hline
+        \end{tabularx}
+        \arrayrulecolor{black}
+    \end{table}
+    
+    \vspace{0.5cm}
+    
+    % CONTATTI
+    {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
+    
+\end{titlepage}
+
+\newpage
+
+% ==============================================================================
+% REGISTRO DELLE MODIFICHE (PAGINA 2)
+% ==============================================================================
+\section*{Registro delle modifiche}
+
+\vspace{1cm}
+\begin{center}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
+        \hline
+        \rowcolor{gray!10} 
+        \multicolumn{1}{|c|}{\textbf{Versione}} & 
+        \multicolumn{1}{c|}{\textbf{Data}} & 
+        \multicolumn{1}{c|}{\textbf{Autore}} & 
+        \multicolumn{1}{c|}{\textbf{Descrizione}} & 
+        \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        0.1.0 & 2026/10/28 & Shuhui Chen & Valutazione dei capitolati C1 e C8 & Tommaso Zorzetto \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{center}
+\vfill
+\newpage
+
+% ==============================================================================
+% INDICE (PAGINA 3)
+% ==============================================================================
+\tableofcontents
+\newpage
+
+\section{Capitolato scelto: C1 - AURA (Vimar)}
+\subsection{Obiettivo}
+Il progetto consiste nella realizzazione di \textit{AURA} (\textit{AI for Understanding, Reasoning and Automation}), un'interfaccia che permette di controllare e interrogare in linguaggio naturale un impianto domotico \textit{Vimar View Wireless}, una rete mesh Bluetooth, tramite servizi di intelligenza artificiale commerciali come \textit{Claude}, \textit{ChatGPT}, \textit{Copilot}, \textit{Gemini}. La soluzione si fonda su un \textit{MCP${_G}$ Server} e rispettivo client, che facciano da interfaccia tra il servizio AI e l'\textit{API KNX IoT 3rd-party${_G}$}, esponendo in modo standardizzato dati, funzionalità e comandi dell'impianto. 
+
+\subsection{Complessità tecnica}
+Il progetto presenta un livello di complessità medio-alta. Lo sviluppo riguarda prevalentemente il back-end, poiché l'utente interagirà con il sistema direttamente tramite l'interfaccia nativa del servizio AI scelto. I requisiti obbligatori si basano su:
+\begin{itemize}
+    \item \textbf{Infrastruttura cloud-ready}: Basata su container \textit{Docker} e \textit{Infrastructure as Code${_G}$} (IaC), avviabile con un solo comando (\textit{docker compose up}) e compatibile per un rilascio nel cloud \href{https://aws.amazon.com/it/}{AWS}.
+    \item \textbf{\textit{MCP Server} e \textit{MCP Client}}: Progettati per supportare le API \textit{KNX IoT 3rd-party} (v2.1.0), in particolare \textit{Authorization, Datapoint, Function, Information, Location, Subscription, Timeseries}; 
+    \item \textbf{Autenticazione e autorizzazione}: Gestiti tramite \textit{OAuth2}, con supporto per la selezione dell'impianto e operazioni di lettura e scrittura sui dispositivi;
+    \item \textbf{Integrazione AI}: Collegamento con almeno un servizio AI commerciale e gestione dei casi d'uso base e avanzati indicati nel capitolato;
+    \item \textbf{Testing}: Raggiungimento di una copertura minima del 75\% per i test \textit{unit/integration} e dell'80\% per i test \textit{E2E} (opzionalmente sopra il 90\%).
+\end{itemize}
+
+\subsection{Opportunità di apprendimento}
+Si interagisce con numerose tecnologie:
+\begin{itemize}
+    \item \textbf{MCP}: protocollo \textit{Model Context Protocol} server, con i relativi \textit{tools} e \textit{resources}, e client collegato al server.
+    \item \textbf{GenAI${_G}$}: progettazione di strumenti utilizzabili da un \textit{LLM}, gestione di richieste ambigue e sinonimi, conferme sulle scritture;
+    \item \textbf{IoT}: integrazione con un sistema domotico fisico (\textit{Vimar View Wireless}) e dispositivi reali (gateway BLE, attuatori, sensori di presenza UWB, termostato), con comprensione della relazione tra gli elementi dell'impianto (\textit{Location}--\textit{Function}--\textit{Datapoint}) di \textit{KNX IoT};
+    \item \textbf{API e sicurezza}: standard internazionale \textit{KNX IoT}, \textit{OAuth2}, gestione multiutente e privacy dei dati verso l'LLM;
+    \item \textbf{Cloud e DevOps${_G}$}: \textit{Docker} e docker-compose, \textit{IaC}, \textit{Continuous Integration${_G}$} (\textit{GitHub Runners}), opzionalmente anche \textit{AWS${_G}$} (\textit{LightSail}, \textit{EC2}) e \textit{Terraform}/\textit{CDK}/\textit{Ansible};
+    \item \textbf{Backend}: \textit{Python} con \textit{FastMCP} (consigliato), in alternativa \textit{TypeScript} o \textit{Java};
+    \item \textbf{Database} (se necessario): relazionali (\textit{MySQL}, \textit{PostgreSQL}) o \textit{Redis} per le sessioni.
+\end{itemize}
+
+\subsection{Chiarezza progettuale}
+La documentazione offre una base solida per l'analisi dei requisiti; le esigenze sono suddivise in obbligatorie, opzionali e ``nice to have'', i prodotti attesi sono descritti con precisione e gli schemi (macro-componenti, architettura \textit{MCP}, foto del kit) ne facilitano la comprensione. Le due tabelle di casi d'uso e le risposte date durante la riunione fatta con la proponente hanno chiarito dubbi quali il ruolo del client \textit{MCP}, la gestione dei token, i \textit{mock} e il \textit{PoC} minimo.
+
+\subsection{Supporto da parte del proponente}
+Il supporto offerto da Vimar è stato uno dei fattori determinanti nella scelta di questo capitolato, per la sua ampiezza e per la chiarezza con cui è descritto. Vimar mette a disposizione:
+\begin{itemize}
+    \item \textit{SAL} (Stato Avanzamento Lavori) bisettimanali di un'ora, che dopo il \textit{Proof of Concept} possono diventare settimanali di mezz'ora, svolti su \textit{Microsoft Teams} oppure in presenza nelle salette della sede;
+    \item la possibilità di richiedere, con 1--2 settimane di anticipo, approfondimenti mirati (anche con colleghi di altri team) e incontri di allineamento extra su dubbi progettuali, scelte architetturali e coerenza della soluzione;
+    \item due incontri in presenza obbligatori a Padova, all'inizio (con consegna del kit) e al collaudo finale, oltre a demo con i colleghi \textit{R\&D} a metà progetto (\textit{PoC}) e a fine progetto (\textit{MVP});
+    \item contatti email diretti con i referenti aziendali, con risposte negli orari d'ufficio, per le comunicazioni asincrone;
+    \item la firma digitale dei verbali esterni redatti dal gruppo;
+    \item il materiale di lavoro: un kit hardware portatile per l'intera durata del progetto, un account amministratore con possibilità di aggiungere utenti, l'accesso alle API e alla documentazione \textit{KNX IoT}, ed eventualmente, in accordo con la proponente, spazio \textit{AWS} e una chiave LLM per le prove.
+\end{itemize}
+
+\subsection{Interesse}
+Il gruppo ha mostrato un interesse particolare per questo capitolato, soprattutto per la possibilità di lavorare su un prodotto fisico: poter provare l'impianto reale e vedere concretamente il risultato del proprio lavoro è stato percepito come un elemento distintivo rispetto agli altri capitolati. Tra i temi di maggiore interesse figurano l'integrazione di un ambiente domotico con un \textit{MCP Server} e un \textit{MCP Client}, la gestione delle ambiguità nelle richieste rivolte alla \textit{GenAI}, l'utilizzo di \textit{API} per il collegamento tra le parti e l'implementazione del protocollo \textit{OAuth2} per l'autenticazione e la gestione dei dati sensibili dell'utente. Hanno inoltre suscitato interesse le tecnologie di \textit{cloud} e \textit{DevOps} come \textit{AWS}, \textit{docker compose} ed eventualmente \textit{Terraform}, \textit{CDK} e \textit{Ansible}, molto richieste nel settore dell'ingegneria del software. Hanno pesato in modo rilevante anche la presentazione in aula, l'incontro di approfondimento aggiuntivo, risultati chiari ed esaustivi, l'entusiasmo con cui l'azienda ha coinvolto il gruppo nel progetto e la grande disponibilità dimostrata, anche grazie alla retrospettiva sulle edizioni passate svolta per comprendere come offrire un supporto più efficace.
+
+\section{Capitolati di interesse}
+
+\subsection{C8 - Sonar}
+\subsubsection{Obiettivo e tecnologie}
+\textbf{Sonar} è un'applicazione web di sola lettura creata per collegarsi a uno store \textit{Shopify enterprise}. Il suo scopo principale è analizzarne le configurazioni e il codice tramite la \textit{Admin GraphQL API}, ricostruendo le dipendenze esistenti e individuando ciò che non è più necessario. L'obiettivo è avere una documentazione sempre aggiornata(consultabile ed esportabile in formati come \textit{Markdown} e \textit{HTML}) e un \textit{rapporto di igiene tecnica} focalizzato su codice morto e configurazioni orfane. Risulta particolarmente utile per i \textit{passaggi di consegne tra fornitori} e per le fasi di \textit{replatforming}. 
+
+Il livello di complessità tecnica del progetto è medio-alto e richiede il rispetto di requisiti rigorosi:
+
+\begin{itemize}
+    \item \textbf{Tecnologie vincolanti:} \textit{Next.js} (\textit{App Router}) ospitato su \textit{Vercel}, orchestrazione tramite \textit{Vercel Workflows} e \textit{Cron}, base dati \textit{Supabase} (\textit{PostgreSQL}) con \textit{Row Level Security}, codice in \textit{TypeScript} strict e autenticazione esclusiva tramite \textit{Google}.
+    \item \textbf{Funzionalità chiave:} Scansione \textit{durevole} e resiliente a \textit{rate limiting} ed errori, acquisizione completa delle risorse Shopify, analisi statica del codice (\textit{Liquid}, \textit{JSON}, \textit{JS}), modello a \textbf{grafo con livelli di confidenza}, \textit{snapshot immutabili} con \textit{diff} e motore di regole estensibile.
+    \item \textbf{Accettazione:} Criteri severi (\textit{test pass} $\ge$ 95\%, \textit{falsi positivi ad alta severità} $\le$ 10\%), da verificare su uno store \textit{Shopify} di sviluppo creato autonomamente dal gruppo.
+\end{itemize}
+
+\subsubsection{Considerazioni e criticità}
+Il capitolato unisce requisiti stringenti a sfide ingegneristiche stimolanti: dallo sviluppo di \textit{scansioni durevoli e ripristinabili} (con gestione di crash, retry, idempotenza e avanzamento) alla progettazione di un \textit{modello a grafo delle dipendenze} per rilevare codice morto tramite analisi statica e API, fino alla \textit{sicurezza} nell'esecuzione isolata di codice non fidato. A bilanciare queste opportunità intervengono però criticità: un supporto proponente limitato a incontri quindicinali e a un referente unico, senza alcun supporto infrastrutturale; la forte dipendenza dall'ecosistema \textit{Vercel/Supabase}; la natura di nicchia della piattaforma \textit{Shopify}.
+
+\subsubsection{Motivazioni dello scarto}
+Il fattore determinante è stato il carico organizzativo e operativo richiesto: il gruppo dovrebbe allestire in autonomia lo store di sviluppo usato come insieme di controllo per i falsi positivi e monitorare costantemente i limiti dei piani gratuiti di \textit{Vercel} e \textit{Supabase}. A ciò si aggiungono le criticità già descritte, che rendono l'opportunità di apprendimento poco spendibile al di fuori di questo specifico ecosistema.
+
+\section{Altri capitolati valutati}
+
+\subsection{C0 - AIRA (Sanmarco Informatica)}
+\subsubsection{Obiettivo}
+\subsubsection{Motivazioni dello scarto}
+
+\subsection{C2 - Concierge}
+\subsubsection{Obiettivo}
+\subsubsection{Motivazioni dello scarto}
+
+\subsection{C3 - Fossdot}
+\subsubsection{Obiettivo}
+\subsubsection{Motivazioni dello scarto}
+
+\subsection{C4 - Gestione veicoli e servizi post-vendita}
+\subsubsection{Obiettivo}
+\subsubsection{Motivazioni dello scarto}
+
+\subsection{C5 - [Titolo capitolato]}
+\subsubsection{Obiettivo}
+\subsubsection{Motivazioni dello scarto}
+
+\subsection{C6 - Sistema AI di caching semantico e dashboard FinOps}
+\subsubsection{Obiettivo}
+\subsubsection{Motivazioni dello scarto}
+
+\subsection{C7 - Smart Dashboard}
+\subsubsection{Obiettivo}
+\subsubsection{Motivazioni dello scarto}
+
+\subsection{C9 - SpecCheck}
+\subsubsection{Obiettivo}
+\subsubsection{Motivazioni dello scarto}
+
+\end{document}
