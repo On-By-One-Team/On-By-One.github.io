@@ -5,7 +5,7 @@ name: Compila documenti LaTeX
 on:
   push:
     branches:
-      - main
+      - 'admin/21-creazione-workflow-pdf'
     paths:
       - 'docs/tex/**.tex'
 
@@ -65,4 +65,4 @@ jobs:
           git commit -m "docs: aggiornamento automatico PDF post-approvazione [skip ci]" || echo "Nessuna modifica al PDF"
           
           # Invia il commit al branch main
-          git push origin main
+          git push origin HEAD:${{ github.ref }}

@@ -1,0 +1,12 @@
+\documentclass{article}
+\usepackage{graphicx}
+
+\begin{document}
+\section*{Test 1: Candidatura}
+Questo documento si trova in \texttt{docs/tex/candidatura/}. \\
+Testo le immagini risalendo di 3 cartelle.
+
+\vspace{1cm}
+% Risale di 3 livelli: tex -> docs -> root -> assets
+\includegraphics[width=0.3\textwidth]{../../../assets/logo.png}
+\end{document}
