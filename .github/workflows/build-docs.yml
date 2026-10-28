@@ -23,28 +23,24 @@ jobs:
           fetch-depth: 0 # Scarica tutta la cronologia, essenziale per poter fare il push successivo
 
       - name: Compila i file LaTeX
-        uses: xu-cheng/latex-action@v4
-        with:
-          root_file: '*.tex'
-          entrypoint: /bin/bash
-          args: |
-            -c "
-            # Cerca tutti i file .tex, ma ignora quelli dentro 'templates' perché sono solo modelli
-            find docs/tex -name '*.tex' -not -path 'docs/tex/templates/*' | while read tex_file; do
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace ghcr.io/xu-cheng/texlive-alpine:latest sh -c '
+            # Cerca tutti i file .tex, ma ignora quelli dentro "templates" perché sono solo modelli
+            find docs/tex -name "*.tex" -not -path "docs/tex/templates/*" | while read tex_file; do
               
-              # Calcola dinamicamente la cartella di destinazione (sostituisce 'tex' con 'pdf' nel percorso)
+              # Calcola dinamicamente la cartella di destinazione (sostituisce "tex" con "pdf" nel percorso)
               # es: docs/tex/verbali/interni -> docs/pdf/verbali/interni
-              outdir=\$(dirname \"\$tex_file\" | sed 's/tex/pdf/')
+              outdir=$(dirname "$tex_file" | sed "s/tex/pdf/")
               
               # Crea la cartella di destinazione se non esiste già
-              mkdir -p \"\$outdir\"
+              mkdir -p "$outdir"
               
-              echo \"Compilando: \$tex_file in \$outdir\"
+              echo "Compilando: $tex_file in $outdir"
               
               # Compila il file LaTeX dicendogli esplicitamente dove salvare i risultati
-              latexmk -pdf -interaction=nonstopmode -output-directory=\"\$outdir\" \"\$tex_file\"
+              latexmk -pdf -interaction=nonstopmode -output-directory="$outdir" "$tex_file"
             done
-            "
+          '
 
       - name: Pulizia file temporanei di LaTeX
         run: |
