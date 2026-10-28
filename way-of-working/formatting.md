@@ -13,7 +13,11 @@ La formattazione deve essere utilizzata in modo coerente e funzionale alla compr
 Si adottano le seguenti convenzioni generali:
 
 - **Grassetto**: utilizzare per evidenziare concetti importanti o termini che richiedono particolare attenzione, evitando un uso eccessivo.
-- *Corsivo*: utilizzare alla prima occorrenza di termini stranieri poco comuni o specialistici. Evitare il corsivo per termini stranieri entrati nell'uso comune italiano, ad esempio team e file.
+- *Corsivo*: utilizzare
+    - alla prima occorrenza di termini stranieri poco comuni o specialistici.
+    - ad ogni occorrenza di termini o espressioni italiane utilizzati per indicare un concetto specifico, per distinguerli dal significato ordinario delle parole che li compongono.
+
+  Evitare il corsivo per i termini stranieri entrati nell'uso comune italiano, ad esempio team e file.
 - Sottolineato: non utilizzare.
 - ~~Barrato~~: non utilizzare.
 - `Codice inline`: utilizzare per nomi di file e directory, *branch*, comandi, identificatori e brevi frammenti di codice.

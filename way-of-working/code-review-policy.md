@@ -93,26 +93,32 @@ L'integrazione deve avvenire secondo la strategia ***Standard merge***, come def
 
 L'approvazione della Pull Request non sostituisce la responsabilità dell'autore di verificare la correttezza delle modifiche.
 
-### 6.1. Approvazione dei documenti
+### 6.1 Approvazione dei documenti
 
-Per le Pull Request che riguardano documenti soggetti ad approvazione, oltre ai criteri generali si applicano le seguenti regole.
+Per i documenti soggetti ad approvazione, sono previste due tabelle: **Informazioni documento** e **Registro delle modifiche**. La prima riporta le informazioni relative alla versione corrente approvata del documento, mentre la seconda tiene traccia delle modifiche apportate al documento.
 
-Durante la redazione e la revisione, il documento deve mantenere lo stato **Bozza**. I campi relativi alla versione e alla data di approvazione devono rimanere vuoti (`-`) fino alla prima approvazione.
+#### Informazioni documento
 
-Al termine della revisione, il verificatore, che deve essere diverso dall'autore, procede in base all'esito della Pull Request:
+La tabella *Informazioni documento* contiene i seguenti campi:
 
-- **Revisione non superata**: il verificatore non approva la Pull Request e richiede le correzioni necessarie. Aggiorna il registro delle modifiche assegnando la versione `0.1.0` al primo esito negativo oppure incrementando la versione preliminare precedente secondo le regole descritte di seguito. Il documento rimane in stato **Bozza**.
-- **Revisione superata**: il verificatore approva la Pull Request e assegna la versione `1.0.0` alla prima approvazione oppure incrementa di uno il contatore più a sinistra rispetto all'ultima versione approvata, azzerando i due contatori successivi. Imposta lo stato su **Approvato** e completa i campi relativi alla versione e alla data di approvazione.
+- **Versione**: indica la versione corrente approvata del documento. Compilato dal revisore.
+- **Data**: indica la data di approvazione. Compilato dal revisore.
+- **Stato**: l'autore imposta il valore `Bozza` quando il documento viene modificato rispetto all'ultima versione approvata e rimane tale per tutta la fase di revisione. Solo in seguito all'approvazione, il revisore aggiorna il campo al valore `Approvato`.
+- **Destinatari**: indica i destinatari del documento. Compilato dall'autore.
 
-Le versioni seguono il formato `X.Y.Z`, secondo le seguenti regole:
+#### Registro delle modifiche
 
-- In caso di revisione non superata, il contatore più a destra (`Z`) viene incrementato di uno.
-- Quando `Z` raggiunge `9`, l'incremento successivo lo riporta a `0` e incrementa di uno il contatore centrale (`Y`).
-- In caso di revisione superata, il contatore più a sinistra (`X`) viene incrementato di uno rispetto all'ultima versione approvata, mentre `Y` e `Z` vengono azzerati.
+La tabella *Registro delle modifiche* contiene i seguenti campi:
 
-Il registro delle modifiche deve riportare la versione e la data corrispondenti a ciascun esito della revisione. La versione approvata deve corrispondere al contenuto effettivamente revisionato e integrato nel repository.
+- **Versione**: l'autore assegna una versione a ogni riga del registro delle modifiche, incrementando di uno il contatore più a destra rispetto alla versione della riga precedente. Se il contatore più a destra raggiunge `9`, l'incremento successivo lo azzera e incrementa di uno il contatore centrale. La versione iniziale assegnata alla prima modifica del documento è `0.1.0`. Nella riga relativa all'ultima modifica apportata prima dell'apertura della Pull Request, l'autore lascia il campo vuoto (`-`), affinché il revisore possa assegnare la versione in base all'esito della revisione:
+  - **Revisione non superata**: il revisore assegna alla modifica in esame la versione successiva a quella dell'ultima modifica registrata, proseguendo la numerazione secondo le regole sopra definite. Il documento rimane in stato `Bozza`.
+  - **Revisione superata**: il revisore assegna la versione `1.0.0` se si tratta della prima approvazione del documento; negli altri casi incrementa di uno il contatore più a sinistra rispetto all'ultima versione e azzera gli altri due contatori.
+- **Data**: indica la data in cui la modifica descritta nella riga è stata apportata al documento. Compilato dall'autore.
+- **Autore**: indica chi ha apportato la modifica. Compilato dall'autore.
+- **Descrizione**: riassume le modifiche apportate al documento. Compilato dall'autore.
+- **Verificatore**: indica chi ha verificato la modifica. Compilato dal revisore.
 
-Le modifiche successive a un documento già approvato devono essere sottoposte a una nuova Pull Request. L'aggiornamento della versione, dello stato, della data di approvazione e del registro delle modifiche deve essere verificato nell'ambito della revisione.
+La versione approvata e la relativa data devono corrispondere al contenuto effettivamente approvato e integrato nel repository.
 
 ## 7. Nuove modifiche dopo l'approvazione
 
