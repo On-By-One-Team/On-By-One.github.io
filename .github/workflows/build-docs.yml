@@ -7,7 +7,7 @@ on:
     branches:
       - 'admin/21-creazione-workflow-pdf'
     paths:
-      - 'docs/tex/**.tex'
+      - 'docs/tex/**/*.tex'
 
 # Permessi necessari alla Action per poter fare il commit dei PDF sulla repo
 permissions:
@@ -25,19 +25,16 @@ jobs:
       - name: Compila i file LaTeX
         run: |
           docker run --rm -v ${{ github.workspace }}:/workspace -w /workspace ghcr.io/xu-cheng/texlive-alpine:latest sh -c '
-            # Cerca tutti i file .tex, ma ignora quelli dentro "templates" perché sono solo modelli
             find docs/tex -name "*.tex" -not -path "docs/tex/templates/*" | while read tex_file; do
               
-              # Calcola dinamicamente la cartella di destinazione (sostituisce "tex" con "pdf" nel percorso)
-              # es: docs/tex/verbali/interni -> docs/pdf/verbali/interni
-              outdir=$(dirname "$tex_file" | sed "s/tex/pdf/")
+              # Salta i file che non contengono \documentclass
+              grep -q "documentclass" "$tex_file" || continue
               
-              # Crea la cartella di destinazione se non esiste già
+              # Calcola dinamicamente la cartella di destinazione
+              outdir=$(dirname "$tex_file" | sed "s|^docs/tex|docs/pdf|")
               mkdir -p "$outdir"
               
               echo "Compilando: $tex_file in $outdir"
-              
-              # Compila il file LaTeX dicendogli esplicitamente dove salvare i risultati
               latexmk -pdf -interaction=nonstopmode -output-directory="$outdir" "$tex_file"
             done
           '
