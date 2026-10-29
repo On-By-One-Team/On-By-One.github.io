@@ -1,6 +1,10 @@
 name: CI/CD Sito Web
 
 on:
+  workflow_run:
+    workflows: ["Controllo Link Sito"]
+    types:
+      - completed
   push:
     branches:
       - main

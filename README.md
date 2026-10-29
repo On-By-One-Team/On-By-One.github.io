@@ -1,5 +1,5 @@
 <div align="center">
-<img src="docs/src/On-By-One.png" width="200">
+<img src="./assets/logo.png" width="200">
 </div>
 <h1 align="center">On-By-One</h1>
 <h2>📖 Documentazione 📖</h2>

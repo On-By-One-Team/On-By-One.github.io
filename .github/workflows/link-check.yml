@@ -1,6 +1,10 @@
 name: Controllo Link Sito
 
 on:
+  workflow_run:
+    workflows: ["Compila documenti LaTeX"]
+    types:
+      - completed
   push:
     branches:
       - main
