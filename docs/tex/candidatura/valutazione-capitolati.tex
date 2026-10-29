@@ -10,8 +10,16 @@
 \usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
 \usepackage{lmodern}      % Rende i font scalabili all'infinito
 \usepackage{anyfontsize}  % Permette di usare dimensioni personalizzate
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\small Termini tecnici sono definiti nel \href{https://github.com/On-By-One-Team/On-By-One.github.io/blob/main/docs/tex/glossario/glossario.tex}{glossario}.}
+\fancyfoot[C]{\thepage}
 
 \begin{document}
+\pagestyle{empty}
 
 % ==============================================================================
 % FRONTESPIZIO (PAGINA 1)
@@ -119,86 +127,87 @@
 \tableofcontents
 \newpage
 
+\pagestyle{fancy}
 \section{Capitolato scelto: C1 - AURA (Vimar)}
 \subsection{Obiettivo}
-Il progetto consiste nella realizzazione di \textit{AURA} (\textit{AI for Understanding, Reasoning and Automation}), un'interfaccia che permette di controllare e interrogare in linguaggio naturale un impianto domotico \textit{Vimar View Wireless}, una rete mesh Bluetooth, tramite servizi di intelligenza artificiale commerciali come \textit{Claude}, \textit{ChatGPT}, \textit{Copilot}, \textit{Gemini}. La soluzione si fonda su un \textit{MCP${_G}$ Server} e rispettivo client, che facciano da interfaccia tra il servizio AI e l'\textit{API KNX IoT 3rd-party${_G}$}, esponendo in modo standardizzato dati, funzionalità e comandi dell'impianto. 
+Il progetto consiste nella realizzazione di AURA (AI for Understanding, Reasoning and Automation), un'interfaccia che permette di controllare e interrogare in linguaggio naturale un impianto domotico Vimar View Wireless, una rete \textit{mesh} Bluetooth, tramite servizi di intelligenza artificiale commerciali come Claude, ChatGPT, Copilot, Gemini. La soluzione si fonda su un \textit{MCP Server} e rispettivo client, che facciano da interfaccia tra il servizio AI e l'API KNX IoT 3rd-party, esponendo in modo standardizzato dati, funzionalità e comandi dell'impianto. 
 
 \subsection{Complessità tecnica}
 Il progetto presenta un livello di complessità medio-alta. Lo sviluppo riguarda prevalentemente il back-end, poiché l'utente interagirà con il sistema direttamente tramite l'interfaccia nativa del servizio AI scelto. I requisiti obbligatori si basano su:
 \begin{itemize}
-    \item \textbf{Infrastruttura cloud-ready}: Basata su container \textit{Docker} e \textit{Infrastructure as Code${_G}$} (IaC), avviabile con un solo comando (\textit{docker compose up}) e compatibile per un rilascio nel cloud \href{https://aws.amazon.com/it/}{AWS}.
-    \item \textbf{\textit{MCP Server} e \textit{MCP Client}}: Progettati per supportare le API \textit{KNX IoT 3rd-party} (v2.1.0), in particolare \textit{Authorization, Datapoint, Function, Information, Location, Subscription, Timeseries}; 
-    \item \textbf{Autenticazione e autorizzazione}: Gestiti tramite \textit{OAuth2}, con supporto per la selezione dell'impianto e operazioni di lettura e scrittura sui dispositivi;
-    \item \textbf{Integrazione AI}: Collegamento con almeno un servizio AI commerciale e gestione dei casi d'uso base e avanzati indicati nel capitolato;
-    \item \textbf{Testing}: Raggiungimento di una copertura minima del 75\% per i test \textit{unit/integration} e dell'80\% per i test \textit{E2E} (opzionalmente sopra il 90\%).
+    \item \textbf{Infrastruttura cloud-ready}: basata su container Docker e \textit{Infrastructure as Code} (IaC), avviabile con un solo comando (\texttt{docker compose up}) e compatibile per un rilascio nel cloud \href{https://aws.amazon.com/it/}{AWS};
+    \item \textbf{MCP Server e MCP Client}: progettati per supportare le API KNX IoT 3rd-party (v2.1.0), in particolare Authorization, Datapoint, Function, Information, Location, Subscription, Timeseries;
+    \item \textbf{Autenticazione e autorizzazione}: gestiti tramite OAuth2, con supporto per la selezione dell'impianto e operazioni di lettura e scrittura sui dispositivi;
+    \item \textbf{Integrazione AI}: collegamento con almeno un servizio AI commerciale e gestione dei casi d'uso base e avanzati indicati nel capitolato;
+    \item \textbf{Testing}: raggiungimento di una copertura minima del 75\% per i test \textit{unit/integration} e dell'80\% per i test \textit{E2E} (opzionalmente sopra il 90\%).
 \end{itemize}
 
 \subsection{Opportunità di apprendimento}
 Si interagisce con numerose tecnologie:
 \begin{itemize}
-    \item \textbf{MCP}: protocollo \textit{Model Context Protocol} server, con i relativi \textit{tools} e \textit{resources}, e client collegato al server.
-    \item \textbf{GenAI${_G}$}: progettazione di strumenti utilizzabili da un \textit{LLM}, gestione di richieste ambigue e sinonimi, conferme sulle scritture;
-    \item \textbf{IoT}: integrazione con un sistema domotico fisico (\textit{Vimar View Wireless}) e dispositivi reali (gateway BLE, attuatori, sensori di presenza UWB, termostato), con comprensione della relazione tra gli elementi dell'impianto (\textit{Location}--\textit{Function}--\textit{Datapoint}) di \textit{KNX IoT};
-    \item \textbf{API e sicurezza}: standard internazionale \textit{KNX IoT}, \textit{OAuth2}, gestione multiutente e privacy dei dati verso l'LLM;
-    \item \textbf{Cloud e DevOps${_G}$}: \textit{Docker} e docker-compose, \textit{IaC}, \textit{Continuous Integration${_G}$} (\textit{GitHub Runners}), opzionalmente anche \textit{AWS${_G}$} (\textit{LightSail}, \textit{EC2}) e \textit{Terraform}/\textit{CDK}/\textit{Ansible};
-    \item \textbf{Backend}: \textit{Python} con \textit{FastMCP} (consigliato), in alternativa \textit{TypeScript} o \textit{Java};
-    \item \textbf{Database} (se necessario): relazionali (\textit{MySQL}, \textit{PostgreSQL}) o \textit{Redis} per le sessioni.
+    \item \textbf{MCP}: protocollo Model Context Protocol server, con i relativi \textit{tools} e \textit{resources}, e client collegato al server;
+    \item \textbf{GenAI}: progettazione di strumenti utilizzabili da un LLM, gestione di richieste ambigue e sinonimi, conferme sulle scritture;
+    \item \textbf{IoT}: integrazione con un sistema domotico fisico (Vimar View Wireless) e dispositivi reali (gateway BLE, attuatori, sensori di presenza UWB, termostato), con comprensione della relazione tra gli elementi dell'impianto (Location--Function--Datapoint) di KNX IoT;
+    \item \textbf{API e sicurezza}: standard internazionale KNX IoT, OAuth2, gestione multiutente e privacy dei dati verso l'LLM;
+    \item \textbf{Cloud e DevOps}: Docker e \texttt{docker-compose}, IaC, \textit{Continuous Integration} (GitHub Runners), opzionalmente anche AWS (LightSail, EC2) e Terraform/CDK/Ansible;
+    \item \textbf{Backend}: Python con FastMCP (consigliato), in alternativa TypeScript o Java;
+    \item \textbf{Database} (se necessario): relazionali (MySQL, PostgreSQL) o Redis per le sessioni.
 \end{itemize}
 
 \subsection{Chiarezza progettuale}
-La documentazione offre una base solida per l'analisi dei requisiti; le esigenze sono suddivise in obbligatorie, opzionali e ``nice to have'', i prodotti attesi sono descritti con precisione e gli schemi (macro-componenti, architettura \textit{MCP}, foto del kit) ne facilitano la comprensione. Le due tabelle di casi d'uso e le risposte date durante la riunione fatta con la proponente hanno chiarito dubbi quali il ruolo del client \textit{MCP}, la gestione dei token, i \textit{mock} e il \textit{PoC} minimo.
+La documentazione offre una base solida per l'analisi dei requisiti; le esigenze sono suddivise in obbligatorie, opzionali e \textit{nice to have}, i prodotti attesi sono descritti con precisione e gli schemi (macro-componenti, architettura MCP, foto del kit) ne facilitano la comprensione. Le due tabelle di casi d'uso e le risposte date durante la riunione fatta con la proponente hanno chiarito dubbi quali il ruolo del client MCP, la gestione dei token, i \textit{mock} e il \textit{PoC} minimo.
 
 \subsection{Supporto da parte del proponente}
 Il supporto offerto da Vimar è stato uno dei fattori determinanti nella scelta di questo capitolato, per la sua ampiezza e per la chiarezza con cui è descritto. Vimar mette a disposizione:
 \begin{itemize}
-    \item \textit{SAL} (Stato Avanzamento Lavori) bisettimanali di un'ora, che dopo il \textit{Proof of Concept} possono diventare settimanali di mezz'ora, svolti su \textit{Microsoft Teams} oppure in presenza nelle salette della sede;
+    \item \textit{SAL} (\textit{Stato Avanzamento Lavori}) bisettimanali di un'ora, che dopo il Proof of Concept possono diventare settimanali di mezz'ora, svolti su Microsoft Teams oppure in presenza nelle salette della sede;
     \item la possibilità di richiedere, con 1--2 settimane di anticipo, approfondimenti mirati (anche con colleghi di altri team) e incontri di allineamento extra su dubbi progettuali, scelte architetturali e coerenza della soluzione;
-    \item due incontri in presenza obbligatori a Padova, all'inizio (con consegna del kit) e al collaudo finale, oltre a demo con i colleghi \textit{R\&D} a metà progetto (\textit{PoC}) e a fine progetto (\textit{MVP});
+    \item due incontri in presenza obbligatori a Padova, all'inizio (con consegna del kit) e al collaudo finale, oltre a demo con i colleghi R\&D a metà progetto (PoC) e a fine progetto (\textit{MVP});
     \item contatti email diretti con i referenti aziendali, con risposte negli orari d'ufficio, per le comunicazioni asincrone;
     \item la firma digitale dei verbali esterni redatti dal gruppo;
-    \item il materiale di lavoro: un kit hardware portatile per l'intera durata del progetto, un account amministratore con possibilità di aggiungere utenti, l'accesso alle API e alla documentazione \textit{KNX IoT}, ed eventualmente, in accordo con la proponente, spazio \textit{AWS} e una chiave LLM per le prove.
+    \item il materiale di lavoro: un kit hardware portatile per l'intera durata del progetto, un account amministratore con possibilità di aggiungere utenti, l'accesso alle API e alla documentazione KNX IoT, ed eventualmente, in accordo con la proponente, spazio AWS e una chiave LLM per le prove.
 \end{itemize}
 
 \subsection{Interesse}
-Il gruppo ha mostrato un interesse particolare per questo capitolato, soprattutto per la possibilità di lavorare su un prodotto fisico: poter provare l'impianto reale e vedere concretamente il risultato del proprio lavoro è stato percepito come un elemento distintivo rispetto agli altri capitolati. Tra i temi di maggiore interesse figurano l'integrazione di un ambiente domotico con un \textit{MCP Server} e un \textit{MCP Client}, la gestione delle ambiguità nelle richieste rivolte alla \textit{GenAI}, l'utilizzo di \textit{API} per il collegamento tra le parti e l'implementazione del protocollo \textit{OAuth2} per l'autenticazione e la gestione dei dati sensibili dell'utente. Hanno inoltre suscitato interesse le tecnologie di \textit{cloud} e \textit{DevOps} come \textit{AWS}, \textit{docker compose} ed eventualmente \textit{Terraform}, \textit{CDK} e \textit{Ansible}, molto richieste nel settore dell'ingegneria del software. Hanno pesato in modo rilevante anche la presentazione in aula, l'incontro di approfondimento aggiuntivo, risultati chiari ed esaustivi, l'entusiasmo con cui l'azienda ha coinvolto il gruppo nel progetto e la grande disponibilità dimostrata, anche grazie alla retrospettiva sulle edizioni passate svolta per comprendere come offrire un supporto più efficace.
+Il gruppo ha mostrato un interesse particolare per questo capitolato, soprattutto per la possibilità di lavorare su un prodotto fisico: poter provare l'impianto reale e vedere concretamente il risultato del proprio lavoro è stato percepito come un elemento distintivo rispetto agli altri capitolati. Tra i temi di maggiore interesse figurano l'integrazione di un ambiente domotico con un MCP Server e un MCP Client, la gestione delle ambiguità nelle richieste rivolte alla GenAI, l'utilizzo di API per il collegamento tra le parti e l'implementazione del protocollo OAuth2 per l'autenticazione e la gestione dei dati sensibili dell'utente. Hanno inoltre suscitato interesse le tecnologie di cloud e DevOps come AWS, \texttt{docker compose} ed eventualmente Terraform, CDK e Ansible, molto richieste nel settore dell'ingegneria del software. Hanno pesato in modo rilevante anche la presentazione in aula, l'incontro di approfondimento aggiuntivo, risultati chiari ed esaustivi, l'entusiasmo con cui l'azienda ha coinvolto il gruppo nel progetto e la grande disponibilità dimostrata, anche grazie alla retrospettiva sulle edizioni passate svolta per comprendere come offrire un supporto più efficace.
 
 \section{Capitolati di interesse}
 
 \subsection{C8 - Sonar}
 \subsubsection{Obiettivo e tecnologie}
-\textbf{Sonar} è un'applicazione web di sola lettura creata per collegarsi a uno store \textit{Shopify enterprise}. Il suo scopo principale è analizzarne le configurazioni e il codice tramite la \textit{Admin GraphQL API}, ricostruendo le dipendenze esistenti e individuando ciò che non è più necessario. L'obiettivo è avere una documentazione sempre aggiornata(consultabile ed esportabile in formati come \textit{Markdown} e \textit{HTML}) e un \textit{rapporto di igiene tecnica} focalizzato su codice morto e configurazioni orfane. Risulta particolarmente utile per i \textit{passaggi di consegne tra fornitori} e per le fasi di \textit{replatforming}. 
+Sonar è un'applicazione web di sola lettura creata per collegarsi a uno store Shopify \textit{enterprise}. Il suo scopo principale è analizzarne le configurazioni e il codice tramite la Admin GraphQL API, ricostruendo le dipendenze esistenti e individuando ciò che non è più necessario. L'obiettivo è avere una documentazione sempre aggiornata (consultabile ed esportabile in formati come Markdown e HTML) e un \textit{rapporto di igiene tecnica} focalizzato su \textit{codice morto} e \textit{configurazioni orfane}. Risulta particolarmente utile per i passaggi di consegne tra fornitori e per le fasi di \textit{replatforming}. 
 
 Il livello di complessità tecnica del progetto è medio-alto e richiede il rispetto di requisiti rigorosi:
 
 \begin{itemize}
-    \item \textbf{Tecnologie vincolanti:} \textit{Next.js} (\textit{App Router}) ospitato su \textit{Vercel}, orchestrazione tramite \textit{Vercel Workflows} e \textit{Cron}, base dati \textit{Supabase} (\textit{PostgreSQL}) con \textit{Row Level Security}, codice in \textit{TypeScript} strict e autenticazione esclusiva tramite \textit{Google}.
-    \item \textbf{Funzionalità chiave:} Scansione \textit{durevole} e resiliente a \textit{rate limiting} ed errori, acquisizione completa delle risorse Shopify, analisi statica del codice (\textit{Liquid}, \textit{JSON}, \textit{JS}), modello a \textbf{grafo con livelli di confidenza}, \textit{snapshot immutabili} con \textit{diff} e motore di regole estensibile.
-    \item \textbf{Accettazione:} Criteri severi (\textit{test pass} $\ge$ 95\%, \textit{falsi positivi ad alta severità} $\le$ 10\%), da verificare su uno store \textit{Shopify} di sviluppo creato autonomamente dal gruppo.
+    \item \textbf{Tecnologie vincolanti}: Next.js (App Router) ospitato su Vercel, orchestrazione tramite Vercel Workflows e Cron, base dati Supabase (PostgreSQL) con \textit{Row Level Security}, codice in TypeScript strict e autenticazione esclusiva tramite Google;
+    \item \textbf{Funzionalità chiave}: \textit{scansione durevole} e resiliente a \textit{rate limiting} ed errori, acquisizione completa delle risorse Shopify, analisi statica del codice (Liquid, JSON, JS), \textit{modello a grafo con livelli di confidenza}, \textit{snapshot} immutabili con \textit{diff} e motore di regole estensibile;
+    \item \textbf{Accettazione}: criteri severi (\textit{test pass} $\ge$ 95\%, \textit{falsi positivi ad alta severità} $\le$ 10\%), da verificare su uno store Shopify di sviluppo creato autonomamente dal gruppo.
 \end{itemize}
 
 \subsubsection{Considerazioni e criticità}
-Il capitolato unisce requisiti stringenti a sfide ingegneristiche stimolanti: dallo sviluppo di \textit{scansioni durevoli e ripristinabili} (con gestione di crash, retry, idempotenza e avanzamento) alla progettazione di un \textit{modello a grafo delle dipendenze} per rilevare codice morto tramite analisi statica e API, fino alla \textit{sicurezza} nell'esecuzione isolata di codice non fidato. A bilanciare queste opportunità intervengono però criticità: un supporto proponente limitato a incontri quindicinali e a un referente unico, senza alcun supporto infrastrutturale; la forte dipendenza dall'ecosistema \textit{Vercel/Supabase}; la natura di nicchia della piattaforma \textit{Shopify}.
+Il capitolato unisce requisiti stringenti a sfide ingegneristiche stimolanti: dallo sviluppo di \textit{scansioni durevoli e ripristinabili} (con gestione di crash, \textit{retry}, idempotenza e avanzamento) alla progettazione di un \textit{modello a grafo delle dipendenze} per rilevare codice morto tramite analisi statica e API, fino alla sicurezza nell'esecuzione isolata di codice non fidato. A bilanciare queste opportunità intervengono però criticità: un supporto proponente limitato a incontri quindicinali e a un referente unico, senza alcun supporto infrastrutturale; la forte dipendenza dall'ecosistema Vercel/Supabase; la natura di nicchia della piattaforma Shopify.
 
 \subsubsection{Motivazioni dello scarto}
-Il fattore determinante è stato il carico organizzativo e operativo richiesto: il gruppo dovrebbe allestire in autonomia lo store di sviluppo usato come insieme di controllo per i falsi positivi e monitorare costantemente i limiti dei piani gratuiti di \textit{Vercel} e \textit{Supabase}. A ciò si aggiungono le criticità già descritte, che rendono l'opportunità di apprendimento poco spendibile al di fuori di questo specifico ecosistema.
+Il fattore determinante è stato il carico organizzativo e operativo richiesto: il gruppo dovrebbe allestire in autonomia lo store di sviluppo usato come insieme di controllo per i \textit{falsi positivi} e monitorare costantemente i limiti dei piani gratuiti di Vercel e Supabase. A ciò si aggiungono le criticità già descritte, che rendono l'opportunità di apprendimento poco spendibile al di fuori di questo specifico ecosistema.
 
 \subsection{C5 - RareCare Navigator (Miriade)}
 \subsubsection{Obiettivo e tecnologie}
-\textbf{RareCare Navigator} è una piattaforma cross-platform con assistente AI progettata per la raccolta dati, il coordinamento e il supporto decisionale nelle malattie rare, a partire dalla Sindrome di Sanfilippo. Lo scopo principale è affiancare la figura umana del Care Navigator e ridurre il carico organizzativo delle famiglie, connettendo in un unico spazio sicuro medici, scuola, terapisti e servizi sociali. \newline
-Il sistema si fonda su un \textit{Core} estendibile ad altre patologie tramite pacchetti di configurazione (Disease Pack) e prevede la validazione sul campo con l'associazione \textbf{Sanfilippo Fighters}. \newline
-Il livello di complessità tecnica del progetto è \textbf{medio-alto} e si articola sui seguenti aspetti:
+RareCare Navigator è una piattaforma cross-platform con assistente AI progettata per la raccolta dati, il coordinamento e il supporto decisionale nelle malattie rare, a partire dalla Sindrome di Sanfilippo. Lo scopo principale è affiancare la figura umana del \textit{Care Navigator} e ridurre il carico organizzativo delle famiglie, connettendo in un unico spazio sicuro medici, scuola, terapisti e servizi sociali. \newline
+Il sistema si fonda su un \textit{Core} estendibile ad altre patologie tramite pacchetti di configurazione (\textit{Disease Pack}) e prevede la validazione sul campo con l'associazione Sanfilippo Fighters. \newline
+Il livello di complessità tecnica del progetto è medio-alto e si articola sui seguenti aspetti:
 
 \begin{itemize}
-    \item \textbf{Tecnologie consigliate (non vincolanti)}: Frontend in Flutter o React Native; backend serverless su AWS in regione UE (API Gateway, Lambda, Step Functions, EventBridge, IaC); database Aurora Serverless v2 (PostgreSQL con pgvector) e bucket S3 cifrati; servizi AI su Amazon Bedrock, Textract e Transcribe (o alternative OpenAI/Hugging Face).
-    \item \textbf{Funzionalità chiave}: Permessi granulari basati su ruolo, relazione con il paziente e attributi del documento (RBAC/ReBAC/ABAC), dashboard collaborativa e fascicolo digitale cifrato (referti, PAI, PEI), workflow per checklist dinamiche e scadenze con notifiche ed escalation, chatbot RAG basato esclusivamente su fonti verificate con citazioni e Guardrails, pipeline NLP/NER per estrarre entità cliniche previa conferma umana obbligatoria e moduli opzionali (assistente vocale, mappa geospaziale e ML predittivo).
-    \item \textbf{Organizzazione e conformità}: Gestione di dati sanitari di minori (art. 9 GDPR) con cifratura TLS 1.3 e AES-256 (KMS), OAuth2/MFA (Cognito), registro di audit immutabile e accessibilità WCAG 2.1 AA; redazione della valutazione d'impatto DPIA, monitoraggio dei consumi per rientrare nel free tier AWS e mantenimento dell'AI entro un perimetro informativo per non ricadere nei vincoli sui dispositivi medici (MDR) e sull'EU AI Act.
+    \item \textbf{Tecnologie consigliate (non vincolanti)}: frontend in Flutter o React Native; backend \textit{serverless} su AWS in regione UE (API Gateway, Lambda, Step Functions, EventBridge, IaC); database Aurora Serverless v2 (PostgreSQL con pgvector) e bucket S3 cifrati; servizi AI su Amazon Bedrock, Textract e Transcribe (o alternative OpenAI/Hugging Face);
+    \item \textbf{Funzionalità chiave}: permessi granulari basati su ruolo, relazione con il paziente e attributi del documento (RBAC/ReBAC/ABAC), dashboard collaborativa e fascicolo digitale cifrato (referti, PAI, PEI), workflow per checklist dinamiche e scadenze con notifiche ed escalation, chatbot RAG basato esclusivamente su fonti verificate con citazioni e \textit{Guardrails}, pipeline NLP/NER per estrarre entità cliniche previa conferma umana obbligatoria e moduli opzionali (assistente vocale, mappa geospaziale e ML predittivo);
+    \item \textbf{Organizzazione e conformità}: gestione di dati sanitari di minori (art. 9 GDPR) con cifratura TLS 1.3 e AES-256 (KMS), OAuth2/MFA (Cognito), registro di audit immutabile e accessibilità WCAG 2.1 AA; redazione della valutazione d'impatto DPIA, monitoraggio dei consumi per rientrare nel \textit{free tier} AWS e mantenimento dell'AI entro un perimetro informativo per non ricadere nei vincoli sui dispositivi medici (MDR) e sull'EU AI Act.
 \end{itemize}
 
 L'opportunità di apprendimento risulta molto completa e trasversale, unendo progettazione DDD ed esagonale, sviluppo mobile/web, cloud serverless su AWS, sicurezza avanzata e GenAI in ambito clinico.
 
 \subsubsection{Considerazioni e criticità}
-La documentazione è estremamente chiara e include l'\textbf{Allegato 1}, una guida implementativa che definisce una roadmap incrementale, analizza i trade-off cloud e risolve preventivamente le criticità dei requisiti (come il bilanciamento tra cifratura end-to-end ed elaborazione AI lato server, l'estensione del modello RBAC e il mancato supporto dell'italiano nei servizi medicali AWS). Anche il supporto della proponente si attesta su un livello elevato, offrendo tre referenti dedicati (Cloud/AI, UX/UI e dominio clinico), formazione iniziale, sale riunioni a Padova e Thiene e piena flessibilità nel concordare un perimetro sostenibile per il gruppo. \newline
-A fronte di questi vantaggi, emergono tuttavia alcune criticità: l'elevato onere di analisi normativa e architetturale richiesto dalla tutela dei dati sanitari pediatrici (DPIA, consensi granulari, confini MDR/AI Act), l'assenza di mockup grafici dell'interfaccia e la mancata fornitura diretta di budget o account cloud aziendali, che lascia al gruppo l'onere di presidiare i limiti del piano gratuito di AWS.
+La documentazione è estremamente chiara e include l'Allegato 1, una guida implementativa che definisce una roadmap incrementale, analizza i \textit{trade-off} cloud e risolve preventivamente le criticità dei requisiti (come il bilanciamento tra cifratura \textit{end-to-end} ed elaborazione AI lato server, l'estensione del modello RBAC e il mancato supporto dell'italiano nei servizi medicali AWS). Anche il supporto della proponente si attesta su un livello elevato, offrendo tre referenti dedicati (Cloud/AI, UX/UI e dominio clinico), formazione iniziale, sale riunioni a Padova e Thiene e piena flessibilità nel concordare un perimetro sostenibile per il gruppo. \newline
+A fronte di questi vantaggi, emergono tuttavia alcune criticità: l'elevato onere di analisi normativa e architetturale richiesto dalla tutela dei dati sanitari pediatrici (DPIA, consensi granulari, confini MDR/AI Act), l'assenza di \textit{mockup} grafici dell'interfaccia e la mancata fornitura diretta di budget o account cloud aziendali, che lascia al gruppo l'onere di presidiare i limiti del piano gratuito di AWS.
 
 \subsubsection{Motivazioni dello scarto}
 Nonostante il forte impatto sociale, l'ottimo supporto multidisciplinare offerto da Miriade e l'interesse per lo stack serverless e GenAI su AWS, il gruppo ha deciso di tenere questo capitolato come seconda opzione. \newline
@@ -223,7 +232,7 @@ Il progetto proposto da Eggon ha lo scopo di introdurre un assistente conversazi
 La proponente, per rendere realizzabile il progetto, circoscrive l'MVP (Minimum Viable Product) alla sola gestione di ferie e permessi.
 Il sistema prevede la creazione di una chat testuale in grado di comprendere i messaggi e conservare le informazioni ricevute in precedenza, deducendo dal contesto i dati mancanti o chiedendo chiarimenti in caso di richieste ambigue. 
 Il Concierge dovrà integrare diverse capacità: la consultazione della conoscenza aziendale (come i regolamenti interni), la lettura dei dati personali dell'utente (come le ferie richieste o residue) e la conoscenza del prodotto, garantita dall'integrazione dei manuali d'uso forniti da Eggon.
-Infine, il Concierge dovrà essere in grado di agire operativamente, guidando l'utente alla compilazione del piano di ferie e assistendolo fornendogli un riepilogo sui dati inseriti e richiedendo conferma esplicita. A livello architetturale, questo sarà eseguito con Gate applicativi che garantiscono il rispetto delle autorizzazioni di accesso e la tracciabilità delle operazioni.
+Infine, il Concierge dovrà essere in grado di agire operativamente, guidando l'utente alla compilazione del piano di ferie e assistendolo fornendogli un riepilogo sui dati inseriti e richiedendo conferma esplicita. A livello architetturale, questo sarà eseguito con \textit{Gate applicativi} che garantiscono il rispetto delle autorizzazioni di accesso e la tracciabilità delle operazioni.
 
 \subsubsection{Motivazioni dello scarto}
 Nonostante il capitolato affronti un problema aziendale concreto, la proposta è stata scartata poiché il gruppo ha preferito orientarsi verso altre tematiche, con l'obiettivo di misurarsi con domini applicativi differenti e maggiormente allineati agli interessi del gruppo.
@@ -231,10 +240,10 @@ Nonostante il capitolato affronti un problema aziendale concreto, la proposta è
 \subsection{C3 - Fossdot}
 
 \subsubsection{Obiettivo}
-Il progetto, proposto da Uranion con il nome FossDot, punta a sviluppare un ecosistema \textit{open source} completo per uno \textit{smart speaker} vocale che sia estensibile e attento alla privacy, pensato come alternativa ai classici dispositivi chiusi (tipo Amazon Echo Dot). Il sistema copre tutta la catena del prodotto: dalla scelta dell'hardware di riferimento al \textit{firmware} embedded per catturare l'audio e rilevare la \textit{wake word}, passando per un servizio di \textit{bridging} che collega il dispositivo a provider di AI tramite una pipeline STT (\textit{speech-to-text}), LLM e TTS (\textit{text-to-speech}), fino a un'interfaccia web utile a registrare e gestire più dispositivi. Il tutto deve essere rilasciato con licenza permissiva (Apache 2.0 o MIT) e testato end-to-end su un dispositivo fisico.
+Il progetto, proposto da Uranion con il nome FossDot, punta a sviluppare un ecosistema open source completo per uno \textit{smart speaker} vocale che sia estensibile e attento alla privacy, pensato come alternativa ai classici dispositivi chiusi (tipo Amazon Echo Dot). Il sistema copre tutta la catena del prodotto: dalla scelta dell'hardware di riferimento al \textit{firmware} embedded per catturare l'audio e rilevare la \textit{wake word}, passando per un servizio di \textit{bridging} che collega il dispositivo a provider di AI tramite una pipeline STT (\textit{speech-to-text}), LLM e TTS (\textit{text-to-speech}), fino a un'interfaccia web utile a registrare e gestire più dispositivi. Il tutto deve essere rilasciato con licenza permissiva (Apache 2.0 o MIT) e testato end-to-end su un dispositivo fisico.
 
 \subsubsection{Motivazioni dello scarto}
-Il capitolato ci è sembrato molto interessante (uno dei più stimolanti in assoluto), ma di difficoltà eccessiva per il gruppo. Il progetto richiede infatti di mettere le mani sull'hardware vero e proprio, che comprende scelta e validazione di scheda, array di microfoni e altoparlante e realizzazione di un prototipo funzionante, oltre a scrivere il \textit{firmware} embedded, per cui viene consigliato ed è preferenziale l'uso di Rust. Il gruppo non ha né competenze pratiche di elettronica né una formazione ingegneristica adatta a questo tipo di lavoro. A tutto ciò si aggiunge anche l'ampiezza del capitolato, che si articola in quattro componenti distinte che devono poi integrarsi perfettamente in un collaudo end-to-end su dispositivo fisico, rendendo poco realistico il completamento dell'MVP nei tempi previsti.
+Il capitolato ci è sembrato molto interessante (uno dei più stimolanti in assoluto), ma di difficoltà eccessiva per il gruppo. Il progetto richiede infatti di mettere le mani sull'hardware vero e proprio, che comprende scelta e validazione di scheda, array di microfoni e altoparlante e realizzazione di un prototipo funzionante, oltre a scrivere il firmware embedded, per cui viene consigliato ed è preferenziale l'uso di Rust. Il gruppo non ha né competenze pratiche di elettronica né una formazione ingegneristica adatta a questo tipo di lavoro. A tutto ciò si aggiunge anche l'ampiezza del capitolato, che si articola in quattro componenti distinte che devono poi integrarsi perfettamente in un collaudo end-to-end su dispositivo fisico, rendendo poco realistico il completamento dell'MVP nei tempi previsti.
 
 \subsection{C4 - Piattaforma per la gestione dei veicoli e dei servizi post-vendita (M31)}
 
@@ -251,8 +260,8 @@ Nonostante il capitolato presenti un'architettura stimolante, la proposta è sta
 \subsubsection{Obiettivo}
 Il progetto proposto da Var Group nasce con l'obiettivo di risolvere due criticità molto diffuse nell'adozione aziendale dell'intelligenza artificiale generativa su larga scala: la ridondanza delle richieste inviate ai modelli e la mancanza di visibilità immediata sui costi di inferenza a consumo, spesso rilevati solo a fine mese con la fattura dei vari provider. \newline
 L'idea consiste nell'estendere LiteLLM, un orchestratore e proxy open source già utilizzato in produzione dall'azienda per instradare le chiamate verso molteplici LLM, integrandovi due nuovi componenti originali.
-Il primo modulo introduce un livello di caching semantico basato su embedding e ricerca di similarità (cosine similarity). A differenza delle cache tradizionali, che richiedono una corrispondenza esatta del testo, questo sistema riconosce domande formulate in modo diverso ma dal significato equivalente e restituisce direttamente la risposta salvata su Redis o database vettoriale (Qdrant o pgvector), registrando i token e la latenza risparmiati. \newline
-Il secondo componente consiste in una dashboard FinOps multi-tenant, realizzata come servizio separato con aggiornamento quasi in tempo reale. L'interfaccia aggrega e isola i consumi per team, progetto e singolo utente, quantifica il risparmio effettivo generato dalla cache semantica e permette di configurare budget con avvisi automatici e previsioni (forecasting) della spesa mensile.
+Il primo modulo introduce un livello di \textit{caching semantico} basato su \textit{embedding} e ricerca di similarità (\textit{cosine similarity}). A differenza delle cache tradizionali, che richiedono una corrispondenza esatta del testo, questo sistema riconosce domande formulate in modo diverso ma dal significato equivalente e restituisce direttamente la risposta salvata su Redis o database vettoriale (Qdrant o pgvector), registrando i token e la latenza risparmiati. \newline
+Il secondo componente consiste in una dashboard FinOps \textit{multi-tenant}, realizzata come servizio separato con aggiornamento quasi in tempo reale. L'interfaccia aggrega e isola i consumi per team, progetto e singolo utente, quantifica il risparmio effettivo generato dal \textit{caching semantico} e permette di configurare budget con avvisi automatici e previsioni (\textit{forecasting}) della spesa mensile.
 
 \subsubsection{Motivazioni dello scarto}
 Il capitolato affronta una problematica aziendale concreta ed è stato apprezzato per la chiarezza della documentazione, la solidità dello stack tecnologico consigliato e il piano di formazione strutturato offerto dalla proponente. \newline
@@ -260,24 +269,24 @@ Tuttavia, è stato scartato perché fortemente incentrato sulla rendicontazione 
 
 \subsection{C7 - SmartDashboard}
 \subsubsection{Obiettivo}
-Il progetto SmartDashboard mira a realizzare una piattaforma di Business Intelligence end-to-end, pensata per democratizzare l'accesso ai dati aziendali.
-Poiché le informazioni risiedono spesso in sistemi ERP complessi e richiedono interventi tecnici per la reportistica, l'obiettivo è costruire un sistema self-service che consenta agli utenti di esplorare autonomamente i dati.
-L'architettura prevede l'estrazione dei dati grezzi dal gestionale, la loro trasformazione (ETL) e il consolidamento in un data warehouse ottimizzato.
+Il progetto SmartDashboard mira a realizzare una piattaforma di \textit{Business Intelligence} end-to-end, pensata per democratizzare l'accesso ai dati aziendali.
+Poiché le informazioni risiedono spesso in sistemi ERP complessi e richiedono interventi tecnici per la reportistica, l'obiettivo è costruire un sistema \textit{self-service} che consenta agli utenti di esplorare autonomamente i dati.
+L'architettura prevede l'estrazione dei dati grezzi dal gestionale, la loro trasformazione (ETL) e il consolidamento in un \textit{data warehouse} ottimizzato.
 Su questa base si innesterà una web application dotata di interfaccia drag \& drop, permettendo la composizione personalizzata di dashboard con widget, grafici, mappe e indicatori di sintesi.
 L'elemento distintivo è l'integrazione di un layer di intelligenza artificiale conversazionale.
 Questo assistente permetterà di generare visualizzazioni a partire da richieste in linguaggio naturale e analizzerà in automatico i dati per evidenziare anomalie, scostamenti e tendenze, fornendo spiegazioni chiare e immediate senza richiedere la conoscenza del modello dati sottostante.
 
 \subsubsection{Motivazioni dello scarto}
-Nonostante l'attrattiva di sviluppare un'applicazione web completa e la stimolante integrazione dell'assistente virtuale, il capitolato non è stato selezionato. La decisione è derivata dalla marcata focalizzazione su processi di data engineering e pipeline ETL, ambiti analitici che si discostano dai principali interessi di sviluppo software del gruppo.
+Nonostante l'attrattiva di sviluppare un'applicazione web completa e la stimolante integrazione dell'assistente virtuale, il capitolato non è stato selezionato. La decisione è derivata dalla marcata focalizzazione su processi di \textit{data engineering} e pipeline ETL, ambiti analitici che si discostano dai principali interessi di sviluppo software del gruppo.
 
 \subsection{C9 - SpecCheck}
 \subsubsection{Obiettivo}
 Il progetto SpecCheck si pone l'obiettivo di affrontare il problema della verifica del software generato tramite intelligenza artificiale, garantendo la tracciabilità end-to-end.
-L'idea centrale è quella di sviluppare estensioni, denominate "skills", per la piattaforma OpenCode, in modo da automatizzare il controllo di coerenza tra le varie fasi del ciclo di vita del software.
+L'idea centrale è quella di sviluppare estensioni, denominate \textit{skills}, per la piattaforma OpenCode, in modo da automatizzare il controllo di coerenza tra le varie fasi del ciclo di vita del software.
 Il sistema proposto dovrà leggere e interpretare i diagrammi dei casi d'uso e la relativa documentazione, per poi confrontarli con le specifiche dei requisiti.
 Successivamente, dovrà analizzare il codice sorgente prodotto per comprenderne il comportamento effettivo e verificare che questo implementi fedelmente quanto definito nei requisiti iniziali.
 Infine, il progetto prevede la realizzazione di una dashboard capace di evidenziare lo stato di avanzamento e segnalare tempestivamente al programmatore eventuali discrepanze.
-Le estensioni create andranno a integrarsi nel sistema di harness di OpenCode (tramite skill, tool e plugin), fungendo da strumento di validazione automatico.
+Le estensioni create andranno a integrarsi nel sistema di \textit{harness} di OpenCode (tramite skill, tool e plugin), fungendo da strumento di validazione automatico.
 
 \subsubsection{Motivazioni dello scarto}
 Il capitolato presenta una tematica innovativa, affrontando il problema attuale della validazione del codice prodotto da LLM. Tuttavia, è stato scartato per la sua natura marcatamente esplorativa e per lo stretto vincolo con l'ecosistema OpenCode, limitando la libertà del gruppo nella scelta e progettazione dello stack tecnologico.
