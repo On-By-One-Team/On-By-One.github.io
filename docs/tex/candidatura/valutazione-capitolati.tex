@@ -21,9 +21,9 @@
     \vspace*{0.5cm}
 
     % LOGHI
-    \includegraphics[width=0.45\textwidth]{img/logo_unipd.jpg}
+    \includegraphics[width=0.45\textwidth]{../../../assets/logo_unipd.jpg}
     \hfill
-    \includegraphics[width=0.45\textwidth]{img/logo.png}\par
+    \includegraphics[width=0.45\textwidth]{../../../assets/logo.png}\par
     \vspace{0.5cm}
 
     % NOME DEL GRUPPO
@@ -63,7 +63,7 @@
             \hline
             \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
             \hline
-            [X.X.X] & [YYYY/MM/DD] & [Bozza/Approvato] & 
+            - & - & Bozza & 
             On-By-One \newline 
             Prof. Tullio Vardanega \newline 
             Prof. Riccardo Cardin \\
@@ -99,7 +99,11 @@
         \multicolumn{1}{c|}{\textbf{Descrizione}} & 
         \multicolumn{1}{c|}{\textbf{Verificatore}} \\
         \hline
-        0.1.0 & 2026/10/28 & Shuhui Chen & Valutazione dei capitolati C1 e C8 & Tommaso Zorzetto \\
+        0.1.2 & - & Daniele Nuzzaci & Valutazione dei capitolati C5 e C6 & - \\
+        \hline
+        0.1.1 & 2026/10/26 & Sara Ballardin & Valutazione del capitolato C0 & - \\
+        \hline
+        0.1.0 & 2026/10/26 & Shuhui Chen & Valutazione dei capitolati C1 e C8 & Tommaso Zorzetto \\
         \hline
     \end{tabularx}
     \arrayrulecolor{black}
@@ -201,8 +205,14 @@ Nella scelta finale hanno pesato il considerevole carico normativo e progettuale
 \section{Altri capitolati valutati}
 
 \subsection{C0 - AIRA (Sanmarco Informatica)}
+
 \subsubsection{Obiettivo}
+Il progetto AIRA (AI Requests Automation) nasce con l'obiettivo di risolvere un problema molto comune nelle aziende: la dispersione delle informazioni su strumenti disorganizzati. Poiché l'eterogeneità dei canali di comunicazione e la mancanza di una centralizzazione causano continue perdite di tempo per l'inserimento manuale di ordini e richieste, l'idea è sviluppare un software guidato dall'intelligenza artificiale per automatizzare l'intero flusso.  \newline
+Il sistema monitora i canali di contatto applicando un filtro di sicurezza sui dati in ingresso. Successivamente, analizza i contenuti estraendo le informazioni in base al formato: interpreta i testi delle e-mail, trascrive le note vocali ed elabora immagini e allegati sfruttando tecnologie OCR e di visione artificiale.  \newline
+Compresa la semantica della richiesta, i dati vengono convertiti in formati strutturati come JSON, classificati per tipologia e inoltrati automaticamente ai gestionali aziendali (B2B, ERP, CRM) tramite API REST, azzerando l'intervento umano. Viene integrata un'interfaccia amministrativa per configurare i canali attivi, gestire la persistenza dei dati e consultare lo storico dei log.
+
 \subsubsection{Motivazioni dello scarto}
+Il capitolato propone un uso interessante dell'intelligenza artificiale e si fa apprezzare per la chiarezza del modello architetturale e delle tecnologie consigliate. Tuttavia, è stato scartato perché risulta interamente focalizzato sull'automazione del lavoro d'ufficio e sull'elaborazione di documenti commerciali, uno scenario che non rientra tra i principali interessi del gruppo.
 
 \subsection{C2 - Concierge}
 \subsubsection{Obiettivo}
@@ -232,7 +242,7 @@ Tuttavia, è stato scartato perché fortemente incentrato sulla rendicontazione 
 Il progetto SmartDashboard mira a realizzare una piattaforma di Business Intelligence end-to-end, pensata per democratizzare l'accesso ai dati aziendali.
 Poiché le informazioni risiedono spesso in sistemi ERP complessi e richiedono interventi tecnici per la reportistica, l'obiettivo è costruire un sistema self-service che consenta agli utenti di esplorare autonomamente i dati.
 L'architettura prevede l'estrazione dei dati grezzi dal gestionale, la loro trasformazione (ETL) e il consolidamento in un data warehouse ottimizzato.
-Su questa base si innesterà una web application dotata di interfaccia drag & drop, permettendo la composizione personalizzata di dashboard con widget, grafici, mappe e indicatori di sintesi.
+Su questa base si innesterà una web application dotata di interfaccia drag \& drop, permettendo la composizione personalizzata di dashboard con widget, grafici, mappe e indicatori di sintesi.
 L'elemento distintivo è l'integrazione di un layer di intelligenza artificiale conversazionale.
 Questo assistente permetterà di generare visualizzazioni a partire da richieste in linguaggio naturale e analizzerà in automatico i dati per evidenziare anomalie, scostamenti e tendenze, fornendo spiegazioni chiare e immediate senza richiedere la conoscenza del modello dati sottostante.
 
