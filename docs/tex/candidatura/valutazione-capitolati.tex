@@ -229,8 +229,12 @@ Infine, il Concierge dovrà essere in grado di agire operativamente, guidando l'
 Nonostante il capitolato affronti un problema aziendale concreto, la proposta è stata scartata poiché il gruppo ha preferito orientarsi verso altre tematiche, con l'obiettivo di misurarsi con domini applicativi differenti e maggiormente allineati agli interessi del gruppo.
 
 \subsection{C3 - Fossdot}
+
 \subsubsection{Obiettivo}
+Il progetto, proposto da Uranion con il nome FossDot, punta a sviluppare un ecosistema \textit{open source} completo per uno \textit{smart speaker} vocale che sia estensibile e attento alla privacy, pensato come alternativa ai classici dispositivi chiusi (tipo Amazon Echo Dot). Il sistema copre tutta la catena del prodotto: dalla scelta dell'hardware di riferimento al \textit{firmware} embedded per catturare l'audio e rilevare la \textit{wake word}, passando per un servizio di \textit{bridging} che collega il dispositivo a provider di AI tramite una pipeline STT (\textit{speech-to-text}), LLM e TTS (\textit{text-to-speech}), fino a un'interfaccia web utile a registrare e gestire più dispositivi. Il tutto deve essere rilasciato con licenza permissiva (Apache 2.0 o MIT) e testato end-to-end su un dispositivo fisico.
+
 \subsubsection{Motivazioni dello scarto}
+Il capitolato ci è sembrato molto interessante (uno dei più stimolanti in assoluto), ma di difficoltà eccessiva per il gruppo. Il progetto richiede infatti di mettere le mani sull'hardware vero e proprio, che comprende scelta e validazione di scheda, array di microfoni e altoparlante e realizzazione di un prototipo funzionante, oltre a scrivere il \textit{firmware} embedded, per cui viene consigliato ed è preferenziale l'uso di Rust. Il gruppo non ha né competenze pratiche di elettronica né una formazione ingegneristica adatta a questo tipo di lavoro. A tutto ciò si aggiunge anche l'ampiezza del capitolato, che si articola in quattro componenti distinte che devono poi integrarsi perfettamente in un collaudo end-to-end su dispositivo fisico, rendendo poco realistico il completamento dell'MVP nei tempi previsti.
 
 \subsection{C4 - Piattaforma per la gestione dei veicoli e dei servizi post-vendita (M31)}
 
