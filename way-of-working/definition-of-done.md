@@ -32,7 +32,7 @@ Un'attività può essere considerata completata quando soddisfa tutti i criteri 
 ### 3.2. Qualità e formattazione
 
 - I contenuti sono chiari, comprensibili e coerenti dal punto di vista terminologico.
-- Sono rispettate le convenzioni generali di [formattazione](formatting.md).
+- Sono rispettate le convenzioni generali di [formattazione](formatting.md#2-formattazione-del-testo).
 - I documenti LaTeX utilizzano i [template](../docs/tex/templates/), ove applicabili.
 - Le modifiche mantengono la coerenza con gli altri documenti e materiali del repository.
 
@@ -48,14 +48,14 @@ Quando applicabile, devono essere effettuate le verifiche necessarie per accerta
 
 ### 3.4. Versionamento e tracciabilità
 
-- Le modifiche sono state apportate su un branch dedicato all'attività, secondo la [strategia di branching](branching-strategy.md).
+- Le modifiche sono state apportate su un branch dedicato all'attività, secondo la [strategia di branching](branching-strategy.md#3-creazione-dei-branch).
 - I commit rispettano le [convenzioni adottate dal team](commit-guidelines.md).
 - L'issue associata, se presente, è aggiornata e correttamente referenziata.
 - Le modifiche sono raccolte in una Pull Request descrittiva e coerente con l'attività svolta.
 
 ### 3.5. Revisione e integrazione
 
-- La Pull Request è stata revisionata secondo la [policy di *code review*](code-review-policy.md).
+- La Pull Request è stata revisionata secondo la [policy di *code review*](code-review-policy.md#6-approvazione-e-merge).
 - È stata ottenuta almeno un'approvazione da un membro del team diverso dall'autore.
 - I commenti bloccanti sono stati risolti.
 - I controlli automatici obbligatori sono stati superati.

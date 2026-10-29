@@ -68,13 +68,13 @@ Esempi di messaggi da evitare:
 
 ## 7. Coerenza con il flusso di lavoro
 
-I commit devono essere creati sul *branch* dedicato all'attività, seguendo la [strategia di branching](branching-strategy.md).
+I commit devono essere creati sul *branch* dedicato all'attività, seguendo la [strategia di branching](branching-strategy.md#3-creazione-dei-branch).
 
 Prima di aprire una Pull Request, l'autore deve verificare che i commit siano comprensibili e coerenti con le modifiche proposte.
 
-Quando necessario, i commit possono essere riorganizzati prima dell'integrazione, nel rispetto del flusso di revisione definito nella [policy di code review](code-review-policy.md).
+Quando necessario, i commit possono essere riorganizzati prima dell'integrazione, nel rispetto del flusso di revisione definito nella [policy di code review](code-review-policy.md#3-regole-generali).
 
-L'integrazione nel branch `main` avviene secondo la [strategia di merge](branching-strategy.md) definita per il repository.
+L'integrazione nel branch `main` avviene secondo la [strategia di merge](branching-strategy.md#6-pull-request-e-merge) definita per il repository.
 
 ## 8. Revisione del documento
 

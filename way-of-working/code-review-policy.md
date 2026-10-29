@@ -46,7 +46,7 @@ Durante la code review devono essere considerati, quando pertinenti, i seguenti 
 - Il testo è chiaro, comprensibile e grammaticalmente corretto.
 - La terminologia è utilizzata in modo coerente.
 - La struttura dei documenti è appropriata e facilita la consultazione.
-- La formattazione rispetta le [convenzioni generali](formatting.md) e, per i documenti LaTeX, la struttura definita dai [template](../docs/tex/templates/), ove applicabili.
+- La formattazione rispetta le [convenzioni generali](formatting.md#2-formattazione-del-testo) e, per i documenti LaTeX, la struttura definita dai [template](../docs/tex/templates/), ove applicabili.
 
 ### 4.3. File tecnici e configurazioni
 
@@ -89,7 +89,7 @@ Una Pull Request può essere integrata nel branch `main` quando sono soddisfatte
 - Tutti i commenti bloccanti sono stati risolti.
 - Le modifiche rispettano le convenzioni e le regole organizzative del repository.
 
-L’integrazione deve avvenire secondo la [strategia di merge](branching-strategy.md) definita per il repository.
+L’integrazione deve avvenire secondo la [strategia di merge](branching-strategy.md#6-pull-request-e-merge) definita per il repository.
 
 L'approvazione della Pull Request non sostituisce la responsabilità dell'autore di verificare la correttezza delle modifiche.
 

@@ -68,7 +68,7 @@ Ogni Pull Request deve:
 - Avere un titolo chiaro e descrittivo.
 - Descrivere le modifiche introdotte e la loro motivazione.
 - Fare riferimento all'issue associata, se presente.
-- Essere sottoposta a *code review* secondo la [policy del repository](code-review-policy.md).
+- Essere sottoposta a *code review* secondo la [policy del repository](code-review-policy.md#3-regole-generali).
 - Superare i controlli automatici richiesti.
 - Non presentare conflitti irrisolti con il branch di destinazione.
 
