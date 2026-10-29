@@ -227,12 +227,28 @@ Il secondo componente consiste in una dashboard FinOps multi-tenant, realizzata 
 Il capitolato affronta una problematica aziendale concreta ed è stato apprezzato per la chiarezza della documentazione, la solidità dello stack tecnologico consigliato e il piano di formazione strutturato offerto dalla proponente. \newline
 Tuttavia, è stato scartato perché fortemente incentrato sulla rendicontazione economica dei consumi (FinOps) e sull'estensione di un proxy preesistente, un dominio applicativo che ha suscitato minore interesse nel gruppo rispetto a soluzioni più tangibili, a cui si aggiunge l'onere procedurale richiesto prima dell'implementazione.
 
-\subsection{C7 - Smart Dashboard}
+\subsection{C7 - SmartDashboard}
 \subsubsection{Obiettivo}
+Il progetto SmartDashboard mira a realizzare una piattaforma di Business Intelligence end-to-end, pensata per democratizzare l'accesso ai dati aziendali.
+Poiché le informazioni risiedono spesso in sistemi ERP complessi e richiedono interventi tecnici per la reportistica, l'obiettivo è costruire un sistema self-service che consenta agli utenti di esplorare autonomamente i dati.
+L'architettura prevede l'estrazione dei dati grezzi dal gestionale, la loro trasformazione (ETL) e il consolidamento in un data warehouse ottimizzato.
+Su questa base si innesterà una web application dotata di interfaccia drag & drop, permettendo la composizione personalizzata di dashboard con widget, grafici, mappe e indicatori di sintesi.
+L'elemento distintivo è l'integrazione di un layer di intelligenza artificiale conversazionale.
+Questo assistente permetterà di generare visualizzazioni a partire da richieste in linguaggio naturale e analizzerà in automatico i dati per evidenziare anomalie, scostamenti e tendenze, fornendo spiegazioni chiare e immediate senza richiedere la conoscenza del modello dati sottostante.
+
 \subsubsection{Motivazioni dello scarto}
+Nonostante l'attrattiva di sviluppare un'applicazione web completa e la stimolante integrazione dell'assistente virtuale, il capitolato non è stato selezionato. La decisione è derivata dalla marcata focalizzazione su processi di data engineering e pipeline ETL, ambiti analitici che si discostano dai principali interessi di sviluppo software del gruppo.
 
 \subsection{C9 - SpecCheck}
 \subsubsection{Obiettivo}
+Il progetto SpecCheck si pone l'obiettivo di affrontare il problema della verifica del software generato tramite intelligenza artificiale, garantendo la tracciabilità end-to-end.
+L'idea centrale è quella di sviluppare estensioni, denominate "skills", per la piattaforma OpenCode, in modo da automatizzare il controllo di coerenza tra le varie fasi del ciclo di vita del software.
+Il sistema proposto dovrà leggere e interpretare i diagrammi dei casi d'uso e la relativa documentazione, per poi confrontarli con le specifiche dei requisiti.
+Successivamente, dovrà analizzare il codice sorgente prodotto per comprenderne il comportamento effettivo e verificare che questo implementi fedelmente quanto definito nei requisiti iniziali.
+Infine, il progetto prevede la realizzazione di una dashboard capace di evidenziare lo stato di avanzamento e segnalare tempestivamente al programmatore eventuali discrepanze.
+Le estensioni create andranno a integrarsi nel sistema di harness di OpenCode (tramite skill, tool e plugin), fungendo da strumento di validazione automatico.
+
 \subsubsection{Motivazioni dello scarto}
+Il capitolato presenta una tematica innovativa, affrontando il problema attuale della validazione del codice prodotto da LLM. Tuttavia, è stato scartato per la sua natura marcatamente esplorativa e per lo stretto vincolo con l'ecosistema OpenCode, limitando la libertà del gruppo nella scelta e progettazione dello stack tecnologico.
 
 \end{document}
