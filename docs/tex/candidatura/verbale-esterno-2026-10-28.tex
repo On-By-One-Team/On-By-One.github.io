@@ -1,0 +1,208 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PACCHETTI ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{lmodern}
+\usepackage{anyfontsize}
+
+\begin{document}
+
+% ==============================================================================
+% FRONTESPIZIO (PAGINA 1)
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+
+    \includegraphics[width=0.45\textwidth]{img/logo_unipd.jpg}
+    \hfill
+    \includegraphics[width=0.45\textwidth]{img/logo.png}\par
+    \vspace{0.5cm}
+
+    {\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par}
+    \vspace{1cm}
+
+    {\huge \bfseries Verbale esterno 2026/10/28 \par}
+
+    \vspace{1.5cm}
+
+    {\large
+    \textbf{On-By-One}:\par
+    \vspace{0.3cm}
+    \begin{tabular}{l l}
+        Sara Ballardin & 2101048 \\
+        Shuhui Chen & 2138001 \\
+        Simone Giuliano & 2145591 \\
+        Alvise Greggio & 2141004 \\
+        Daniele Nuzzaci & 2139039 \\
+        Federico Temporin & 2146764 \\
+        Tommaso Zorzetto & 2148629 \\
+    \end{tabular}
+    \par}
+
+    \vfill
+
+    \begin{table}[h]
+        \centering
+        \arrayrulecolor{gray!50}
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabularx}{\textwidth}{|c|c|c|X|}
+            \hline
+            \rowcolor{gray!10} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
+            \hline
+            \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+            \hline
+            0.1.0 & 2026/10/28 & Bozza &
+            On-By-One \newline
+            Prof. Tullio Vardanega \newline
+            Prof. Riccardo Cardin \newline
+            MIRIADE srl \newline
+             \\
+            \hline
+        \end{tabularx}
+        \arrayrulecolor{black}
+    \end{table}
+
+    \vspace{0.5cm}
+
+    {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
+
+\end{titlepage}
+
+% ==============================================================================
+% REGISTRO DELLE MODIFICHE (PAGINA 2)
+% ==============================================================================
+\section*{Registro delle modifiche}
+
+\vspace{1cm}
+\begin{center}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
+        \hline
+        \rowcolor{gray!10}
+        \multicolumn{1}{|c|}{\textbf{Versione}} &
+        \multicolumn{1}{c|}{\textbf{Data}} &
+        \multicolumn{1}{c|}{\textbf{Autore}} &
+        \multicolumn{1}{c|}{\textbf{Descrizione}} &
+        \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        [1.X.X] & [YYYY/MM/DD] & [Nome e cognome] & [Descrizione] & [Nome e cognome] \\
+        \hline
+        0.1.0 & 2026/10/28 & Shuhui Chen & Prima stesura del verbale & - \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{center}
+\vfill
+\newpage
+
+% ==============================================================================
+% INDICE (PAGINA 3)
+% ==============================================================================
+\tableofcontents
+\newpage
+
+% ==============================================================================
+% INFORMAZIONI GENERALI
+% ==============================================================================
+\section{Informazioni generali}
+
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|>{\centering\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!10} \multicolumn{2}{|c|}{\textbf{Dettagli della riunione}} \\
+        \hline
+        \textbf{Data} & 2026/10/28 \\ \hline
+        \textbf{Ora inizio} & 15:00 \\ \hline
+        \textbf{Ora fine} & 16:00 \\ \hline
+        \textbf{Modalità} & Google Meet \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!10} \multicolumn{3}{|c|}{\textbf{Partecipanti}} \\
+        \hline
+        \rowcolor{gray!10} \textbf{Nome e cognome} & \textbf{Ruolo} & \textbf{Presenza} \\
+        \hline
+        Sara Ballardin & - & Presente \\ \hline
+        Shuhui Chen & - & Presente \\ \hline
+        Simone Giuliano & - & Presente \\ \hline
+        Alvise Greggio & Responsabile & Presente \\ \hline
+        Daniele Nuzzaci & - & Assente \\ \hline
+        Federico Temporin & - & Assente \\ \hline
+        Tommaso Zorzetto & - & Presente \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+\newpage
+
+% ==============================================================================
+% CORPO DEL VERBALE
+% ==============================================================================
+\section{Introduzione}
+La riunione si è svolta con il referente di MIRIADE srl Emanuele Righetto con l'obiettivo di chiarire il contesto del capitolato, i requisiti funzionali e non funzionali, le scelte tecnologiche e il supporto che l'azienda metterà a disposizione del gruppo durante il progetto.
+
+\section{Discussioni}
+
+\subsection{Origine del progetto e stato di partenza}
+Non esiste alcun prototipo: il progetto parte da zero. Miriade collabora con San Filippo Fighters da due anni, tramite finanziamenti e progetti minori come pagine web e landing page. A inizio anno l'associazione aveva avanzato una richiesta più piccola e mirata, che l'azienda non era riuscita a soddisfare per mancanza di risorse; la proposta è stata poi ampliata e presentata come tema del corso.
+
+\subsection{Dati di test e documentazione medica}
+Non è previsto l'accesso a dati reali di pazienti. L'azienda fornirà, tramite l'associazione, documenti su trattamenti, tipi di cura e procedure, che costituiranno fonti affidabili per alimentare la parte di IA (RAG) e i \emph{disease pack}, oltre a guidare il gruppo nel flusso di supporto al malato. I casi d'uso (pazienti fittizi) dovranno invece essere generati dal gruppo. In alternativa, si può chiedere ai volontari dell'associazione di provare l'applicazione inserendo un caso con informazioni a loro note, il più realistico possibile, tenendo conto che si tratta in prevalenza di volontari con disponibilità limitata.
+
+\subsection{Formazione sul dominio e \emph{design sprint}}
+Per colmare la mancanza di competenze mediche l'azienda propone due attività facoltative. La prima consiste in uno o più incontri con l'associazione, in cui viene spiegato il flusso che il \emph{care navigator} e il \emph{caregiver} affrontano per assistere il paziente, sia per la parte tecnica sia per quella medica. La seconda è una versione ridotta di \emph{design sprint}, già apprezzata negli anni scorsi, con uno o due workshop che coinvolgono il gruppo, Miriade e l'associazione per disegnare i flussi di lavoro di tutti gli attori. Al termine il gruppo dovrebbe avere un'idea più chiara della navigazione e delle azioni del prodotto, oltre a una bozza di interfaccia a livello di componenti e sezioni, senza elementi grafici definitivi.
+
+\subsection{Attori, ruoli e sistema dei permessi}
+Gli attori di base sono quattro o cinque: \emph{caregiver}, \emph{care navigator}, professionista sanitario, struttura ed, eventualmente, un ente pubblico come la scuola (preside o docente referente), profilo che non ci si aspetta nella fase iniziale. L'azienda ritiene auspicabile un sistema di permessi espandibile senza modificare il codice, in cui l'aggiunta di un nuovo ruolo avvenga da configurazione. L'approccio tipico prevede permessi molto granulari associati alle singole operazioni, con il ruolo inteso come insieme di permessi (sì/no). Una volta realizzato il sistema dinamico, la stessa interfaccia potrà essere usata per creare i ruoli richiesti durante il progetto, a patto che sia progettata con cura. Il controllo degli accessi è invece obbligatorio; per esempio un medico può vedere solo i referti dei propri pazienti.
+
+\subsection{Sicurezza, privacy e autenticazione}
+I dati sensibili devono essere trasmessi in modo protetto. L'allegato 1 del capitolato elenca una serie di standard, non tutti da implementare; come primo livello è sufficiente HTTPS al posto di HTTP e non è richiesta la cifratura aggiuntiva del payload. La cifratura \emph{end-to-end} sulla parte LLM non è facilmente realizzabile e potrebbe risultare assente o parziale; l'azienda supporterà il gruppo sui dubbi tecnici. Per l'autenticazione, che il gruppo non aveva ancora affrontato, sono state indicate due strade: un database locale con tabelle di utenti e ruoli e password cifrate oppure AWS Cognito, che gestisce un pool di utenti, il reset della password e la federazione (single sign-on tramite Google, OAuth2 e OpenID Connect). Nelle architetture serverless dell'azienda una funzione Lambda posta davanti alle altre verifica l'utente tramite Cognito e, in base ai ruoli, autorizza o nega le operazioni. L'uso di Cognito è consigliato perché semplifica il lavoro.
+
+\subsection{Accessibilità e uso dell'IA nello sviluppo}
+L'interfaccia deve essere accessibile. Poiché il gruppo non conosce i pazienti, l'azienda può fornire librerie e template grafici (\emph{design system}). Progettare un'interfaccia accessibile non è banale e le linee guida sono molto estese: si consiglia di farsi aiutare da strumenti di IA esplicitando i requisiti di accessibilità, e di verificare il risultato con un tool di controllo , che segnala problemi di colore, contrasto, font e dimensioni. L'uso dell'IA non è un problema, a condizione che resti un supporto: le decisioni progettuali e tecniche devono essere prese dal gruppo, che deve mantenere il controllo del codice e saper motivare le proprie scelte.
+
+\subsection{Architettura, linguaggi e supporto tecnico}
+Si richiede un'architettura a microservizi: non un unico artefatto monolitico con tutte le API, ma tanti servizi autonomi e piccoli, ciascuno con una singola responsabilità, che insieme formino il \emph{backend}. Il gruppo può scegliere tra container (Docker, eseguiti ad esempio su AWS con ECS), facili da testare in locale, e funzioni serverless (AWS Lambda, Google Cloud Functions), ognuna con pro e contro. Con Lambda è più naturale mantenere servizi molto piccoli, mentre i container, più costosi, tendono ad aggregare più funzioni. Va evitata la miscela incoerente tra microservizi e serverless. Per il \emph{backend} l'azienda consiglia Java e Python (anche Node/TypeScript, con minor supporto). Per il \emph{frontend} suggerisce Angular per il web e Flutter per il mobile, oppure Flutter per entrambi, con maggiore lavoro di adattamento ma un'unica base di codice. Miriade può offrire supporto su Java, Python, Angular, Flutter e AWS, in parte anche su React e Node; è possibile usare altre tecnologie (ad esempio Azure), ma con un supporto più limitato.
+
+\subsection{Intelligenza artificiale e dati sensibili}
+Sono stati analizzati i concetti di RAG (risposte fondate su documentazione autorevole e controllata) e di \emph{guardrail} (meccanismi di protezione contro allucinazioni ed esfiltrazione di dati sensibili). Data la limitata esperienza del gruppo sulle architetture ad agenti, l'azienda eventualmente fornirà supporto nella classificazione delle informazioni riservate e nella definizione di un sistema sicuro per il controllo degli accessi e delle risposte del modello.
+
+\subsection{Priorità del \emph{Minimum Viable Product}}
+Le priorità andranno definite insieme nel workshop iniziale; secondo l'azienda le funzioni per \emph{caregiver} e \emph{care navigator} sono le più importanti, mentre funzioni menop importanti quali quelle per il medico sono negoziabili. Poiché il capitolato è ampio, il gruppo può specializzarsi senza completare ogni parte.
+
+\subsection{Account AWS e costi}
+L'azienda fornirà un account AWS gestito da Miriade, con utenze nominali e permessi iniziali di base limitati ai servizi standard (ad esempio Lambda ed ECS) e non ai servizi più costosi (ad esempio Bedrock), per evitare costi elevati. I permessi aggiuntivi andranno richiesti in modo puntuale all'azienda, mettendo in conto alcuni tempi di attesa. I costi dell'account sono sostenuti dall'azienda, che chiede però attenzione al loro contenimento.
+
+
+% ==============================================================================
+% APPROVAZIONE
+% ==============================================================================
+\vfill
+\hfill
+\begin{minipage}{0.4\textwidth}
+    \centering
+    \textbf{Firma del revisore esterno}\par
+    \vspace{1.5cm}
+    \rule{\textwidth}{0.4pt}
+\end{minipage}
+
+\vspace{2cm}
+\end{document}
+
