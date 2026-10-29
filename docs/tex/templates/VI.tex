@@ -14,11 +14,11 @@
 \begin{document}
 
 % ==============================================================================
-% FRONTESPIZIO
+% FRONTESPIZIO (PAGINA 1)
 % ==============================================================================
 \begin{titlepage}
     \centering
-    \vspace*{1cm}
+    \vspace*{0.5cm}
 
     % LOGHI
     \includegraphics[width=0.45\textwidth]{../../../../assets/logo_unipd.jpg}
@@ -28,41 +28,51 @@
 
     % NOME DEL GRUPPO
     {\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par} 
-    \vspace{1.5cm}
+    \vspace{1cm}
 
     % TITOLO DEL VERBALE
     {\huge \bfseries Verbale interno [YYYY/MM/DD] \par}
-    \vspace{2cm}
+    
+    \vspace{1.5cm}
 
     % MEMBRI DEL GRUPPO
     {\large
     \textbf{On-By-One}:\par
     \vspace{0.3cm}
-    Sara Ballardin, Shuhui Chen, Simone Giuliano, Alvise Greggio,
-    
-    Daniele Nuzzaci, Federico Temporin, Tommaso Zorzetto 
-    
-    (2101048, 2138001, 2145591, 2141004, 2139039, 2146764, 2148629)
+    \begin{tabular}{l l}
+        Sara Ballardin & 2101048 \\
+        Shuhui Chen & 2138001 \\
+        Simone Giuliano & 2145591 \\
+        Alvise Greggio & 2141004 \\
+        Daniele Nuzzaci & 2139039 \\
+        Federico Temporin & 2146764 \\
+        Tommaso Zorzetto & 2148629 \\
+    \end{tabular}
     \par}
 
     \vfill
 
-    % TABELLA INFORMAZIONI DOCUMENTO 
+    % TABELLA INFORMAZIONI DOCUMENTO E DESTINATARI
     \begin{table}[h]
         \centering
+        \arrayrulecolor{gray!50}
         \renewcommand{\arraystretch}{1.5}
         \begin{tabularx}{\textwidth}{|c|c|c|X|}
             \hline
-            \rowcolor{gray!20} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
+            \rowcolor{gray!10} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
             \hline
-            \rowcolor{gray!20} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+            \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
             \hline
-            [X.X.X] & [YYYY/MM/DD] & [Bozza/Approvato] & On-By-One, prof. Tullio Vardanega, prof. Riccardo Cardin \\
+            [X.X.X] & [YYYY/MM/DD] & [Bozza/Approvato] & 
+            On-By-One \newline 
+            Prof. Tullio Vardanega \newline 
+            Prof. Riccardo Cardin \\
             \hline
         \end{tabularx}
+        \arrayrulecolor{black}
     \end{table}
-
-    \vspace{1cm}
+    
+    \vspace{0.5cm}
     
     % CONTATTI
     {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
@@ -72,7 +82,35 @@
 \newpage
 
 % ==============================================================================
-% INDICE
+% REGISTRO DELLE MODIFICHE (PAGINA 2)
+% ==============================================================================
+\section*{Registro delle modifiche}
+
+\vspace{1cm}
+\begin{center}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
+        \hline
+        \rowcolor{gray!10} 
+        \multicolumn{1}{|c|}{\textbf{Versione}} & 
+        \multicolumn{1}{c|}{\textbf{Data}} & 
+        \multicolumn{1}{c|}{\textbf{Autore}} & 
+        \multicolumn{1}{c|}{\textbf{Descrizione}} & 
+        \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        [1.X.X] & [YYYY/MM/DD] & [Nome e cognome] & [Descrizione] & [Nome e cognome] \\
+        \hline
+        [0.1.0] & [YYYY/MM/DD] & [Nome e cognome] & [Descrizione] & [Nome e cognome] \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{center}
+\vfill
+\newpage
+
+% ==============================================================================
+% INDICE (PAGINA 3)
 % ==============================================================================
 \tableofcontents
 \newpage
@@ -82,28 +120,31 @@
 % ==============================================================================
 \section{Informazioni generali}
 
-    \begin{table}[h]
+\begin{table}[h]
     \centering
+    \arrayrulecolor{gray!50}
     \renewcommand{\arraystretch}{1.5}
     \begin{tabularx}{\textwidth}{|c|>{\centering\arraybackslash}X|}
         \hline
-        \rowcolor{gray!20} \multicolumn{2}{|c|}{\textbf{Dettagli della riunione}} \\
+        \rowcolor{gray!10} \multicolumn{2}{|c|}{\textbf{Dettagli della riunione}} \\
         \hline
         \textbf{Data} & [YYYY/MM/DD] \\ \hline
         \textbf{Ora inizio} & [HH:MM] \\ \hline
         \textbf{Ora fine} & [HH:MM] \\ \hline
         \textbf{Modalità} & [Discord / In presenza] \\ \hline
     \end{tabularx}
+    \arrayrulecolor{black}
 \end{table}
 
 \begin{table}[h]
     \centering
+    \arrayrulecolor{gray!50}
     \renewcommand{\arraystretch}{1.5}
     \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
         \hline
-        \rowcolor{gray!20} \multicolumn{3}{|c|}{\textbf{Partecipanti}} \\
+        \rowcolor{gray!10} \multicolumn{3}{|c|}{\textbf{Partecipanti}} \\
         \hline
-        \rowcolor{gray!20} \textbf{Nome e cognome} & \textbf{Ruolo} & \textbf{Presenza} \\
+        \rowcolor{gray!10} \textbf{Nome e cognome} & \textbf{Ruolo} & \textbf{Presenza} \\
         \hline
         Sara Ballardin & [Ruolo] & Presente \\ \hline
         Shuhui Chen & [Ruolo] & Presente \\ \hline
@@ -113,6 +154,7 @@
         Federico Temporin & [Ruolo] & Presente \\ \hline
         Tommaso Zorzetto & [Ruolo] & Presente \\ \hline
     \end{tabularx}
+    \arrayrulecolor{black}
 \end{table}
 
 % ==============================================================================
@@ -136,44 +178,24 @@
 \end{itemize}
 
 \section{To-do}
-\begin{center}
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
     \renewcommand{\arraystretch}{1.5}
     \begin{tabularx}{\textwidth}{|c|X|c|c|}
         \hline
-        \rowcolor{gray!20} 
-        \multicolumn{1}{|c|}{\textbf{ID issue}} & 
-        \multicolumn{1}{c|}{\textbf{Task}} & 
-        \multicolumn{1}{c|}{\textbf{Assegnatario}} & 
-        \multicolumn{1}{c|}{\textbf{Scadenza}} \\
+        \rowcolor{gray!10} 
+        \textbf{ID issue} & 
+        \textbf{Task} & 
+        \textbf{Assegnatario} & 
+        \textbf{Scadenza} \\
         \hline
         [- o \#numero] & [Descrizione] & [Nome e cognome] & [YYYY/MM/DD] \\
         \hline
         [- o \#numero] & [Descrizione] & [Nome e cognome] & [YYYY/MM/DD] \\
         \hline
     \end{tabularx}
-\end{center}
-
-% ==============================================================================
-% REGISTRO DELLE MODIFICHE
-% ==============================================================================
-\section{Registro delle modifiche}
-\begin{center}
-    \renewcommand{\arraystretch}{1.5}
-    \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
-        \hline
-        \rowcolor{gray!20} 
-        \multicolumn{1}{|c|}{\textbf{Versione}} & 
-        \multicolumn{1}{c|}{\textbf{Data}} & 
-        \multicolumn{1}{c|}{\textbf{Autore}} & 
-        \multicolumn{1}{c|}{\textbf{Descrizione}} & 
-        \multicolumn{1}{c|}{\textbf{Verificatore}} \\
-        \hline
-        [1.X.X] & [YYYY/MM/DD] & [Nome e cognome] & [Descrizione] & [Nome e cognome] \\
-        \hline
-        [0.1.0] & [YYYY/MM/DD] & [Nome e cognome] & [Descrizione] & [Nome e cognome] \\
-        \hline
-        
-    \end{tabularx}
-\end{center}
+    \arrayrulecolor{black}
+\end{table}
 
 \end{document}
