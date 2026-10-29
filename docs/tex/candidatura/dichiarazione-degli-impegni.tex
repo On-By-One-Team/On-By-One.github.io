@@ -1,0 +1,286 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PACCHETTI ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
+\usepackage{graphicx}               % Per inserire il logo
+\usepackage{tabularx}               % Per tabelle larghe quanto la pagina
+\usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
+\usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
+\usepackage{lmodern}      % Rende i font scalabili all'infinito
+\usepackage{anyfontsize}  % Permette di usare dimensioni personalizzate
+
+\begin{document}
+
+% ==============================================================================
+% FRONTESPIZIO (PAGINA 1)
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+
+     % LOGHI
+    \includegraphics[width=0.45\textwidth]{../../../assets/logo_unipd.jpg}
+    \hfill
+    \includegraphics[width=0.45\textwidth]{../../../assets/logo.png}\par
+    \vspace{0.5cm}
+
+    % NOME DEL GRUPPO
+    {\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par} 
+    \vspace{1cm}
+
+    % TITOLO DEL DOCUMENTO
+    {\huge \bfseries Dichiarazione degli impegni \par}
+    
+    \vspace{1.5cm}
+
+    % MEMBRI DEL GRUPPO
+    {\large
+    \textbf{On-By-One}:\par
+    \vspace{0.3cm}
+    \begin{tabular}{l l}
+        Sara Ballardin & 2101048 \\
+        Shuhui Chen & 2138001 \\
+        Simone Giuliano & 2145591 \\
+        Alvise Greggio & 2141004 \\
+        Daniele Nuzzaci & 2139039 \\
+        Federico Temporin & 2146764 \\
+        Tommaso Zorzetto & 2148629 \\
+    \end{tabular}
+    \par}
+
+    \vfill
+
+    % TABELLA INFORMAZIONI DOCUMENTO E DESTINATARI
+    \begin{table}[h]
+        \centering
+        \arrayrulecolor{gray!50}
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabularx}{\textwidth}{|c|c|c|X|}
+            \hline
+            \rowcolor{gray!10} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
+            \hline
+            \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+            \hline
+            - & - & Bozza & 
+            On-By-One \newline 
+            Prof. Tullio Vardanega \newline 
+            Prof. Riccardo Cardin \\
+            \hline
+        \end{tabularx}
+        \arrayrulecolor{black}
+    \end{table}
+    
+    \vspace{0.5cm}
+    
+    % CONTATTI
+    {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
+    
+\end{titlepage}
+
+% ==============================================================================
+% REGISTRO DELLE MODIFICHE (PAGINA 2)
+% ==============================================================================
+\section*{Registro delle modifiche}
+
+\vspace{1cm}
+\begin{center}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
+        \hline
+        \rowcolor{gray!10} 
+        \multicolumn{1}{|c|}{\textbf{Versione}} & 
+        \multicolumn{1}{c|}{\textbf{Data}} & 
+        \multicolumn{1}{c|}{\textbf{Autore}} & 
+        \multicolumn{1}{c|}{\textbf{Descrizione}} & 
+        \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        - & - & - & - & - \\
+        \hline
+        0.1.1 & 2026/10/29 & Sara Ballardin & Struttura del documento & - \\
+        \hline
+        0.1.0 & 2026/10/28 & Sara Ballardin & Aggiunta delle tabelle create durante l'incontro & - \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{center}
+\vfill
+\newpage
+
+% ==============================================================================
+% INDICE (PAGINA 3)
+% ==============================================================================
+\tableofcontents
+\newpage
+
+% ==============================================================================
+% CORPO DEL DOCUMENTO
+% ==============================================================================
+\section{Scopo del documento}
+Con questo documento il gruppo \textbf{On-By-One} definisce il proprio piano d'azione per realizzare \textit{AURA}, il progetto proposto da Vimar S.p.A. 
+
+Il testo illustra la nostra organizzazione interna, definendo i ruoli, le responsabilità e il modo in cui questi ruoteranno tra i membri del team nel corso del tempo. Vengono inoltre presentati i principali rischi attesi con le relative contromisure, un calendario di massima per tracciare le scadenze e la pianificazione dettagliata delle ore di lavoro (sia a livello individuale che di gruppo) con il relativo preventivo.
+
+\section{Analisi dei rischi attesi e mitigazione}
+La pianificazione ha tenuto conto di alcuni fattori di rischio che potrebbero verificarsi durante il ciclo di vita del progetto. 
+
+\section{Gestione dei ruoli}
+Sono stati definiti i seguenti ruoli, con i relativi costi orari:
+\begin{itemize}
+    \item \textbf{Responsabile (30 €/h):} 
+    \item \textbf{Analista (25 €/h):}
+    \item \textbf{Progettista (25 €/h):}
+    \item \textbf{Amministratore (20 €/h):} 
+    \item \textbf{Programmatore (15 €/h):} 
+    \item \textbf{Verificatore (15 €/h):} 
+\end{itemize}
+
+\subsection{Rotazione dei ruoli}
+
+
+\section{Preventivo dei costi}
+Il gruppo ha stimato un impegno totale di \textbf{620 ore} per le 20 settimane di progetto. L'impegno individuale ammonta a circa 88 ore produttive per ogni membro del team (calcolate suddividendo equamente il monte ore totale di 620 per i 7 componenti del gruppo). Il preventivo finale previsto ammonta a \textbf{€ 12.840}.
+
+Per formulare un preventivo realistico e coerente con l'effettivo andamento del lavoro, il calendario e il relativo budget sono stati suddivisi in cinque macro-periodi. Le stime orarie riportate nelle tabelle sottostanti riflettono l'impegno atteso da ciascun ruolo in un dato periodo. 
+
+Essendo il nostro un gruppo composto da 7 membri, per ogni macro-periodo il ruolo più oneroso verrà svolto contemporaneamente da due persone. Nello specifico, seguendo l'ordine dei periodi, i ruoli raddoppiati saranno:
+\begin{itemize}
+    \item Settimane 1-4: 2 Analisti.
+    \item Settimane 5-8: 2 Analisti.
+    \item Settimane 9-12: 2 Progettisti o Programmatori.
+    \item Settimane 13-16: 2 Programmatori o Verificatori.
+    \item Settimane 17-20: 2 Programmatori o Verificatori.
+\end{itemize}
+
+\subsection{Distribuzione oraria}
+Di seguito sono riportate le tabelle create per i cinque macro-periodi.
+
+\begin{table}[htbp]
+    \centering
+    \caption{Settimane [1, 4]}
+    \vspace{0.2cm}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|X|c|r|}
+        \hline
+        \rowcolor{gray!10} \textbf{Ruolo} & \textbf{Ore} & \textbf{Costo parziale} \\ \hline
+        Responsabile & 24 & € 720,00 \\ \hline
+        Amministratore & 20 & € 400,00 \\ \hline
+        Analista & 40 & € 1.000,00 \\ \hline
+        Progettista & 12 & € 300,00 \\ \hline
+        Programmatore & 8 & € 120,00 \\ \hline
+        Verificatore & 20 & € 300,00 \\ \hline
+        \rowcolor{gray!20} \textbf{Totale} & \textbf{124} & \textbf{€ 2.840,00} \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Settimane [5, 8]}
+    \vspace{0.2cm}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|X|c|r|}
+        \hline
+        \rowcolor{gray!10} \textbf{Ruolo} & \textbf{Ore} & \textbf{Costo parziale} \\ \hline
+        Responsabile & 16 & € 480,00 \\ \hline
+        Amministratore & 16 & € 320,00 \\ \hline
+        Analista & 28 & € 700,00 \\ \hline
+        Progettista & 16 & € 400,00 \\ \hline
+        Programmatore & 20 & € 300,00 \\ \hline
+        Verificatore & 24 & € 360,00 \\ \hline
+        \rowcolor{gray!20} \textbf{Totale} & \textbf{120} & \textbf{€ 2.560,00} \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Settimane [9, 12]}
+    \vspace{0.2cm}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|X|c|r|}
+        \hline
+        \rowcolor{gray!10} \textbf{Ruolo} & \textbf{Ore} & \textbf{Costo parziale} \\ \hline
+        Responsabile & 16 & € 480,00 \\ \hline
+        Amministratore & 12 & € 240,00 \\ \hline
+        Analista & 16 & € 400,00 \\ \hline
+        Progettista & 28 & € 700,00 \\ \hline
+        Programmatore & 32 & € 480,00 \\ \hline
+        Verificatore & 28 & € 420,00 \\ \hline
+        \rowcolor{gray!20} \textbf{Totale} & \textbf{132} & \textbf{€ 2.720,00} \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Settimane [13, 16]}
+    \vspace{0.2cm}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|X|c|r|}
+        \hline
+        \rowcolor{gray!10} \textbf{Ruolo} & \textbf{Ore} & \textbf{Costo parziale} \\ \hline
+        Responsabile & 12 & € 360,00 \\ \hline
+        Amministratore & 8 & € 160,00 \\ \hline
+        Analista & 8 & € 200,00 \\ \hline
+        Progettista & 28 & € 700,00 \\ \hline
+        Programmatore & 36 & € 540,00 \\ \hline
+        Verificatore & 36 & € 540,00 \\ \hline
+        \rowcolor{gray!20} \textbf{Totale} & \textbf{128} & \textbf{€ 2.500,00} \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Settimane [17, 20]}
+    \vspace{0.2cm}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|X|c|r|}
+        \hline
+        \rowcolor{gray!10} \textbf{Ruolo} & \textbf{Ore} & \textbf{Costo parziale} \\ \hline
+        Responsabile & 16 & € 480,00 \\ \hline
+        Amministratore & 8 & € 160,00 \\ \hline
+        Analista & 4 & € 100,00 \\ \hline
+        Progettista & 16 & € 400,00 \\ \hline
+        Programmatore & 32 & € 480,00 \\ \hline
+        Verificatore & 40 & € 600,00 \\ \hline
+        \rowcolor{gray!20} \textbf{Totale} & \textbf{116} & \textbf{€ 2.220,00} \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\newpage
+
+\section{Scadenza prevista}
+La data per la consegna del prodotto finale è fissata entro e non oltre il \textbf{...}. 
+
+\subsection{Riepilogo dei costi}
+Di seguito si riporta la tabella riassuntiva con i valori complessivi e il preventivo totale del progetto.
+
+\vspace{0.2cm}
+
+\begin{table}[htbp]
+    \centering
+    \caption{Riepilogo finale del progetto}
+    \vspace{0.2cm}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|X|r|}
+        \hline
+        \rowcolor{gray!20} \textbf{Voce} & \textbf{Valore} \\ \hline
+        \textbf{Preventivo finale} & \textbf{€ 12.840,00} \\ \hline
+        \textbf{Ore totali rendicontate} & \textbf{620} \\ \hline
+        \textbf{Ore individuali medie} & \textbf{$\sim$ 88} \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\end{document}
