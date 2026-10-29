@@ -99,6 +99,8 @@
         \multicolumn{1}{c|}{\textbf{Descrizione}} & 
         \multicolumn{1}{c|}{\textbf{Verificatore}} \\
         \hline
+        0.1.3 & 2026/10/29 & Simone Giuliano & Valutazione dei capitolati C2 e C4 & - \\
+        \hline
         0.1.2 & - & Daniele Nuzzaci & Valutazione dei capitolati C5 e C6 & - \\
         \hline
         0.1.1 & 2026/10/26 & Sara Ballardin & Valutazione del capitolato C0 & - \\
@@ -214,17 +216,32 @@ Compresa la semantica della richiesta, i dati vengono convertiti in formati stru
 \subsubsection{Motivazioni dello scarto}
 Il capitolato propone un uso interessante dell'intelligenza artificiale e si fa apprezzare per la chiarezza del modello architetturale e delle tecnologie consigliate. Tuttavia, è stato scartato perché risulta interamente focalizzato sull'automazione del lavoro d'ufficio e sull'elaborazione di documenti commerciali, uno scenario che non rientra tra i principali interessi del gruppo.
 
-\subsection{C2 - Concierge}
+\subsection{C2 - NEXUM Concierge (Eggon)}
+
 \subsubsection{Obiettivo}
+Il progetto proposto da Eggon ha lo scopo di introdurre un assistente conversazionale, denominato Concierge, all'interno di NEXUM. Questa piattaforma è dedicata alla comunicazione aziendale e alla gestione dei servizi HR e mira a semplificare l'accesso alle informazioni e le attività più ricorrenti della quotidianità aziendale attraverso il solo utilizzo del linguaggio naturale. 
+La proponente, per rendere realizzabile il progetto, circoscrive l'MVP (Minimum Viable Product) alla sola gestione di ferie e permessi.
+Il sistema prevede la creazione di una chat testuale in grado di comprendere i messaggi e conservare le informazioni ricevute in precedenza, deducendo dal contesto i dati mancanti o chiedendo chiarimenti in caso di richieste ambigue. 
+Il Concierge dovrà integrare diverse capacità: la consultazione della conoscenza aziendale (come i regolamenti interni), la lettura dei dati personali dell'utente (come le ferie richieste o residue) e la conoscenza del prodotto, garantita dall'integrazione dei manuali d'uso forniti da Eggon.
+Infine, il Concierge dovrà essere in grado di agire operativamente, guidando l'utente alla compilazione del piano di ferie e assistendolo fornendogli un riepilogo sui dati inseriti e richiedendo conferma esplicita. A livello architetturale, questo sarà eseguito con Gate applicativi che garantiscono il rispetto delle autorizzazioni di accesso e la tracciabilità delle operazioni.
+
 \subsubsection{Motivazioni dello scarto}
+Nonostante il capitolato affronti un problema aziendale concreto, la proposta è stata scartata poiché il gruppo ha preferito orientarsi verso altre tematiche, con l'obiettivo di misurarsi con domini applicativi differenti e maggiormente allineati agli interessi del gruppo.
 
 \subsection{C3 - Fossdot}
 \subsubsection{Obiettivo}
 \subsubsection{Motivazioni dello scarto}
 
-\subsection{C4 - Gestione veicoli e servizi post-vendita}
+\subsection{C4 - Piattaforma per la gestione dei veicoli e dei servizi post-vendita (M31)}
+
 \subsubsection{Obiettivo}
+Il progetto proposto da M31 ha come obiettivo lo sviluppo di una piattaforma software utile alla gestione dell'intero ciclo di vita dei veicoli e dei servizi post-vendita. Lo scopo finale risiede nella centralizzazione delle informazioni, mettendo in comunicazione la casa automobilistica, le concessionarie e i proprietari finali dei mezzi.
+L'architettura logica è suddivisa in tre livelli, ciascuno con responsabilità e accessi indipendenti. Sarà possibile la comunicazione tra i servizi sia in modo sincrono, con l'utilizzo di API, che asincrono, tramite lo scambio di eventi.
+La casa automobilistica gestisce il catalogo dei modelli e organizza le campagne di richiamo; avrà inoltre la possibilità di registrare i singoli veicoli (tramite identificativo univoco) e associarli alle concessionarie. Le concessionarie si occupano della vendita, dell'associazione dei veicoli ai clienti e delle richieste di manutenzione. Infine, i proprietari hanno accesso a un'area personale da cui possono consultare le statistiche del mezzo (come chilometraggio e stato della batteria, inserite manualmente o tramite simulatore) e prenotare appuntamenti.
+A supporto di queste funzionalità, è richiesta un'architettura che preveda l'impiego di Node.js e Go per i servizi applicativi, l'utilizzo di database relazionali e non relazionali e la creazione di interfacce web in Angular. Tutto ciò dovrà essere racchiuso all'interno di un'infrastruttura gestita tramite Kubernetes.
+
 \subsubsection{Motivazioni dello scarto}
+Nonostante il capitolato presenti un'architettura stimolante, la proposta è stata scartata poiché il dominio applicativo legato al settore automobilistico non ha suscitato un forte interesse all'interno del gruppo. Il team ha infatti preferito orientarsi verso altre tematiche e valutare capitolati ritenuti più affini ai gusti personali.
 
 \subsection{C6 - Sistema AI di caching semantico e dashboard FinOps (Var Group)}
 \subsubsection{Obiettivo}
