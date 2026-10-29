@@ -72,7 +72,7 @@ Ogni Pull Request deve:
 - Superare i controlli automatici richiesti.
 - Non presentare conflitti irrisolti con il branch di destinazione.
 
-La strategia di merge adottata è **Standard merge**: tutti i commit della Pull Request vengono replicati sul branch `main` e si effettua un ulteriore commit rappresentante il merge. Questa modalità è particolarmente adatta per preservare lo storico dei commit e la loro integrazione in `main` una volta eliminati i branch di lavoro.
+La strategia di merge adottata è il **merge commit** (opzione *Create a merge commit* di GitHub): tutti i commit della Pull Request vengono replicati su `main` e viene creato un ulteriore commit di merge. Questa modalità preserva lo storico dei commit del branch di lavoro.
 
 ## 7. Eccezioni
 

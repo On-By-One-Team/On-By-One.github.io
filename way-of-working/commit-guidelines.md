@@ -74,7 +74,7 @@ Prima di aprire una Pull Request, l'autore deve verificare che i commit siano co
 
 Quando necessario, i commit possono essere riorganizzati prima dell'integrazione, nel rispetto del flusso di revisione definito nella [policy di code review](code-review-policy.md).
 
-L'integrazione nel branch `main` avviene secondo la strategia **Standard merge**, come descritto nella [strategia di branching](branching-strategy.md).
+L'integrazione nel branch `main` avviene secondo la [strategia di merge](branching-strategy.md) definita per il repository.
 
 ## 8. Revisione del documento
 

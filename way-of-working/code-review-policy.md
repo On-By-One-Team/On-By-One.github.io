@@ -89,7 +89,7 @@ Una Pull Request può essere integrata nel branch `main` quando sono soddisfatte
 - Tutti i commenti bloccanti sono stati risolti.
 - Le modifiche rispettano le convenzioni e le regole organizzative del repository.
 
-L'integrazione deve avvenire secondo la strategia **Standard merge**, come definito nella [strategia di *branching*](branching-strategy.md).
+L’integrazione deve avvenire secondo la [strategia di merge](branching-strategy.md) definita per il repository.
 
 L'approvazione della Pull Request non sostituisce la responsabilità dell'autore di verificare la correttezza delle modifiche.
 
