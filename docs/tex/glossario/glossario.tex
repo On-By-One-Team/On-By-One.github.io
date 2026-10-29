@@ -1,0 +1,476 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PACCHETTI ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
+\usepackage{graphicx}               % Per inserire il logo
+\usepackage{tabularx}               % Per tabelle larghe quanto la pagina
+\usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
+\usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
+\usepackage{lmodern}      % Rende i font scalabili all'infinito
+\usepackage{anyfontsize}  % Permette di usare dimensioni personalizzate
+
+\begin{document}
+
+% ==============================================================================
+% FRONTESPIZIO
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+
+    \includegraphics[width=0.5\textwidth]{img/logo.png}\par
+    \vspace{0.2cm}
+
+    % NOME DEL GRUPPO
+    {\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par} 
+    \vspace{1.5cm}
+
+    % TITOLO DEL DOCUMENTO
+    {\huge \bfseries Glossario \par}
+    \vspace{2cm}
+
+    % MEMBRI DEL GRUPPO
+    {\large
+    \textbf{On-By-One}:\par
+    \vspace{0.3cm}
+    Sara Ballardin, Shuhui Chen, Simone Giuliano, Alvise Greggio,
+    
+    Daniele Nuzzaci, Federico Temporin, Tommaso Zorzetto 
+    
+    (2101048, 2138001, 2145591, 2141004, 2139039, 2146764, 2148629)
+    \par}
+
+    \vfill
+
+    % TABELLA INFORMAZIONI DOCUMENTO 
+    \begin{table}[h]
+        \centering
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabularx}{\textwidth}{|c|c|c|X|}
+            \hline
+            \rowcolor{gray!20} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
+            \hline
+            \rowcolor{gray!20} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+            \hline
+            1.0.0 & 2026/10/29 & Approvato & On-By-One, prof. Tullio Vardanega, prof. Riccardo Cardin \\
+            \hline
+        \end{tabularx}
+    \end{table}
+
+    \vspace{1cm}
+    
+    % CONTATTI
+    {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
+    
+\end{titlepage}
+
+\newpage
+\section*{Registro delle modifiche}
+\begin{center}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
+        \hline
+        \rowcolor{gray!20} 
+        \multicolumn{1}{|c|}{\textbf{Versione}} & 
+        \multicolumn{1}{c|}{\textbf{Data}} & 
+        \multicolumn{1}{c|}{\textbf{Autore}} & 
+        \multicolumn{1}{c|}{\textbf{Descrizione}} & 
+        \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        1.0.0 & 2026/10/29 & Zorzetto Tommaso & Stesura glossario e inserimento dei primi termini tratti dal WoW & Federico Temporin \\
+        \hline
+        
+    \end{tabularx}
+\end{center}
+
+
+\newpage
+
+% ==============================================================================
+% INDICE
+% ==============================================================================
+\tableofcontents
+\newpage
+
+% ==============================================================================
+% 1. INTRODUZIONE
+% ==============================================================================
+\section{Introduzione}
+
+\subsection{Obiettivo del documento}
+Questo documento è stato redatto con l'obiettivo di raccogliere, definire e spiegare in modo chiaro e univoco tutti i termini tecnici, gli acronimi, i ruoli e i concetti (inclusi quelli di base legati al controllo di versione e al flusso di lavoro) utilizzati all'interno della documentazione e del \textit{repository} del gruppo \textbf{On-By-One}. Lo scopo principale è prevenire ambiguità interpretative e costruire una base di conoscenza condivisa e omogenea tra tutti i membri del \textit{team} e gli \textit{stakeholder}.
+
+\subsection{Struttura del documento}
+Il documento è organizzato in sezioni ordinate alfabeticamente. All'interno di ciascuna lettera sono elencati i termini specifici o potenzialmente ambigui incontrati nei documenti del progetto. In conformità con le convenzioni di formattazione adottate dal gruppo:
+\begin{itemize}
+    \item Il \textit{corsivo} viene impiegato alla prima occorrenza di termini stranieri poco comuni o specialistici e ad ogni occorrenza di espressioni italiane usate con un significato tecnico specifico all'interno del progetto.
+    \item Il \texttt{codice inline} viene utilizzato per indicare nomi di file e \textit{directory}, \textit{branch}, prefissi, comandi, identificatori e brevi frammenti di codice.
+\end{itemize}
+
+\newpage
+
+% ==============================================================================
+% CORPO DEL GLOSSARIO (A - W)
+% ==============================================================================
+
+\phantomsection
+\section*{A}
+\addcontentsline{toc}{section}{A}
+
+\subsection*{Admin (prefisso)}
+Prefisso utilizzato nelle convenzioni di \textit{branching} (\texttt{admin/}) e nei messaggi di \textit{commit} (\texttt{admin:}) del \textit{repository} per identificare attività di natura organizzativa e amministrativa. Rientrano in questa categoria le modifiche ai documenti relativi al \textit{Way of Working}, la riorganizzazione delle \textit{directory} e la configurazione o manutenzione dei \textit{workflow} automatici.
+
+\subsection*{Approvazione}
+Atto formale mediante il quale almeno un membro del \textit{team} diverso dall'autore (il \textit{revisore}) attesta, al termine della \textit{code review}, che le modifiche proposte in una \textit{Pull Request} soddisfano i requisiti dell'attività e rispettano le convenzioni del gruppo. L'approvazione è condizione necessaria per procedere al \textit{merge} nel \textit{branch} \texttt{main} e per aggiornare lo stato di un documento formale da \texttt{Bozza} ad \texttt{Approvato}.
+
+\subsection*{Assegnatario}
+Membro del gruppo a cui viene affidata la responsabilità operativa di portare a termine una specifica attività (\textit{task}) o di risolvere una \textit{issue} entro una scadenza concordata.
+
+\subsection*{Attività (Task)}
+Unità elementare di lavoro pianificata dal gruppo per raggiungere un determinato obiettivo progettuale, documentale o tecnico. Ogni attività che comporta modifiche al \textit{repository} viene tracciata tramite una \textit{issue}, sviluppata su un \textit{branch dedicato} e valutata secondo i criteri della \textit{Definition of Done}.
+
+\subsection*{Autore}
+Membro del \textit{team} che redige o modifica un documento, scrive codice o apre una \textit{Pull Request}. L'autore è responsabile della qualità e della correttezza delle modifiche proposte, del rispetto della \textit{Definition of Done}, della compilazione dei campi di propria competenza nel \textit{Registro delle modifiche} e della risoluzione delle osservazioni ricevute durante la \textit{code review}.
+
+\newpage
+
+\phantomsection
+\section*{B}
+\addcontentsline{toc}{section}{B}
+
+\subsection*{Bozza}
+Valore del campo \textit{Stato} nella tabella \textit{Informazioni documento} che identifica un documento non ancora approvato o sottoposto a modifiche rispetto all'ultima versione approvata. Lo stato rimane impostato su \texttt{Bozza} per tutta la durata della stesura e della fase di revisione, fino all'approvazione finale da parte del \textit{revisore}.
+
+\subsection*{Branch}
+Letteralmente ``ramo'', rappresenta una linea di sviluppo indipendente e parallela all'interno di un sistema di controllo di versione come \textit{Git}. L'utilizzo dei \textit{branch} permette ai membri del \textit{team} di lavorare contemporaneamente a nuove funzionalità, documenti o correzioni in un ambiente isolato, senza alterare la stabilità del \textit{branch principale} (\texttt{main}) fino al momento dell'integrazione finale (\textit{merge}).
+
+\subsection*{Branch dedicato (o di lavoro)}
+\textit{Branch} temporaneo creato a partire dal \textit{branch} \texttt{main} aggiornato per sviluppare una singola attività o risolvere una specifica \textit{issue}. Secondo le convenzioni del gruppo, il suo nome deve essere scritto in minuscolo separando le parole con trattini (\textit{Kebab Case}) secondo il formato \texttt{<tipo>/<numero-issue>-<descrizione>} (ad esempio \texttt{docs/24-aggiornamento-readme}), e viene eliminato una volta completato il \textit{merge}.
+
+\subsection*{Branch di destinazione}
+Il \textit{branch} (nella maggior parte dei casi \texttt{main}) verso il quale viene aperta una \textit{Pull Request} e all'interno del quale confluiranno le modifiche provenienti dal \textit{branch di lavoro} al termine della revisione.
+
+\subsection*{Branch principale (\texttt{main})}
+Il ramo ufficiale, stabile e di riferimento del \textit{repository}. Contiene esclusivamente materiale verificato e approvato; su di esso sono vietati i \textit{push} diretti e ogni modifica deve essere integrata tramite una \textit{Pull Request} che abbia superato la \textit{code review} e i controlli automatici.
+
+\subsection*{Branching (Strategia di)}
+L'insieme delle regole, delle convenzioni di denominazione e delle procedure operative adottate dal \textit{team} per creare, gestire, aggiornare e unire i \textit{branch} nel \textit{repository}, con l'obiettivo di mantenere una cronologia \textit{Git} ordinata e proteggere l'integrità del ramo principale.
+
+\newpage
+
+\phantomsection
+\section*{C}
+\addcontentsline{toc}{section}{C}
+
+\subsection*{Candidatura}
+Fase iniziale del progetto didattico durante la quale il gruppo definisce la propria struttura organizzativa e il proprio \textit{Way of Working}, analizza i capitolati proposti e redige i documenti e i verbali necessari per candidarsi alla realizzazione di uno specifico capitolato.
+
+\subsection*{Closes (Keyword)}
+Parola chiave (\textit{keyword}) riconosciuta automaticamente da \textit{GitHub} che, se inserita nella descrizione di una \textit{Pull Request} o nel messaggio di un \textit{commit} seguita dal riferimento numerico di una \textit{issue} (ad esempio \texttt{Closes \#46}), provoca la chiusura automatica dell'\textit{issue} stessa non appena la \textit{Pull Request} viene integrata nel \textit{branch} principale.
+
+\subsection*{Code review (Revisione del codice)}
+Processo di verifica sistematica applicato a ogni \textit{Pull Request} prima della sua integrazione nel \textit{branch} \texttt{main}. Viene svolto da almeno un membro del \textit{team} diverso dall'autore (\textit{revisore}) e mira ad accertare la correttezza, la completezza, la chiarezza espositiva, la coerenza terminologica e il rispetto delle convenzioni di formattazione e dei \textit{template} di progetto.
+
+\subsection*{Codice inline}
+Stile di formattazione tipografica (ottenuto racchiudendo il testo tra accenti gravi in \textit{Markdown} o tramite carattere monospazio in \textit{LaTeX}) utilizzato all'interno di un testo discorsivo per distinguere visivamente nomi di file e \textit{directory}, nomi di \textit{branch}, comandi, identificatori e brevi frammenti di codice.
+
+\subsection*{Commento bloccante}
+Osservazione formulata dal \textit{revisore} durante una \textit{code review} per segnalare problemi critici, quali errori sostanziali nei contenuti o nel codice, requisiti dell'\textit{issue} non soddisfatti o violazioni delle norme del \textit{repository}. Tutti i commenti bloccanti devono essere obbligatoriamente risolti dall'autore e verificati dal \textit{revisore} prima del \textit{merge}.
+
+\subsection*{Commento non bloccante}
+Osservazione formulata dal \textit{revisore} durante una \textit{code review} che propone miglioramenti facoltativi, ottimizzazioni o suggerimenti stilistici che non pregiudicano la correttezza del lavoro. L'autore e il \textit{revisore} possono concordare se applicare subito la modifica nella \textit{Pull Request} corrente oppure rinviarla a un'attività futura senza bloccare il \textit{merge}.
+
+\subsection*{Commit}
+Operazione fondamentale di \textit{Git} che registra nella cronologia del \textit{branch} corrente un'istantanea (\textit{snapshot}) di un insieme logicamente coerente e circoscritto di modifiche apportate ai file del \textit{repository}. Ogni \textit{commit} è identificato da un codice univoco ed è accompagnato da un messaggio descrittivo strutturato secondo la convenzione \texttt{<tipo>: <descrizione>} (ad esempio \texttt{docs: aggiornate le convenzioni di formattazione (\#24)}).
+
+\subsection*{Compilazione}
+Processo automatico mediante il quale un programma trasforma file sorgente scritti in un linguaggio formale o di marcatura in un documento finale pronto per la distribuzione o l'esecuzione. Nel contesto del progetto, si riferisce in particolare alla generazione dei documenti PDF a partire dai file sorgente \textit{LaTeX} (\texttt{.tex}).
+
+\subsection*{Conflitto (Merge conflict)}
+Situazione che si verifica in \textit{Git} quando si tenta di unire due \textit{branch} che contengono modifiche divergenti e incompatibili sulle stesse righe di un medesimo file. Prima di poter completare il \textit{merge} di una \textit{Pull Request}, l'autore ha la responsabilità di aggiornare il proprio \textit{branch} rispetto a \texttt{main} e risolvere manualmente ogni conflitto.
+
+\subsection*{Controlli automatici (Verifiche automatiche)}
+Procedure di verifica eseguite in modo automatico tramite i \textit{workflow} di \textit{GitHub Actions} quando vengono proposte modifiche nel \textit{repository}. Servono ad accertare che i documenti \textit{LaTeX} compilino senza errori e che i file rispettino i requisiti tecnici stabiliti prima di consentire l'integrazione nel \textit{branch} \texttt{main}.
+
+\subsection*{Controllo di versione}
+Sistema che registra nel tempo tutte le modifiche apportate a un insieme di file, permettendo di consultare lo storico completo degli interventi, confrontare versioni differenti, lavorare in parallelo su più \textit{branch} e ripristinare stati precedenti in caso di errore.
+
+\subsection*{Credenziali}
+Informazioni riservate di autenticazione (quali password, chiavi di accesso o \textit{token}) utilizzate per verificare l'identità di un utente o di un servizio. Durante la \textit{code review} viene sempre verificata l'assenza di credenziali inserite accidentalmente nei file del \textit{repository}.
+
+\subsection*{CSS (Cascading Style Sheets)}
+Linguaggio di stile utilizzato insieme a \textit{HTML} per definire l'aspetto grafico e l'impaginazione del \textit{sito web} del gruppo (colori, caratteri tipografici, margini e disposizione degli elementi), garantendo uniformità visiva tra le diverse pagine attraverso file di stile condivisi.
+
+\newpage
+
+\phantomsection
+\section*{D}
+\addcontentsline{toc}{section}{D}
+
+\subsection*{Definition of Done (DoD)}
+Documento e insieme di criteri minimi di qualità, correttezza, formattazione, verifica tecnica e tracciabilità che qualsiasi attività deve soddisfare per poter essere considerata completata dal \textit{team} e pronta per essere integrata nel \textit{branch} principale del \textit{repository}.
+
+\subsection*{Destinatari}
+Campo della tabella \textit{Informazioni documento} presente nel frontespizio dei documenti formali, compilato dall'autore per indicare i soggetti a cui il documento è destinato (il gruppo \textbf{On-By-One}, i docenti del corso prof.\ Tullio Vardanega e prof.\ Riccardo Cardin ed eventualmente l'azienda \textit{proponente}).
+
+\subsection*{Directory (Cartella)}
+Contenitore logico del \textit{file system} utilizzato per organizzare in modo gerarchico e strutturato i file all'interno del \textit{repository} (ad esempio separando i \textit{template} \textit{LaTeX}, la documentazione e i \textit{workflow} di configurazione).
+
+\subsection*{Discord}
+Piattaforma di comunicazione vocale (\textit{VoIP}), video e testuale utilizzata dal gruppo \textbf{On-By-One} come uno dei canali principali per tenere le riunioni a distanza e coordinare il lavoro tra i membri.
+
+\subsection*{Docs (prefisso)}
+Prefisso utilizzato nelle convenzioni di \textit{branching} (\texttt{docs/}) e nei messaggi di \textit{commit} (\texttt{docs:}) per identificare tutte le attività che riguardano la stesura, la modifica, la correzione o la rimozione di documentazione.
+
+\newpage
+
+\phantomsection
+\section*{E}
+\addcontentsline{toc}{section}{E}
+
+\subsection*{Estensione (di un file)}
+Sequenza di caratteri posta al termine del nome di un file dopo un punto (ad esempio \texttt{.md}, \texttt{.tex}, \texttt{.pdf}, \texttt{.html}, \texttt{.css}), che identifica il formato del file stesso. Secondo le convenzioni di denominazione del gruppo, le estensioni devono essere sempre scritte in lettere minuscole.
+
+\phantomsection
+\section*{F}
+\addcontentsline{toc}{section}{F}
+
+\subsection*{File}
+Unità base di memorizzazione delle informazioni digitali all'interno del \textit{repository}, contenente testo, documentazione, codice sorgente o impostazioni tecniche.
+
+\subsection*{File di configurazione}
+File tecnico contenente parametri, direttive e impostazioni che regolano il funzionamento degli strumenti di sviluppo, dell'ambiente del \textit{repository} o dei \textit{workflow} automatici di \textit{GitHub Actions}.
+
+\subsection*{Fix}
+Termine inglese di uso comune in ambito informatico che indica la correzione di un errore, di un difetto (\textit{bug}) o di un'imprecisione. Nelle convenzioni per i \textit{commit} del gruppo, l'utilizzo di messaggi generici composti dalla sola parola \texttt{fix} è vietato, poiché ogni messaggio deve descrivere in modo specifico l'oggetto della correzione.
+
+\subsection*{Formattazione}
+Insieme delle regole tipografiche e stilistiche adottate dal gruppo per strutturare e presentare il testo nei diversi formati (\textit{Markdown}, \textit{LaTeX}, \textit{HTML}/\textit{CSS}), regolando l'uso di grassetto, corsivo, \textit{codice inline}, titoli e tabelle per garantire leggibilità e coerenza tra tutti gli elaborati.
+
+\newpage
+
+\phantomsection
+\section*{G}
+\addcontentsline{toc}{section}{G}
+
+\subsection*{Git}
+Software libero di controllo di versione distribuito (\textit{Distributed Version Control System}) utilizzato dal gruppo per tracciare la storia delle modifiche ai file del progetto, gestire lo sviluppo parallelo tramite \textit{branch} e coordinare l'integrazione del lavoro di tutti i membri.
+
+\subsection*{GitHub}
+Piattaforma web di \textit{hosting} per progetti gestiti con \textit{Git}. Ospita il \textit{repository} remoto del gruppo \textbf{On-By-One} e fornisce gli strumenti collaborativi impiegati nel flusso di lavoro quotidiano, tra cui la gestione delle \textit{issue}, le \textit{Pull Request}, le \textit{code review} e i \textit{workflow} di \textit{GitHub Actions}.
+
+\subsection*{GitHub Actions}
+Piattaforma di automazione integrata in \textit{GitHub} che consente di eseguire \textit{workflow} automatici al verificarsi di specifici eventi nel \textit{repository} (come un \textit{push} o l'apertura di una \textit{Pull Request}), utilizzata dal gruppo per eseguire le verifiche tecniche obbligatorie, come il controllo di compilazione dei documenti \textit{LaTeX}.
+
+\phantomsection
+\section*{H}
+\addcontentsline{toc}{section}{H}
+
+\subsection*{HTML (HyperText Markup Language)}
+Linguaggio di marcatura standard utilizzato per definire la struttura e i contenuti delle pagine che compongono il \textit{sito web} del gruppo.
+
+\newpage
+
+\phantomsection
+\section*{I}
+\addcontentsline{toc}{section}{I}
+
+\subsection*{Identificatore}
+Codice o nome simbolico univoco utilizzato per fare riferimento in modo non ambiguo a un elemento del progetto, come il numero di una \textit{issue} (es.\ \texttt{\#24}), il codice di una decisione verbalizzata (es.\ \texttt{VI-AAAA-MM-GG.1}) o un elemento tecnico nel codice.
+
+\subsection*{Informazioni documento}
+Tabella posizionata nel frontespizio dei documenti soggetti ad approvazione che riassume i metadati relativi all'ultima versione approvata o in lavorazione: \textit{Versione}, \textit{Data}, \textit{Stato} (\texttt{Bozza} o \texttt{Approvato}) e \textit{Destinatari}.
+
+\subsection*{Issue}
+Elemento di tracciamento fornito da \textit{GitHub} e identificato da un numero progressivo (es.\ \texttt{\#12}), utilizzato dal gruppo per descrivere, pianificare e assegnare un'attività da svolgere, una modifica documentale o un problema da risolvere. Costituisce il punto di partenza del flusso di lavoro standard e viene referenziata nel nome del \textit{branch}, nei messaggi di \textit{commit} e nella \textit{Pull Request}.
+
+\phantomsection
+\section*{K}
+\addcontentsline{toc}{section}{K}
+
+\subsection*{Kebab Case}
+Convenzione di scrittura in cui i nomi sono composti esclusivamente da lettere minuscole e le singole parole sono separate dal carattere trattino \texttt{-} (ad esempio \texttt{code-review-policy.md} o \texttt{2026-10-28-vi}). È lo standard adottato dal gruppo per nominare file, verbali e \textit{branch}.
+
+\subsection*{Keyword}
+Parola chiave riservata a cui un sistema informatico attribuisce una funzione specifica, come la parola \texttt{Closes} riconosciuta da \textit{GitHub} nelle descrizioni delle \textit{Pull Request} per automatizzare la chiusura delle \textit{issue} associate.
+
+\newpage
+
+\phantomsection
+\section*{L}
+\addcontentsline{toc}{section}{L}
+
+\subsection*{LaTeX}
+Sistema di composizione tipografica basato su linguaggio di marcatura (file con estensione \texttt{.tex}), utilizzato dal gruppo tramite appositi \textit{template} condivisi per redigere tutta la documentazione ufficiale e i verbali destinati alla generazione in formato PDF.
+
+\subsection*{Link (Collegamento ipertestuale)}
+Riferimento inserito all'interno di un documento (\textit{Markdown}, \textit{LaTeX} o \textit{HTML}) che consente di navigare direttamente verso un altro documento del \textit{repository}, una sezione interna o una risorsa esterna. La validità dei collegamenti è uno dei criteri verificati prima del completamento di un'attività.
+
+\phantomsection
+\section*{M}
+\addcontentsline{toc}{section}{M}
+
+\subsection*{Main}
+Nome del \textit{branch principale} del \textit{repository} \textit{Git} del gruppo. Rappresenta la linea temporale ufficiale che conserva unicamente le versioni stabili, revisionate e approvate dei documenti e del codice.
+
+\subsection*{Manutenibilità}
+Grado di facilità con cui un documento, un sito web o un file di configurazione può essere compreso, modificato, corretto o aggiornato nel tempo da qualsiasi membro del \textit{team}, garantito dal rispetto delle convenzioni di \textit{naming}, \textit{formattazione} e \textit{code review}.
+
+\subsection*{Markdown}
+Linguaggio di marcatura leggero (file con estensione \texttt{.md}) progettato per essere facilmente leggibile sia in formato sorgente sia una volta convertito in testo formattato. È utilizzato dal gruppo per la documentazione interna del \textit{repository}, per il file \texttt{README.md} e per le guide sul \textit{Way of Working}.
+
+\subsection*{Merge}
+Operazione di \textit{Git} che conclude il ciclo di vita di una \textit{Pull Request}, unendo le modifiche sviluppate su un \textit{branch dedicato} all'interno del \textit{branch di destinazione} (\texttt{main}), una volta ottenuta l'approvazione del \textit{revisore} e superati i controlli automatici.
+
+\newpage
+
+\phantomsection
+\section*{N}
+\addcontentsline{toc}{section}{N}
+
+\subsection*{Naming (Convenzioni di denominazione)}
+Insieme delle regole definite dal gruppo per assegnare nomi coerenti, leggibili e standardizzati ai file, alle date (\texttt{AAAA-MM-GG}), ai verbali interni ed esterni e ai \textit{branch} all'interno del \textit{repository}.
+
+\phantomsection
+\section*{O}
+\addcontentsline{toc}{section}{O}
+
+\subsection*{On-By-One}
+Nome ufficiale del gruppo di lavoro impegnato nello svolgimento del progetto didattico per il corso di Ingegneria del Software presso l'Università degli Studi di Padova.
+
+\subsection*{Ordine del giorno}
+Elenco dei temi e dei punti programmati per essere discussi durante una riunione interna o esterna del gruppo, riportato nell'apposita sezione iniziale di ciascun \textit{verbale}.
+
+\phantomsection
+\section*{P}
+\addcontentsline{toc}{section}{P}
+
+\subsection*{PDF (Portable Document Format)}
+Formato di file standard utilizzato per distribuire in modo immutabile i documenti ufficiali e i verbali del gruppo, generato automaticamente tramite la compilazione dei file sorgente \textit{LaTeX}.
+
+\subsection*{Policy}
+Insieme di regole e direttive vincolanti adottate dal gruppo per disciplinare uno specifico processo di lavoro, come la \textit{Policy di code review} che stabilisce i criteri di verifica e approvazione delle modifiche.
+
+\subsection*{Proponente}
+Azienda o organizzazione esterna che presenta un capitolato d'appalto nell'ambito del corso di Ingegneria del Software e con cui il gruppo interagisce durante gli incontri documentati tramite \textit{verbali esterni}.
+
+\subsection*{Pull Request (PR)}
+Meccanismo offerto da \textit{GitHub} tramite il quale l'autore richiede formalmente di integrare le modifiche effettuate su un \textit{branch dedicato} all'interno del \textit{branch} \texttt{main}. La \textit{Pull Request} raccoglie la descrizione del lavoro svolto, il riferimento all'\textit{issue} associata, l'esito dei controlli automatici e tutti i commenti della \textit{code review} fino al \textit{merge}.
+
+\subsection*{Push}
+Operazione di \textit{Git} che invia e pubblica i \textit{commit} registrati sul computer locale di un membro del gruppo verso il \textit{repository} remoto ospitato su \textit{GitHub}. Secondo la strategia di \textit{branching} del gruppo, i \textit{push} sono consentiti solo sui \textit{branch di lavoro} e mai direttamente su \texttt{main}.
+
+\newpage
+
+\phantomsection
+\section*{R}
+\addcontentsline{toc}{section}{R}
+
+\subsection*{README (\texttt{README.md})}
+File scritto in formato \textit{Markdown} collocato nella radice del \textit{repository} (o di una specifica \textit{directory}) che fornisce una panoramica immediata dei contenuti e delle istruzioni principali. Costituisce un'eccezione esplicita alla regola generale che prevede l'uso di sole lettere minuscole nei nomi dei file.
+
+\subsection*{Registro delle modifiche}
+Tabella presente nei documenti formali del gruppo che conserva la storia cronologica di tutte le modifiche apportate al documento stesso. Per ogni intervento registra cinque campi: \textit{Versione}, \textit{Data}, \textit{Autore}, \textit{Descrizione} e \textit{Verificatore}.
+
+\subsection*{Repository}
+Archivio digitale centralizzato, gestito tramite il sistema di controllo di versione \textit{Git} e ospitato su \textit{GitHub}, in cui sono conservati tutti i file del progetto (documenti \textit{Markdown} e \textit{LaTeX}, verbali, sito web, \textit{template} e \textit{workflow}) unitamente all'intera cronologia delle modifiche.
+
+\subsection*{Requisito}
+Obiettivo, condizione o specifica che un documento, un artefatto tecnico o un'attività deve soddisfare per rispondere a quanto richiesto dall'\textit{issue} associata e dalla \textit{Definition of Done}.
+
+\subsection*{Responsabile}
+Ruolo progettuale ricoperto a rotazione da un membro del gruppo, incaricato di coordinare il \textit{team}, pianificare le attività, aprire le relative \textit{issue} su \textit{GitHub} e monitorare l'avanzamento complessivo del lavoro.
+
+\subsection*{Revisore}
+Membro del \textit{team}, obbligatoriamente diverso dall'autore, che prende in carico la \textit{code review} di una \textit{Pull Request}. Ha il compito di esaminare con attenzione i contenuti proposti, segnalare eventuali osservazioni bloccanti o non bloccanti, verificare il superamento dei controlli automatici e concedere l'approvazione finale.
+
+\newpage
+
+\phantomsection
+\section*{S}
+\addcontentsline{toc}{section}{S}
+
+\subsection*{Scadenza}
+Termine temporale entro il quale un'\textit{attività} (\textit{task}) assegnata a un membro del gruppo deve essere completata e sottoposta a revisione.
+
+\subsection*{Sito web}
+Portale web del gruppo \textbf{On-By-One}, sviluppato in \textit{HTML} e \textit{CSS} all'interno del \textit{repository}, destinato a raccogliere e rendere consultabili in modo ordinato i documenti e i verbali prodotti durante il progetto.
+
+\subsection*{Standard merge}
+Strategia di integrazione adottata dal gruppo per unire le \textit{Pull Request} nel \textit{branch} \texttt{main}. Prevede che tutti i singoli \textit{commit} creati sul \textit{branch di lavoro} vengano mantenuti integralmente nella cronologia e che venga generato un ulteriore \textit{commit} specifico di \textit{merge}, preservando così la tracciabilità storica completa anche dopo la rimozione del \textit{branch} dedicato.
+
+\subsection*{Stato (di un documento)}
+Campo della tabella \textit{Informazioni documento} che indica la fase corrente del ciclo di vita del documento: \texttt{Bozza} (impostato dall'autore durante la stesura e la revisione) oppure \texttt{Approvato} (impostato dal \textit{revisore} al superamento della \textit{code review}).
+
+\phantomsection
+\section*{T}
+\addcontentsline{toc}{section}{T}
+
+\subsection*{Task}
+Vedi \textit{Attività (Task)}.
+
+\subsection*{Team}
+L'insieme dei componenti del gruppo \textbf{On-By-One} che collaborano allo sviluppo del progetto seguendo le convenzioni e i processi condivisi nel \textit{Way of Working}.
+
+\subsection*{Template}
+Modello strutturato predefinito (in particolare i file \textit{LaTeX} presenti nella \textit{directory} \texttt{docs/tex/templates/} del \textit{repository}) che fornisce l'impaginazione, il frontespizio e gli stili standardizzati da utilizzare obbligatoriamente nella redazione dei documenti per garantire uniformità visiva e strutturale.
+
+\subsection*{To-do}
+Tabella riassuntiva posta al termine dei verbali di riunione che elenca i compiti operativi emersi durante l'incontro, specificando per ciascuno l'identificativo dell'\textit{issue} associata, la descrizione del \textit{task}, l'\textit{assegnatario} e la data di scadenza.
+
+\subsection*{Token}
+Stringa segreta di caratteri utilizzata come credenziale digitale per autenticare utenti, applicazioni o \textit{workflow} automatici verso servizi esterni come \textit{GitHub}, senza dover utilizzare la password personale. Non deve mai essere incluso all'interno dei file salvati nel \textit{repository}.
+
+\subsection*{Tracciabilità}
+Proprietà fondamentale del flusso di lavoro del gruppo che permette di risalire in modo chiaro e verificabile all'origine, all'autore, alla motivazione e alla revisione di ogni singola modifica, grazie al collegamento sistematico tra decisioni dei verbali, \textit{issue}, \textit{branch}, messaggi di \textit{commit}, \textit{Pull Request} e \textit{Registro delle modifiche}.
+
+\newpage
+
+\phantomsection
+\section*{V}
+\addcontentsline{toc}{section}{V}
+
+\subsection*{Verbale}
+Documento ufficiale che riassume lo svolgimento e gli esiti di una riunione del gruppo, registrando informazioni generali (data, ora di inizio e fine, modalità, partecipanti e ruoli), \textit{ordine del giorno}, sintesi delle discussioni, decisioni assunte con codice identificativo e tabella dei \textit{to-do}.
+
+\subsection*{Verbale esterno (\texttt{ve})}
+\textit{Verbale} redatto in seguito a una riunione svolta con la partecipazione di soggetti esterni al gruppo, come i referenti dell'azienda \textit{proponente}. Secondo le convenzioni di denominazione, il file deve seguire il formato \texttt{AAAA-MM-GG-ve} (ad esempio \texttt{2026-10-28-ve.tex}).
+
+\subsection*{Verbale interno (\texttt{vi})}
+\textit{Verbale} redatto in seguito a una riunione che coinvolge esclusivamente i membri del gruppo \textbf{On-By-One}. Secondo le convenzioni di denominazione, il file deve seguire il formato \texttt{AAAA-MM-GG-vi} (ad esempio \texttt{2026-10-28-vi.tex}) e le relative decisioni sono identificate dal codice \texttt{[VI-AAAA-MM-GG.n]}.
+
+\subsection*{Verifica}
+Insieme dei controlli manuali (\textit{code review}) e automatici (\textit{workflow}) eseguiti per accertare che un documento o una modifica tecnica rispetti i requisiti, non contenga errori di compilazione o di forma e soddisfi tutti i criteri della \textit{Definition of Done}.
+
+\subsection*{Verificatore}
+Ruolo riportato nella tabella \textit{Registro delle modifiche} dei documenti formali e nella tabella \textit{Informazioni documento}, ricoperto dal membro del gruppo (\textit{revisore}) che ha esaminato e validato le modifiche introdotte dall'autore e che compila il numero di versione e lo stato di approvazione del documento.
+
+\subsection*{Versionamento}
+Gestione strutturata dell'evoluzione nel tempo dei file e dei documenti del progetto, realizzata sia a livello tecnico tramite \textit{Git}, sia a livello documentale tramite il sistema di numerazione delle versioni nel \textit{Registro delle modifiche}.
+
+\subsection*{Versione}
+Identificativo numerico a tre cifre (\texttt{X.Y.Z}) che contraddistingue ogni stato evolutivo di un documento soggetto ad approvazione:
+\begin{itemize}
+    \item La prima modifica di un nuovo documento assume la versione iniziale \texttt{0.1.0}.
+    \item Ad ogni modifica successiva in stato di \texttt{Bozza} (o in caso di revisione non superata), viene incrementato di uno il contatore più a destra; se questo raggiunge \texttt{9}, l'incremento successivo lo azzera e incrementa di uno il contatore centrale.
+    \item Al superamento della revisione con approvazione del documento, il \textit{revisore} assegna la versione \texttt{1.0.0} (alla prima approvazione) oppure incrementa di uno il contatore più a sinistra azzerando gli altri due.
+\end{itemize}
+
+\newpage
+
+\phantomsection
+\section*{W}
+\addcontentsline{toc}{section}{W}
+
+\subsection*{Way of Working (WoW)}
+L'insieme organico delle convenzioni, delle regole operative, dei ruoli e delle procedure condivise dal gruppo \textbf{On-By-One} per organizzare e svolgere il lavoro in modo coerente, disciplinato e collaborativo (comprendente convenzioni di \textit{naming}, \textit{formattazione}, \textit{commit}, strategia di \textit{branching}, \textit{policy di code review} e \textit{Definition of Done}).
+
+\subsection*{Website (prefisso)}
+Prefisso utilizzato nelle convenzioni di \textit{branching} (\texttt{website/}) e nei messaggi di \textit{commit} (\texttt{website:}) per contrassegnare tutte le attività e le modifiche riguardanti i contenuti, la struttura \textit{HTML} o i fogli di stile \textit{CSS} del \textit{sito web} del gruppo.
+
+\subsection*{Workflow}
+Procedura automatizzata definita tramite file di configurazione nella \textit{directory} \texttt{.github/workflows/} ed eseguita da \textit{GitHub Actions} per compiere verifiche tecniche automatiche (come il controllo della corretta compilazione dei file \textit{LaTeX}) ad ogni proposta di modifica nel \textit{repository}.
+
+\end{document}
