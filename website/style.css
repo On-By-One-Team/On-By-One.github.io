@@ -184,7 +184,7 @@ summary:focus-visible {
 
 .btn-outline:hover {
     background-color: var(--sidebar-border);
-    border-color: var(--bh-surface);
+    border-color: var(--bg-surface);
 }
 
 /* ==========================================================================
