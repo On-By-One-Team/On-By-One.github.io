@@ -95,7 +95,7 @@ L'approvazione della Pull Request non sostituisce la responsabilità dell'autore
 
 ### 6.1 Approvazione dei documenti
 
-Per i documenti soggetti ad approvazione, sono previste due tabelle: **Informazioni documento** e **Registro delle modifiche**. La prima riporta le informazioni relative alla versione corrente approvata del documento, mentre la seconda tiene traccia delle modifiche apportate al documento.
+Per i documenti che richiedono approvazione formale e una cronologia delle versioni consultabile dal lettore del documento stesso, sono previste due tabelle: **Informazioni documento** e **Registro delle modifiche**. La prima riporta le informazioni relative alla versione corrente approvata del documento, mentre la seconda tiene traccia delle modifiche apportate al documento.
 
 #### Informazioni documento
 

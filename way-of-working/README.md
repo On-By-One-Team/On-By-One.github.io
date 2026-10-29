@@ -7,7 +7,7 @@ I documenti descrivono le modalità operative da seguire nello sviluppo del prog
 ## Documenti
 
 - [`branching-strategy.md`](branching-strategy.md): definisce la strategia di *branching* adottata per gestire lo sviluppo.
-- [`code-review.md`](code-review-policy.md): descrive le procedure di revisione e approvazione del codice e dei documenti.
+- [`code-review-policy.md`](code-review-policy.md): descrive le procedure di revisione e approvazione del codice e dei documenti.
 - [`commit-guidelines.md`](commit-guidelines.md): definisce le convenzioni da seguire nella creazione dei *commit*.
 - [`definition-of-done.md`](definition-of-done.md): definisce i criteri da soddisfare affinché un'attività possa considerarsi completata.
 - [`formatting.md`](formatting.md): definisce le convenzioni di formattazione da applicare al codice e alla documentazione.
