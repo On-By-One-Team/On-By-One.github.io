@@ -13,73 +13,96 @@
 
 \begin{document}
 
+
 % ==============================================================================
-% FRONTESPIZIO
+% FRONTESPIZIO (PAGINA 1)
 % ==============================================================================
 \begin{titlepage}
     \centering
-    \vspace*{1cm}
+    \vspace*{0.5cm}
 
-    \includegraphics[width=0.5\textwidth]{img/logo.png}\par
-    \vspace{0.2cm}
+    % LOGHI
+    \includegraphics[width=0.45\textwidth]{../../../assets/logo_unipd.jpg}
+    \hfill
+    \includegraphics[width=0.45\textwidth]{../../../assets/logo.png}\par
+    \vspace{0.5cm}
 
     % NOME DEL GRUPPO
     {\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par} 
-    \vspace{1.5cm}
+    \vspace{1cm}
 
     % TITOLO DEL DOCUMENTO
     {\huge \bfseries Glossario \par}
-    \vspace{2cm}
+    
+    \vspace{1.5cm}
 
     % MEMBRI DEL GRUPPO
     {\large
     \textbf{On-By-One}:\par
     \vspace{0.3cm}
-    Sara Ballardin, Shuhui Chen, Simone Giuliano, Alvise Greggio,
-    
-    Daniele Nuzzaci, Federico Temporin, Tommaso Zorzetto 
-    
-    (2101048, 2138001, 2145591, 2141004, 2139039, 2146764, 2148629)
+    \begin{tabular}{l l}
+        Sara Ballardin & 2101048 \\
+        Shuhui Chen & 2138001 \\
+        Simone Giuliano & 2145591 \\
+        Alvise Greggio & 2141004 \\
+        Daniele Nuzzaci & 2139039 \\
+        Federico Temporin & 2146764 \\
+        Tommaso Zorzetto & 2148629 \\
+    \end{tabular}
     \par}
 
     \vfill
 
-    % TABELLA INFORMAZIONI DOCUMENTO 
+    % TABELLA INFORMAZIONI DOCUMENTO E DESTINATARI
     \begin{table}[h]
         \centering
+        \arrayrulecolor{gray!50}
         \renewcommand{\arraystretch}{1.5}
         \begin{tabularx}{\textwidth}{|c|c|c|X|}
             \hline
-            \rowcolor{gray!20} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
+            \rowcolor{gray!10} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
             \hline
-            \rowcolor{gray!20} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+            \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
             \hline
-            1.0.0 & 2026/10/29 & Approvato & On-By-One, prof. Tullio Vardanega, prof. Riccardo Cardin \\
+            1.0.1 & 2026/10/29 & Approvato & 
+            On-By-One \newline 
+            Prof. Tullio Vardanega \newline 
+            Prof. Riccardo Cardin \\
             \hline
         \end{tabularx}
+        \arrayrulecolor{black}
     \end{table}
-
-    \vspace{1cm}
+    
+    \vspace{0.5cm}
     
     % CONTATTI
     {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
     
 \end{titlepage}
 
+
 \newpage
+
+% ==============================================================================
+% REGISTRO DELLE MODIFICHE (PAGINA 2)
+% ==============================================================================
 \section*{Registro delle modifiche}
+\vspace{1cm}
 \begin{center}
+    \arrayrulecolor{gray!50}
     \renewcommand{\arraystretch}{1.5}
     \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
         \hline
-        \rowcolor{gray!20} 
+        \rowcolor{gray!10} 
         \multicolumn{1}{|c|}{\textbf{Versione}} & 
         \multicolumn{1}{c|}{\textbf{Data}} & 
         \multicolumn{1}{c|}{\textbf{Autore}} & 
         \multicolumn{1}{c|}{\textbf{Descrizione}} & 
         \multicolumn{1}{c|}{\textbf{Verificatore}} \\
         \hline
-        1.0.0 & 2026/10/29 & Zorzetto Tommaso & Stesura glossario e inserimento dei primi termini tratti dal WoW & Federico Temporin \\
+        1.0.1 & 2026/10/29 & Sara Ballardin & Modifica path immagini e stile documento & Shuhui Chen \\
+        \hline
+        1.0.0 & 2026/10/29 & Tommaso Zorzetto & Stesura glossario e inserimento dei primi termini tratti dal WoW & Federico Temporin \\
         \hline
         
     \end{tabularx}
@@ -89,7 +112,7 @@
 \newpage
 
 % ==============================================================================
-% INDICE
+% INDICE (PAGINA 3)
 % ==============================================================================
 \tableofcontents
 \newpage
