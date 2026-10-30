@@ -29,9 +29,12 @@ permissions:
 jobs:
   link-check:
     runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Checkout del repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch || github.ref }}
 
       - name: Verifica link interni, esterni e PDF
         uses: lycheeverse/lychee-action@v2

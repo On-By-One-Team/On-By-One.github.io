@@ -31,7 +31,7 @@ jobs:
           if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
             find docs/tex -name "*.tex" > changed.txt
           else
-            git diff --name-only --diff-filter=AM "$BEFORE" "${{ github.sha }}" -- 'docs/tex/*.tex' > changed.txt
+            git diff --name-only --diff-filter=AM "$BEFORE" "${{ github.sha }}" -- ':(glob)docs/tex/**/*.tex' > changed.txt
           fi
           echo "File da compilare:"
           cat changed.txt
