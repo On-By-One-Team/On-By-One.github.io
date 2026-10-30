@@ -1,20 +1,10 @@
 name: CI/CD Sito Web
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'website/**'
-      - 'assets/**'
-      - 'docs/pdf/**'
-      - '.github/workflows/deploy-pages.yml'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'website/**'
-      - '.github/workflows/deploy-pages.yml'
+  workflow_run:
+    workflows: ["Controllo Link Sito"]
+    types:
+      - completed
   workflow_dispatch:
 
 permissions:
@@ -29,9 +19,12 @@ concurrency:
 jobs:
   ci-validate:
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Checkout del repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Validazione HTML5
         run: npx --yes htmlhint website/index.html
@@ -57,7 +50,9 @@ jobs:
 
   cd-deploy:
     needs: ci-validate
-    if: github.ref == 'refs/heads/main'
+    if: |
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.event != 'pull_request')
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -65,6 +60,8 @@ jobs:
     steps:
       - name: Checkout del repository
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Prepara index.html e style.css nella root per il deploy
         run: |

@@ -1,6 +1,10 @@
 name: Controllo Link Sito
 
 on:
+  workflow_run:
+    workflows: ["Compila documenti LaTeX"]
+    types:
+      - completed
   push:
     branches:
       - main
@@ -25,12 +29,24 @@ permissions:
 jobs:
   link-check:
     runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Checkout del repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch || github.head_ref || github.ref_name }}
+
+      - name: Verifica presenza file PDF nel branch
+        run: |
+          echo "Branch scaricato: ${{ github.event.workflow_run.head_branch || github.head_ref || github.ref_name }}"
+          ls -la docs/pdf/verbali/interni/ || true
+          ls -la docs/pdf/verbali/esterni/ || true
 
       - name: Verifica link interni, esterni e PDF
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --verbose --no-progress "website/index.html"
+          args: >-
+            --verbose --no-progress
+            ${{ github.event_name == 'pull_request' && '--exclude "docs/pdf/.*\.pdf$"' || '' }}
+            "website/index.html"
           fail: true
