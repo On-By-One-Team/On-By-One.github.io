@@ -1,11 +1,10 @@
 name: Compila documenti LaTeX
 
-# Il workflow si attiva quando una Pull Request viene mergiata su main
-# (il merge genera un push su main) e sono stati toccati dei file .tex.
-# Compila solo i .tex aggiunti o modificati da quella PR.
+# Il workflow si attiva sui branch di lavoro quando sono stati toccati dei
+# file .tex. Compila solo i .tex aggiunti o modificati dal commit.
 on:
   push:
-    branches:
+    branches-ignore:
       - main
     paths:
       - 'docs/tex/**/*.tex'
@@ -17,6 +16,8 @@ permissions:
 
 jobs:
   build_latex:
+    # Evita di generare PDF su main anche quando il workflow viene avviato a mano.
+    if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del repository
@@ -24,7 +25,7 @@ jobs:
         with:
           fetch-depth: 0 # Scarica tutta la cronologia, serve per il git diff e per il push
 
-      - name: Trova i .tex aggiunti o modificati dalla PR
+      - name: Trova i .tex aggiunti o modificati dal commit
         run: |
           BEFORE="${{ github.event.before }}"
           # Se non c'è un commit precedente valido (run manuale o primo push), compila tutto
@@ -73,6 +74,6 @@ jobs:
           # Il tag [skip ci] impedisce a questo commit di far ripartire il workflow
           git commit -m "docs: aggiornamento automatico PDF post-approvazione [skip ci]" || echo "Nessuna modifica al PDF"
           
-          # Se main è avanzato mentre il job girava, riallinea prima di pushare
-          git pull --rebase origin main
-          git push origin HEAD:main
+          # Se il branch è avanzato mentre il job girava, riallinea prima di pushare
+          git pull --rebase origin "${{ github.ref_name }}"
+          git push origin HEAD:"${{ github.ref_name }}"
