@@ -1,11 +1,10 @@
 name: Compila documenti LaTeX
 
-# Il workflow si attiva quando una Pull Request viene mergiata su main
-# (il merge genera un push su main) e sono stati toccati dei file .tex.
-# Compila solo i .tex aggiunti o modificati da quella PR.
+# Il workflow si attiva sui branch di lavoro quando sono stati toccati dei
+# file .tex. Compila solo i .tex aggiunti o modificati dal commit.
 on:
   push:
-    branches:
+    branches-ignore:
       - main
     paths:
       - 'docs/tex/**/*.tex'
@@ -15,8 +14,16 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  # Impedisce a due esecuzioni dello stesso branch di fare commit contemporaneamente.
+  # Il job già in corso non viene annullato; un eventuale job successivo resta in coda.
+  group: build-docs-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build_latex:
+    # Evita di generare PDF su main anche quando il workflow viene avviato a mano.
+    if: github.ref != 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del repository
@@ -24,17 +31,40 @@ jobs:
         with:
           fetch-depth: 0 # Scarica tutta la cronologia, serve per il git diff e per il push
 
-      - name: Trova i .tex aggiunti o modificati dalla PR
+      - name: Trova i .tex aggiunti o modificati dal commit
         run: |
           BEFORE="${{ github.event.before }}"
-          # Se non c'è un commit precedente valido (run manuale o primo push), compila tutto
-          if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+          : > changed.txt
+          : > deleted.txt
+
+          # Un avvio manuale deve rigenerare tutti i documenti.
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             find docs/tex -name "*.tex" > changed.txt
+          # Al primo push del branch, confronta le modifiche con main.
+          elif [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            DIFF_RANGE="origin/main...${{ github.sha }}"
           else
-            git diff --name-only --diff-filter=AM "$BEFORE" "${{ github.sha }}" -- ':(glob)docs/tex/**/*.tex' > changed.txt
+            # Nei push successivi, considera solo il commit appena ricevuto.
+            DIFF_RANGE="$BEFORE ${{ github.sha }}"
+          fi
+
+          if [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
+            # name-status restituisce lo stato e i percorsi separati da tab:
+            # per i rename, old_path è il percorso precedente e new_path quello nuovo.
+            git diff --name-status --diff-filter=AMDR $DIFF_RANGE -- ':(glob)docs/tex/**/*.tex' |
+              while IFS="$(printf '\t')" read -r status old_path new_path; do
+                case "$status" in
+                  A|M) echo "$old_path" >> changed.txt ;;
+                  # Un rename richiede la rimozione del PDF vecchio e la compilazione del nuovo.
+                  D) echo "$old_path" >> deleted.txt ;;
+                  R*) echo "$old_path" >> deleted.txt; echo "$new_path" >> changed.txt ;;
+                esac
+              done
           fi
           echo "File da compilare:"
           cat changed.txt
+          echo "PDF da rimuovere:"
+          cat deleted.txt
         
       - name: Compila i file LaTeX
         run: |
@@ -60,6 +90,14 @@ jobs:
           # Elimina i file spazzatura di latexmk, tenendo solo .pdf e .gitkeep
           find docs/pdf -type f -not -name '*.pdf' -not -name '.gitkeep' -delete
 
+          # Rimuove i PDF dei documenti LaTeX eliminati o rinominati
+          while IFS= read -r tex_file; do
+            # La struttura delle cartelle sotto docs/tex e docs/pdf è identica.
+            pdf_file="${tex_file/docs\/tex/docs\/pdf}"
+            pdf_file="${pdf_file%.tex}.pdf"
+            rm -f "$pdf_file"
+          done < deleted.txt
+
       - name: Commit e push dei PDF generati
         run: |
           # Usa l'utente di sistema di GitHub per firmare il commit
@@ -73,6 +111,6 @@ jobs:
           # Il tag [skip ci] impedisce a questo commit di far ripartire il workflow
           git commit -m "docs: aggiornamento automatico PDF post-approvazione [skip ci]" || echo "Nessuna modifica al PDF"
           
-          # Se main è avanzato mentre il job girava, riallinea prima di pushare
-          git pull --rebase origin main
-          git push origin HEAD:main
+          # Se il branch è avanzato mentre il job girava, riallinea prima di pushare
+          git pull --rebase origin "${{ github.ref_name }}"
+          git push origin HEAD:"${{ github.ref_name }}"
