@@ -1,0 +1,230 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PACCHETTI ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
+\usepackage{graphicx}               % Per inserire il logo
+\usepackage{tabularx}               % Per tabelle larghe quanto la pagina
+\usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
+\usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
+\usepackage{lmodern}      % Rende i font scalabili all'infinito
+\usepackage{anyfontsize}  % Permette di usare dimensioni personalizzate
+
+\begin{document}
+
+% ==============================================================================
+% FRONTESPIZIO (PAGINA 1)
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+
+    % LOGHI
+    \includegraphics[width=0.45\textwidth]{../../../../assets/logo_unipd.jpg}
+    \hfill
+    \includegraphics[width=0.45\textwidth]{../../../../assets/logo.png}\par
+    \vspace{0.5cm}
+
+    % NOME DEL GRUPPO
+    {\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par} 
+    \vspace{1cm}
+
+    % TITOLO DEL VERBALE
+    {\huge \bfseries Verbale interno 2026/11/05 \par}
+    
+    \vspace{1.5cm}
+
+    % MEMBRI DEL GRUPPO
+    {\large
+    \textbf{On-By-One}:\par
+    \vspace{0.3cm}
+    \begin{tabular}{l l}
+        Sara Ballardin & 2101048 \\
+        Shuhui Chen & 2138001 \\
+        Simone Giuliano & 2145591 \\
+        Alvise Greggio & 2141004 \\
+        Daniele Nuzzaci & 2139039 \\
+        Federico Temporin & 2146764 \\
+        Tommaso Zorzetto & 2148629 \\
+    \end{tabular}
+    \par}
+
+    \vfill
+
+    % TABELLA INFORMAZIONI DOCUMENTO E DESTINATARI
+    \begin{table}[h]
+        \centering
+        \arrayrulecolor{gray!50}
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabularx}{\textwidth}{|c|c|c|X|}
+            \hline
+            \rowcolor{gray!10} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
+            \hline
+            \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+            \hline
+            1.0.1 & 2026/11/05 & Approvato & 
+            On-By-One \newline 
+            Prof. Tullio Vardanega \newline 
+            Prof. Riccardo Cardin \\
+            \hline
+        \end{tabularx}
+        \arrayrulecolor{black}
+    \end{table}
+    
+    \vspace{0.5cm}
+    
+    % CONTATTI
+    {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
+    
+\end{titlepage}
+
+\newpage
+
+% ==============================================================================
+% REGISTRO DELLE MODIFICHE (PAGINA 2)
+% ==============================================================================
+% ==============================================================================
+% REGISTRO DELLE MODIFICHE (PAGINA 2)
+% ==============================================================================
+\section*{Registro delle modifiche}
+
+\vspace{1cm}
+\begin{center}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
+        \hline
+        \rowcolor{gray!10} 
+        \multicolumn{1}{|c|}{\textbf{Versione}} & 
+        \multicolumn{1}{c|}{\textbf{Data}} & 
+        \multicolumn{1}{c|}{\textbf{Autore}} & 
+        \multicolumn{1}{c|}{\textbf{Descrizione}} & 
+        \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        1.0.0 & 2026/11/05 & Daniele Nuzzaci & Stesura del verbale & Tommaso Zorzetto \\
+        \hline
+        0.1.0 & 2026/11/05 & Daniele Nuzzaci & Bozza iniziale & - \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{center}
+\vfill
+\newpage
+
+% ==============================================================================
+% INDICE (PAGINA 3)
+% ==============================================================================
+\tableofcontents
+\newpage
+
+% ==============================================================================
+% INFORMAZIONI GENERALI
+% ==============================================================================
+\section{Informazioni generali}
+
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|>{\centering\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!10} \multicolumn{2}{|c|}{\textbf{Dettagli della riunione}} \\
+        \hline
+        \textbf{Data} & 2026/11/05 \\ \hline
+        \textbf{Ora inizio} & 15:00 \\ \hline
+        \textbf{Ora fine} & 16:50 \\ \hline
+        \textbf{Modalità} & Discord \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!10} \multicolumn{3}{|c|}{\textbf{Partecipanti}} \\
+        \hline
+        \rowcolor{gray!10} \textbf{Nome e cognome} & \textbf{Ruolo} & \textbf{Presenza} \\
+        \hline
+        Sara Ballardin & Analista & Presente \\ \hline
+        Shuhui Chen & Analista & Presente \\ \hline
+        Simone Giuliano & Analista & Presente \\ \hline
+        Alvise Greggio & Responsabile & Presente \\ \hline
+        Daniele Nuzzaci & Verificatore & Presente \\ \hline
+        Federico Temporin & Amministratore & Presente \\ \hline
+        Tommaso Zorzetto & Verificatore & Presente \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+% ==============================================================================
+% CORPO DEL VERBALE
+% ==============================================================================
+
+\section{Ordine del giorno}
+\begin{itemize}
+    \item Suddivisione e assegnazione dei ruoli per il primo \textit{sprint}.
+    \item Definizione delle modalità di rendicontazione delle ore lavorative.
+    \item Comunicazione ufficiale all'azienda proponente \textbf{Vimar} (C1) in merito all'aggiudicazione del capitolato.
+    \item Analisi della documentazione richiesta per la \textit{milestone} \textbf{RTB} e definizione delle priorità.
+    \item Riorganizzazione delle cartelle della \textit{repository}, del sito web e aggiornamento dei \textit{workflow} automatici.
+    \item Pianificazione delle riunioni periodiche e ripartizione dei compiti.
+\end{itemize}
+
+\section{Discussioni}
+La riunione si è aperta con la pianificazione del primo sprint, della durata di due settimane, e con la relativa assegnazione dei ruoli, chiarendo anche le mansioni operative del Responsabile (gestione del \textit{backlog}, \textit{merge} e redazione del \textit{Diario di Bordo}).
+
+Successivamente, il Responsabile ha scritto e inviato un'email ufficiale all'azienda proponente \textbf{Vimar} (C1) per comunicare l'avvenuta assegnazione del capitolato al gruppo e per concordare un incontro finalizzato alla consegna del \textit{kit hardware} necessario allo sviluppo e ai test.
+
+Il team si è poi confrontato sulle modalità di tracciamento e rendicontazione delle ore produttive individuali, stabilendo di monitorare l'avanzamento rispetto al preventivo tramite il consuntivo di periodo e il diagramma di Gantt all'interno del \textit{Piano di Progetto}. Si è deciso inoltre di chiedere a Vimar, durante il primo incontro, se l'azienda richiede una modalità specifica di rendicontazione oraria e quali strumenti utilizza internamente.
+
+Nella seconda parte dell'incontro sono state analizzate le priorità in vista della revisione \textbf{RTB}. Oltre allo studio preliminare delle tecnologie da parte di tutti i componenti, il gruppo ha stabilito di dare priorità all'avvio dell'\textit{Analisi dei Requisiti} (a partire dai requisiti espliciti del capitolato) e all'impostazione del \textit{Piano di Progetto}. È stata inoltre concordata la creazione di una repository dedicata al \textit{PoC}, la separazione delle \textit{Norme di Progetto} tra documentazione e prodotto, e il raggruppamento di \textit{Glossario} e \textit{Norme di Progetto} nella nuova cartella e sezione \texttt{gestionali/}.
+
+Si è infine discusso del perfezionamento dei workflow di GitHub Actions per la compilazione automatica dei PDF e per l'inserimento automatico dei link ai nuovi documenti sul sito web, concordando di fissare la prossima riunione per martedì 2026/11/10 e di definire tramite sondaggio interno un giorno fisso settimanale per gli incontri futuri.
+
+\section{Decisioni}
+\begin{itemize}
+    \item \texttt{VI-2026-11-05.1} Approvata la ripartizione dei ruoli per il primo sprint: Alvise Greggio (Responsabile), Federico Temporin (Amministratore), Daniele Nuzzaci e Tommaso Zorzetto (Verificatori), Sara Ballardin, Shuhui Chen e Simone Giuliano (Analisti).
+    \item \texttt{VI-2026-11-05.2} Inviata la comunicazione ufficiale all'azienda Vimar (C1) per notificare l'assegnazione del capitolato e concordare il ritiro del kit hardware.
+    \item \texttt{VI-2026-11-05.3} Stabilito l'utilizzo del consuntivo di periodo e del diagramma di Gantt all'interno del \textit{Piano di Progetto} per la rendicontazione delle ore lavorative di ciascuno sprint.
+    \item \texttt{VI-2026-11-05.4} Approvato lo sdoppiamento delle \textit{Norme di Progetto} in due documenti distinti per la repository della documentazione e per quella del prodotto (con verifica affidata a Daniele Nuzzaci), e definita la creazione di una repository dedicata al PoC.
+    \item \texttt{VI-2026-11-05.5} Approvata la riorganizzazione della repository di documentazione e del sito web tramite l'introduzione della cartella e sezione \texttt{gestionali/} contenente il \textit{Glossario} e le \textit{Norme di Progetto}.
+    \item \texttt{VI-2026-11-05.6} Stabilita la priorità immediata sullo studio delle tecnologie, sull'avvio della bozza dell'\textit{Analisi dei Requisiti} e sull'impostazione del \textit{Piano di Progetto}.
+    \item \texttt{VI-2026-11-05.7} Stabilite le modifiche ai workflow automatici per la generazione dei PDF e per l'aggiornamento del sito web.
+    \item \texttt{VI-2026-11-05.8} Pianificata la prossima riunione interna per martedì 2026/11/10 e stabilita la creazione di un sondaggio interno per definire il giorno fisso settimanale delle riunioni periodiche.
+\end{itemize}
+
+\newpage
+\section{To-do}
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|X|p{3.15cm}|c|}
+        \hline
+        \rowcolor{gray!10} 
+        \multicolumn{1}{|c|}{\textbf{ID issue}} & 
+        \multicolumn{1}{c|}{\textbf{Task}} & 
+        \multicolumn{1}{c|}{\textbf{Assegnatario}} & 
+        \multicolumn{1}{c|}{\textbf{Scadenza}} \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/59}{\#59} & Stesura del verbale interno del 2026/11/05 & Daniele Nuzzaci & 2026/11/07 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/55}{\#55} & Conversione in LaTeX e aggiornamento del documento Norme di Progetto & Federico Temporin & 2026/11/09 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/58}{\#58} & Riorganizzazione della cartella \texttt{gestionali/} e creazione repository PoC & Federico Temporin & 2026/11/09 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/60}{\#60} & Sistemazione del workflow per la creazione dei PDF & Federico Temporin & 2026/11/09 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/61}{\#61} & Creazione del workflow per l'aggiornamento automatico dei link sul sito web & Federico Temporin & 2026/11/09 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/62}{\#62} & Stesura della bozza dell'Analisi dei Requisiti & Sara Ballardin, Shuhui Chen, Simone Giuliano & 2026/11/09 \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\end{document}
