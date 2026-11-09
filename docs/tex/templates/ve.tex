@@ -8,8 +8,8 @@
 \usepackage{tabularx}               % Per tabelle larghe quanto la pagina
 \usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
 \usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
-\usepackage{lmodern}      % Rende i font scalabili all'infinito
-\usepackage{anyfontsize}  % Permette di usare dimensioni personalizzate
+\usepackage{lmodern}                % Rende i font scalabili all'infinito
+\usepackage{anyfontsize}            % Permette di usare dimensioni personalizzate
 
 \begin{document}
 
@@ -21,9 +21,9 @@
     \vspace*{0.5cm}
 
     % LOGHI
-    \includegraphics[width=0.45\textwidth]{../../../../assets/logo_unipd.jpg}
+    \includegraphics[width=0.45\textwidth]{assets/logo_unipd.jpg}
     \hfill
-    \includegraphics[width=0.45\textwidth]{../../../../assets/logo.png}\par
+    \includegraphics[width=0.45\textwidth]{assets/logo.png}\par
     \vspace{0.5cm}
 
     % NOME DEL GRUPPO
@@ -31,7 +31,7 @@
     \vspace{1cm}
 
     % TITOLO DEL VERBALE
-    {\huge \bfseries Verbale interno [YYYY/MM/DD] \par}
+    {\huge \bfseries Verbale esterno [YYYY/MM/DD] \par}
     
     \vspace{1.5cm}
 
@@ -66,7 +66,8 @@
             [X.X.X] & [YYYY/MM/DD] & [Bozza/Approvato] & 
             On-By-One \newline 
             Prof. Tullio Vardanega \newline 
-            Prof. Riccardo Cardin \\
+            Prof. Riccardo Cardin \newline 
+            [Nome Azienda] \\
             \hline
         \end{tabularx}
         \arrayrulecolor{black}
@@ -78,8 +79,6 @@
     {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
     
 \end{titlepage}
-
-\newpage
 
 % ==============================================================================
 % REGISTRO DELLE MODIFICHE (PAGINA 2)
@@ -131,7 +130,7 @@
         \textbf{Data} & [YYYY/MM/DD] \\ \hline
         \textbf{Ora inizio} & [HH:MM] \\ \hline
         \textbf{Ora fine} & [HH:MM] \\ \hline
-        \textbf{Modalità} & [Discord / In presenza] \\ \hline
+        \textbf{Modalità} & [Asincrona / In presenza] \\ \hline
     \end{tabularx}
     \arrayrulecolor{black}
 \end{table}
@@ -156,10 +155,13 @@
     \end{tabularx}
     \arrayrulecolor{black}
 \end{table}
+\newpage
 
 % ==============================================================================
 % CORPO DEL VERBALE
 % ==============================================================================
+\section{Introduzione}
+[Breve panoramica sulle motivazioni della riunione]
 
 \section{Ordine del giorno}
 \begin{itemize}
@@ -198,4 +200,18 @@
     \arrayrulecolor{black}
 \end{table}
 
+\vfill
+
+% ==============================================================================
+% APPROVAZIONE
+% ==============================================================================
+\hfill
+\begin{minipage}{0.4\textwidth}
+    \centering
+    \textbf{Firma del revisore esterno}\par
+    \vspace{1.5cm}
+    \rule{\textwidth}{0.4pt} % Solo la linea
+\end{minipage}
+
+\vspace{2cm} 
 \end{document}
