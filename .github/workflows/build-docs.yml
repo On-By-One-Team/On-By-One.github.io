@@ -109,7 +109,7 @@ jobs:
           
           # Fa il commit rispettando la nomenclatura imposta da WoW (tipo: descrizione)
           # Il tag [skip ci] impedisce a questo commit di far ripartire il workflow
-          git commit -m "docs: aggiornamento automatico PDF post-approvazione [skip ci]" || echo "Nessuna modifica al PDF"
+          git commit -m "docs: aggiornamento automatico PDF [skip ci]" || echo "Nessuna modifica al PDF"
           
           # Se il branch è avanzato mentre il job girava, riallinea prima di pushare
           git pull --rebase origin "${{ github.ref_name }}"

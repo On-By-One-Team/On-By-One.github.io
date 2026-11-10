@@ -1,0 +1,675 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PACCHETTI ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
+\usepackage{graphicx}               % Per inserire il logo
+\usepackage{tabularx}               % Per tabelle larghe quanto la pagina
+\usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
+\usepackage{hyperref}    % Per stile link cliccabili
+\hypersetup{
+    colorlinks=true,       % Attiva il colore dei link (rimuove i riquadri)
+    linkcolor=[HTML]{1B6B3A},
+    urlcolor=[HTML]{0000FF},         % Colore dei link web esterni
+}
+\usepackage{lmodern}      % Rende i font scalabili all'infinito
+\usepackage{anyfontsize}  % Permette di usare dimensioni personalizzate
+
+\begin{document}
+
+% ==============================================================================
+% FRONTESPIZIO (PAGINA 1)
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+
+    % LOGHI
+    \includegraphics[width=0.45\textwidth]{assets/logo_unipd.jpg}
+    \hfill
+    \includegraphics[width=0.45\textwidth]{assets/logo.png}\par
+    \vspace{0.5cm}
+
+    % NOME DEL GRUPPO
+    {\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par} 
+    \vspace{1cm}
+
+    % TITOLO DEL VERBALE
+    {\huge \bfseries Norme di progetto \par}
+    \vspace{0.3cm}
+    {\Large Documentazione \par}
+    
+    \vspace{1.5cm}
+
+    % MEMBRI DEL GRUPPO
+    {\large
+    \textbf{On-By-One}:\par
+    \vspace{0.3cm}
+    \begin{tabular}{l l}
+        Sara Ballardin & 2101048 \\
+        Shuhui Chen & 2138001 \\
+        Simone Giuliano & 2145591 \\
+        Alvise Greggio & 2141004 \\
+        Daniele Nuzzaci & 2139039 \\
+        Federico Temporin & 2146764 \\
+        Tommaso Zorzetto & 2148629 \\
+    \end{tabular}
+    \par}
+
+    \vfill
+
+    % TABELLA INFORMAZIONI DOCUMENTO E DESTINATARI
+    \begin{table}[h]
+        \centering
+        \arrayrulecolor{gray!50}
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabularx}{\textwidth}{|c|c|c|X|}
+            \hline
+            \rowcolor{gray!10} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
+            \hline
+            \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+            \hline
+            1.0.0 & 2026-11-08 & Approvato & 
+            On-By-One \newline 
+            Prof. Tullio Vardanega \newline 
+            Prof. Riccardo Cardin \\
+            \hline
+        \end{tabularx}
+        \arrayrulecolor{black}
+    \end{table}
+    
+    \vspace{0.5cm}
+    
+    % CONTATTI
+    {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
+    
+\end{titlepage}
+
+\newpage
+
+% ==============================================================================
+% REGISTRO DELLE MODIFICHE (PAGINA 2)
+% ==============================================================================
+\section*{Registro delle modifiche}
+
+\vspace{1cm}
+\begin{center}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
+        \hline
+        \rowcolor{gray!10} 
+        \multicolumn{1}{|c|}{\textbf{Versione}} & 
+        \multicolumn{1}{c|}{\textbf{Data}} & 
+        \multicolumn{1}{c|}{\textbf{Autore}} & 
+        \multicolumn{1}{c|}{\textbf{Descrizione}} & 
+        \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        1.0.0 & 2026-11-08 & Federico Temporin & Specificazione della compilazione del campo Verificatore nel registro delle modifiche & Daniele Nuzzaci \\
+        \hline
+        0.1.1 & 2026-11-06 & Federico Temporin & Specificazioni sul fatto che il documento norma esclusivamente il processo di documentazione & - \\
+        \hline
+        0.1.0 & 2026-11-04 & Federico Temporin & Creazione e consolidamento delle Norme di Progetto documentali in un documento unico & - \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{center}
+\vfill
+\newpage
+
+% ==============================================================================
+% INDICE (PAGINA 3)
+% ==============================================================================
+\hypersetup{linkcolor=black}
+\tableofcontents
+\hypersetup{linkcolor=[HTML]{1B6B3A}}
+\newpage
+
+\section{Abstract}
+Questo documento raccoglie le \textit{Norme di Progetto} relative alla parte di documentazione, che definiscono le procedure, le convenzioni e gli strumenti adottati dal team per organizzare e svolgere il lavoro.
+
+Si descrivono le modalità operative da seguire nella gestione del \href{https://github.com/On-By-One-Team/On-By-One.github.io}{\textit{repository della documentazione}} (d'ora in poi \textit{repository}), nella redazione dei documenti di progetto e nella collaborazione tra i membri del team.
+
+\section{Ambito di applicazione}
+
+Le norme contenute in questo documento si applicano \textbf{esclusivamente} al processo di documentazione del progetto, rappresentato dal \href{https://github.com/On-By-One-Team/On-By-One.github.io}{repository}.
+
+\section{Strumenti di lavoro}
+
+\subsection{Comunicazione}
+\begin{itemize}
+    \item \textbf{WhatsApp}: utilizzato per le comunicazioni rapide e gli aggiornamenti brevi tra i membri del team.
+    \item \textbf{Discord}: utilizzato per le chiamate e le riunioni vocali del team.
+    \item \textbf{Gmail}: utilizzato per gestire la casella di posta condivisa \href{mailto:onbyone.swe@gmail.com}{\texttt{onbyone.swe@gmail.com}}, accessibile ai membri del team tramite delega. La casella consente di contattare soggetti esterni e di ricevere comunicazioni indirizzate al team, mantenendo un unico recapito di riferimento.
+\end{itemize}
+
+\subsection{Pianificazione}
+\begin{itemize}
+    \item \textbf{Google Calendar}: utilizzato per coordinare le disponibilità dei membri del team.
+\end{itemize}
+
+\subsection{Sviluppo e collaborazione}
+\begin{itemize}
+    \item \textbf{Git}: utilizzato per il controllo di versione dei documenti e degli altri file del \href{https://github.com/On-By-One-Team/On-By-One.github.io}{repository}.
+    \item \textbf{GitHub}: utilizzato per ospitare il repository e gestire le \textit{Pull Request}, facilitando la collaborazione e la revisione delle modifiche.
+    \item \textbf{GitHub Actions}: utilizzato per automatizzare le attività del repository tramite \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/.github/workflows}{\textit{workflow}}.
+    \item \textbf{GitHub Projects}: utilizzato per tracciare l'avanzamento del progetto tramite una board \textbf{Kanban}, organizzando le attività e monitorandone lo stato di avanzamento.
+\end{itemize}
+
+\subsection{Documentazione}
+\begin{itemize}
+    \item \textbf{Markdown}: utilizzato per redigere una parte limitata della documentazione del progetto.
+    \item \textbf{LaTeX}: utilizzato come formato principale per la redazione dei documenti di progetto, con il supporto dei \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/docs/tex/templates}{\textit{template}} disponibili nel repository.
+    \item \textbf{Canva}: utilizzato per produrre i diari di bordo e relativo \href{https://www.canva.com/design/DAXYpWf746s/uXPPm-JCKg6TbuRorlvcWQ/view?utm_content=DAXYpWf746s&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview}{template}.
+\end{itemize}
+
+\section{Strategia di branching}
+\label{sec:strategia-di-branching}
+
+La presente sezione descrive la strategia di \textit{branching} adottata dal team per gestire lo sviluppo, la correzione e la manutenzione della parte documentativa del progetto, contenuta nel \href{https://github.com/On-By-One-Team/On-By-One.github.io}{repository}.
+
+L'obiettivo è mantenere una cronologia Git leggibile, facilitare la collaborazione e garantire che le modifiche siano revisionate prima di essere integrate nel \textit{branch} principale.
+
+\subsection{Branch principale}
+
+Il branch \texttt{main} rappresenta la versione principale del repository.
+
+Le seguenti regole si applicano a \texttt{main}:
+\begin{itemize}
+    \item Deve contenere modifiche revisionate e approvate.
+    \item Non è consentito effettuare \textit{push} diretti sul branch \texttt{main}.
+    \item Le modifiche devono essere integrate tramite Pull Request.
+    \item Le \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/.github/workflows}{verifiche automatiche} previste dal repository devono essere superate prima del \textit{merge}.
+\end{itemize}
+
+\subsection{Creazione dei branch}
+\label{subsec:creazione-dei-branch}
+
+Ogni attività che comporta una modifica al repository deve essere sviluppata su un branch dedicato, creato a partire da \texttt{main} aggiornato.
+
+I nomi dei branch devono essere descrittivi, brevi e scritti in minuscolo. Le parole devono essere separate da trattini (\texttt{-}).
+
+Il formato da seguire è:
+
+\noindent \texttt{<tipo>/<numero-issue>-<descrizione>}
+
+I tipi di branch previsti sono:
+
+\begin{center}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|c|X|}
+        \hline
+        \rowcolor{gray!10} 
+        \multicolumn{1}{|c|}{\textbf{Tipo}} & 
+        \multicolumn{1}{c|}{\textbf{Utilizzo}} & 
+        \multicolumn{1}{c|}{\textbf{Esempio}} \\
+        \hline
+        \texttt{admin/} & Attività di amministrazione & \texttt{admin/12-workflow-compilazione-tex}\\
+        \hline
+        \texttt{docs/} & Attività di documentazione & \texttt{docs/24-aggiornamento-readme}\\
+        \hline
+        \texttt{website/} & Sviluppo sito web & \texttt{website/35-modifica-etichetta-proponente}\\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{center}
+
+Il numero dell'\textit{issue} deve essere incluso quando l'attività è associata a un'issue GitHub. Per attività minori non associate a un'issue, il numero può essere omesso.
+
+\subsection{Flusso di lavoro}
+
+Il flusso di lavoro standard è il seguente:
+\begin{enumerate}
+    \item Identificare un'issue che descriva l'attività.
+    \item Aggiornare il branch locale \texttt{main}.
+    \item Creare un branch dedicato all'attività.
+    \item Implementare le modifiche ed eseguire le verifiche pertinenti.
+    \item Registrare le modifiche tramite \textit{commit} conformi alle \hyperref[sec:linee-guida-per-i-commit]{convenzioni del repository}.
+    \item Aprire una Pull Request verso \texttt{main}.
+    \item Attendere la revisione e il completamento dei controlli automatici.
+    \item Integrare le modifiche dopo aver soddisfatto i requisiti di approvazione.
+    \item Eliminare il branch di lavoro dopo il merge, salvo necessità di conservarlo per motivi specifici.
+\end{enumerate}
+
+\subsection{Aggiornamento dei branch}
+
+Durante lo sviluppo, è responsabilità dell'autore verificare che le modifiche rimangano compatibili con gli aggiornamenti del branch \texttt{main}.
+
+Quando necessario, il branch di lavoro deve essere aggiornato con le modifiche più recenti di \texttt{main}, utilizzando le modalità concordate dal team.
+
+Eventuali conflitti devono essere risolti e verificati dall'autore prima di richiedere il merge.
+
+Non devono essere integrate modifiche che introducano conflitti irrisolti o compromettano la correttezza e la coerenza dei contenuti e dei materiali presenti nel repository.
+
+\subsection{Pull Request e merge}
+\label{subsec:pull-request-e-merge}
+
+Ogni Pull Request deve:
+\begin{itemize}
+    \item Avere un titolo chiaro e descrittivo.
+    \item Descrivere le modifiche introdotte e la loro motivazione.
+    \item Fare riferimento all'issue associata, se presente.
+    \item Essere sottoposta a revisione secondo la \hyperref[subsec:regole-generali]{policy del repository}.
+    \item Superare i controlli automatici richiesti.
+    \item Non presentare conflitti irrisolti con il branch di destinazione.
+\end{itemize}
+
+\noindent La strategia di merge adottata è il \textbf{merge commit} (opzione \textit{Create a merge commit} di GitHub): tutti i commit della Pull Request vengono replicati su \texttt{main} e viene creato un ulteriore commit di merge. Questa modalità preserva lo storico dei commit del branch di lavoro.
+
+\subsection{Eccezioni}
+
+Eventuali eccezioni al flusso standard devono essere motivate e concordate con il team.
+
+Le eccezioni non devono compromettere la tracciabilità delle modifiche o la stabilità del branch principale.
+
+\subsection{Modifiche incrementali}
+
+La presente sezione può essere modificata tramite Pull Request quando emergono esigenze organizzative o tecniche che rendono necessario aggiornare il flusso di lavoro.
+
+\section{Linee guida per i commit}
+\label{sec:linee-guida-per-i-commit}
+
+Questa sezione raccoglie le convenzioni da seguire nella creazione dei commit, con l'obiettivo di rendere la cronologia delle modifiche chiara, coerente e facilmente consultabile.
+
+Le convenzioni si applicano a tutti i membri del team che contribuiscono al \href{https://github.com/On-By-One-Team/On-By-One.github.io}{repository}.
+
+\subsection{Struttura del messaggio}
+
+Ogni commit deve avere un messaggio breve e descrittivo, che riassuma la modifica introdotta.
+
+Il messaggio deve seguire la struttura:
+
+\noindent \texttt{<tipo>: <descrizione>}
+
+La descrizione deve essere concisa, specifica e formulata in modo da identificare chiaramente lo scopo della modifica.
+
+\subsection{Tipologie di commit}
+
+Il tipo identifica la natura principale della modifica. Si adottano le seguenti tipologie:
+\begin{itemize}
+    \item \texttt{docs}: aggiunta, modifica o rimozione di documentazione.
+    \item \texttt{admin}: modifiche organizzative e amministrative, incluse le modifiche ai file relativi al \textit{way of working}, la riorganizzazione delle directory e la gestione dei \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/.github/workflows}{workflow}.
+    \item \texttt{website}: modifiche al \href{https://on-by-one-team.github.io/On-By-One.github.io/}{sito web} e ai relativi contenuti o stili.
+\end{itemize}
+
+\noindent Quando una modifica coinvolge più ambiti, scegliere il tipo che rappresenta meglio il suo obiettivo principale.
+
+\subsection{Regole di scrittura}
+
+I messaggi dei commit devono rispettare le seguenti convenzioni:
+\begin{itemize}
+    \item Utilizzare l'italiano, salvo termini tecnici comunemente adottati in inglese.
+    \item Iniziare la descrizione con una lettera minuscola.
+    \item Utilizzare una forma verbale coerente e diretta, preferibilmente al participio passato.
+    \item Non terminare il messaggio con un punto.
+    \item Evitare descrizioni generiche come \texttt{aggiornamenti}, \texttt{modifiche varie} o \texttt{fix}.
+    \item Evitare di includere nel messaggio dettagli non necessari o informazioni già ricavabili dal contesto.
+\end{itemize}
+
+\noindent È preferibile che ogni commit rappresenti una modifica logicamente coerente e circoscritta.
+
+\subsection{Riferimento alle issue}
+
+Quando il commit è associato a un'issue, si deve includere il riferimento nel messaggio, ad esempio:
+
+\noindent \texttt{docs: aggiornate le convenzioni di formattazione (\#24)}
+
+\noindent Il riferimento deve corrispondere all'issue effettivamente associata alla modifica.
+
+Quando una Pull Request risolve completamente un'issue, è possibile chiuderla automaticamente inserendo nella sua descrizione una keyword riconosciuta da GitHub, come \texttt{Closes}, seguita dall'identificativo dell'issue. Ad esempio:
+
+\noindent \texttt{Redazione del verbale esterno. Closes \#46}
+
+\subsection{Esempi}
+
+Esempi di messaggi conformi alle convenzioni:
+\begin{itemize}
+    \item \texttt{docs: aggiornato il README del repository}
+    \item \texttt{admin: modificato il workflow di compilazione LaTeX (\#57)}
+    \item \texttt{website: corretto il collegamento alla documentazione}
+\end{itemize}
+
+\noindent Esempi di messaggi da evitare:
+\begin{itemize}
+    \item \texttt{aggiornamenti vari}
+    \item \texttt{fix}
+    \item \texttt{modifiche al sito.}
+    \item \texttt{Docs: Update README}
+\end{itemize}
+
+\subsection{Coerenza con il flusso di lavoro}
+
+I commit devono essere creati sul branch dedicato all'attività, seguendo la \hyperref[subsec:creazione-dei-branch]{strategia di branching}.
+
+Prima di aprire una Pull Request, l'autore deve verificare che i commit siano comprensibili e coerenti con le modifiche proposte.
+
+Quando necessario, i commit possono essere riorganizzati prima dell'integrazione, nel rispetto del flusso di revisione definito nella \hyperref[subsec:regole-generali]{policy di revisione}.
+
+L'integrazione nel branch \texttt{main} avviene secondo la \hyperref[subsec:pull-request-e-merge]{strategia di merge} definita per il repository.
+
+\subsection{Modifiche incrementali}
+
+La presente sezione può essere aggiornata tramite Pull Request quando emergono esigenze di uniformità o miglioramenti nel processo di gestione delle modifiche.
+
+\section{Convenzioni di denominazione e formati standard}
+
+Le convenzioni di questa sezione si applicano ai file e ai documenti presenti nel \href{https://github.com/On-By-One-Team/On-By-One.github.io}{repository}.
+
+\subsection{Nomi dei file}
+
+I nomi dei file devono seguire queste convenzioni:
+\begin{itemize}
+    \item Utilizzare preferibilmente lettere minuscole. Sono ammesse eccezioni per i nomi convenzionali che richiedono le maiuscole, come \texttt{README.md}.
+    \item Utilizzare i trattini (\texttt{-}) al posto degli spazi per separare le parole.
+    \item Evitare spazi, caratteri speciali e abbreviazioni non standard.
+    \item Mantenere le estensioni dei file in minuscolo.
+\end{itemize}
+
+\subsection{Formato delle date}
+
+Le date devono essere espresse nel formato \texttt{AAAA-MM-GG}, dove:
+\begin{itemize}
+    \item \texttt{AAAA} indica l'anno a quattro cifre.
+    \item \texttt{MM} indica il mese a due cifre.
+    \item \texttt{GG} indica il giorno a due cifre.
+\end{itemize}
+
+\noindent Il formato deve essere utilizzato in modo uniforme in tutti i documenti e nei nomi dei file che contengono una data.
+
+\subsection{Denominazione dei verbali}
+
+I \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/docs/pdf/verbali}{verbali delle riunioni} devono includere la data della riunione e un suffisso che ne identifichi la tipologia.
+\begin{itemize}
+    \item Verbali esterni: utilizzare il formato \texttt{AAAA-MM-GG-ve}.
+    \item Verbali interni: utilizzare il formato \texttt{AAAA-MM-GG-vi}.
+\end{itemize}
+
+\noindent Il nome del file deve terminare con il suffisso corrispondente alla tipologia del verbale, seguito dall'estensione del file.
+
+\subsection{Modifiche incrementali}
+
+La presente sezione può essere aggiornata tramite Pull Request quando emergono esigenze di uniformità o organizzazione dei nomi e dei formati.
+
+\section{Convenzioni di formattazione}
+
+Questa sezione definisce le convenzioni generali di formattazione adottate nel \href{https://github.com/On-By-One-Team/On-By-One.github.io}{repository}, con l'obiettivo di garantire uniformità, leggibilità e coerenza tra i contenuti.
+
+Le indicazioni si applicano ai documenti e ai materiali presenti nel repository, tenendo conto delle caratteristiche dei diversi formati.
+
+\subsection{Formattazione del testo}
+\label{subsec:formattazione-del-testo}
+
+La formattazione deve essere utilizzata in modo coerente e funzionale alla comprensione dei contenuti.
+
+Si adottano le seguenti convenzioni generali:
+\begin{itemize}
+    \item \textbf{Grassetto}: utilizzare per evidenziare concetti importanti o termini che richiedono particolare attenzione, evitando un uso eccessivo.
+    \item \textit{Corsivo}: utilizzare
+    \begin{itemize}
+        \item alla prima occorrenza di termini stranieri poco comuni o specialistici.
+        \item ad ogni occorrenza di termini o espressioni italiane utilizzati per indicare un concetto specifico, per distinguerli dal significato ordinario delle parole che li compongono.
+    \end{itemize}
+
+    \noindent Evitare il corsivo per i termini stranieri entrati nell'uso comune italiano, ad esempio team e file.
+    \item Sottolineato: non utilizzare.
+    \item Barrato: non utilizzare.
+    \item \texttt{Codice inline}: utilizzare per nomi di file e directory, branch, comandi, identificatori e brevi frammenti di codice.
+\end{itemize}
+
+\noindent È preferibile evitare l'uso simultaneo o eccessivo di diversi stili di formattazione all'interno dello stesso contenuto.
+
+\subsection{Coerenza tra i documenti}
+
+I documenti dello stesso tipo devono mantenere, per quanto possibile, uno stile uniforme e una struttura coerente, così da facilitarne la lettura e la consultazione.
+
+La formattazione deve essere adeguata al formato utilizzato. In particolare:
+\begin{itemize}
+    \item Nei documenti Markdown, utilizzare le funzionalità di formattazione supportate dal formato.
+    \item Nei documenti LaTeX, utilizzare i \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/docs/tex/templates}{template} presenti nel repository, evitando personalizzazioni non necessarie.
+    \item Nei contenuti del \href{https://on-by-one-team.github.io/On-By-One.github.io/}{sito web}, mantenere coerenza con gli stili definiti nei file CSS condivisi.
+\end{itemize}
+
+\subsection{Modifiche incrementali}
+
+La presente sezione può essere aggiornata tramite Pull Request quando emergono esigenze di uniformità, leggibilità o organizzazione dei contenuti.
+
+\section{Policy di revisione}
+
+Questa sezione stabilisce le regole per la revisione delle modifiche proposte nel \href{https://github.com/On-By-One-Team/On-By-One.github.io}{repository}.
+
+L'obiettivo della revisione è garantire la correttezza, la coerenza, la leggibilità e la manutenibilità dei contenuti, favorendo la collaborazione tra i membri del team e riducendo il rischio di introdurre errori nel branch \texttt{main}.
+
+\subsection{Ambito di applicazione}
+
+La revisione si applica alle Pull Request che introducono modifiche al repository, inclusi:
+\begin{itemize}
+    \item Documenti in formato Markdown e LaTeX.
+    \item \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/docs/pdf/verbali}{Verbali delle riunioni} e documentazione relativa al progetto.
+    \item File di configurazione e \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/.github/workflows}{workflow} GitHub Actions.
+    \item \href{https://on-by-one-team.github.io/On-By-One.github.io/}{Sito web} e relativi file HTML e CSS.
+    \item Altri materiali e strumenti di supporto presenti nel repository.
+\end{itemize}
+
+\noindent L'intensità della revisione deve essere proporzionata alla natura e alla complessità delle modifiche proposte.
+
+\subsection{Regole generali}
+\label{subsec:regole-generali}
+
+Ogni Pull Request deve essere revisionata prima di essere integrata nel branch \texttt{main}.
+
+La revisione deve essere effettuata da almeno un membro del team diverso dall'autore della Pull Request.
+
+Il revisore deve esaminare le modifiche proposte con attenzione, verificando che siano coerenti con gli obiettivi dell'attività e con le convenzioni definite nei documenti organizzativi del repository.
+
+L'autore è responsabile della qualità delle modifiche proposte e della gestione dei commenti ricevuti durante la revisione.
+
+Non è consentito approvare una Pull Request senza averne verificato adeguatamente il contenuto.
+
+\subsection{Aspetti da verificare}
+
+Durante la revisione devono essere considerati, quando pertinenti, i seguenti aspetti.
+
+\subsubsection{Correttezza e completezza}
+
+\begin{itemize}
+    \item Le modifiche soddisfano i requisiti dell'attività o dell'issue associata.
+    \item I contenuti sono corretti, coerenti e sufficientemente completi.
+    \item Non sono state introdotte informazioni contraddittorie o ridondanti.
+    \item I riferimenti ad altri documenti, file e risorse sono corretti.
+\end{itemize}
+
+\subsubsection{Qualità della documentazione}
+
+\begin{itemize}
+    \item Il testo è chiaro, comprensibile e grammaticalmente corretto.
+    \item La terminologia è utilizzata in modo coerente.
+    \item La struttura dei documenti è appropriata e facilita la consultazione.
+    \item La formattazione rispetta le \hyperref[subsec:formattazione-del-testo]{convenzioni generali} e, per i documenti LaTeX, la struttura definita dai \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/docs/tex/templates}{template}, ove applicabili.
+\end{itemize}
+
+\subsubsection{File tecnici e configurazioni}
+
+Quando la Pull Request riguarda file tecnici, il revisore deve verificare, per quanto applicabile:
+\begin{itemize}
+    \item La correttezza delle modifiche ai file di configurazione.
+    \item La coerenza dei workflow con le procedure del repository.
+    \item L'assenza di errori evidenti nel codice HTML, CSS e LaTeX modificato.
+    \item Il corretto funzionamento delle funzionalità interessate dalle modifiche.
+    \item L'assenza di credenziali, \textit{token} o altri dati riservati inseriti accidentalmente nei file.
+\end{itemize}
+
+\subsubsection{Verifiche automatiche}
+
+Il revisore deve verificare che i controlli automatici previsti per la Pull Request siano stati completati con esito positivo.
+
+Se un controllo fallisce, la causa deve essere esaminata e risolta prima del merge.
+
+\subsection{Gestione dei commenti}
+
+I commenti della revisione devono essere chiari, pertinenti e, quando possibile, accompagnati da una proposta di miglioramento.
+
+Per facilitare la gestione delle osservazioni, si distinguono due categorie:
+\begin{itemize}
+    \item \textbf{Bloccanti}: segnalano problemi che devono essere risolti prima dell'approvazione o del merge, come errori sostanziali, requisiti non soddisfatti o malfunzionamenti.
+    \item \textbf{Non bloccanti}: suggeriscono miglioramenti che non impediscono l'integrazione delle modifiche, come preferenze stilistiche o ottimizzazioni facoltative.
+\end{itemize}
+
+\noindent L'autore deve rispondere alle osservazioni ricevute e apportare le correzioni necessarie.
+
+I commenti bloccanti devono essere risolti prima del merge e il revisore deve verificarne la risoluzione.
+
+Per i commenti non bloccanti, l'autore e il revisore concordano se apportare le modifiche nella Pull Request corrente oppure registrarle per un'attività successiva. In quest'ultimo caso, le modifiche possono essere rinviate senza impedire il merge.
+
+\subsection{Approvazione e merge}
+\label{subsec:approvazione-e-merge}
+
+Una Pull Request può essere integrata nel branch \texttt{main} quando sono soddisfatte tutte le seguenti condizioni:
+\begin{itemize}
+    \item Ha ricevuto almeno un'approvazione da un membro del team diverso dall'autore.
+    \item I controlli automatici obbligatori sono stati superati.
+    \item Non presenta conflitti irrisolti con il branch di destinazione.
+    \item Tutti i commenti bloccanti sono stati risolti.
+    \item Le modifiche rispettano le convenzioni e le regole organizzative del repository.
+\end{itemize}
+
+\noindent L'integrazione deve avvenire secondo la \hyperref[subsec:pull-request-e-merge]{strategia di merge} definita per il repository.
+
+L'approvazione della Pull Request non sostituisce la responsabilità dell'autore di verificare la correttezza delle modifiche.
+
+\subsubsection{Approvazione dei documenti}
+
+Per i documenti che richiedono approvazione formale e una cronologia delle versioni consultabile dal lettore del documento stesso, sono previste due tabelle: \textbf{Informazioni documento} e \textbf{Registro delle modifiche}. La prima riporta le informazioni relative alla versione corrente approvata del documento, mentre la seconda tiene traccia delle modifiche apportate al documento.
+
+\paragraph{Informazioni documento}
+
+La tabella \textit{Informazioni documento} contiene i seguenti campi:
+\begin{itemize}
+    \item \textbf{Versione}: indica la versione corrente approvata del documento. Compilato dal revisore.
+    \item \textbf{Data}: indica la data di approvazione. Compilato dal revisore.
+    \item \textbf{Stato}: l'autore imposta il valore \texttt{Bozza} quando il documento viene modificato rispetto all'ultima versione approvata e rimane tale per tutta la fase di revisione. Solo in seguito all'approvazione, il revisore aggiorna il campo al valore \texttt{Approvato}.
+    \item \textbf{Destinatari}: indica i destinatari del documento. Compilato dall'autore.
+\end{itemize}
+
+\paragraph{Registro delle modifiche}
+
+La tabella \textit{Registro delle modifiche} contiene i seguenti campi:
+\begin{itemize}
+    \item \textbf{Versione}: l'autore assegna una versione a ogni riga del registro delle modifiche, incrementando di uno il contatore più a destra rispetto alla versione della riga precedente. Se il contatore più a destra raggiunge \texttt{9}, l'incremento successivo lo azzera e incrementa di uno il contatore centrale. La versione iniziale assegnata alla prima modifica del documento è \texttt{0.1.0}. Nella riga relativa all'ultima modifica apportata prima dell'apertura della Pull Request, l'autore lascia il campo vuoto (\texttt{-}), affinché il revisore possa assegnare la versione in base all'esito della revisione:
+    \begin{itemize}
+        \item \textbf{Revisione non superata}: il revisore assegna alla modifica in esame la versione successiva a quella dell'ultima modifica registrata, proseguendo la numerazione secondo le regole sopra definite. Il documento rimane in stato \texttt{Bozza}.
+        \item \textbf{Revisione superata}: il revisore assegna la versione \texttt{1.0.0} se si tratta della prima approvazione del documento; negli altri casi incrementa di uno il contatore più a sinistra rispetto all'ultima versione e azzera gli altri due contatori.
+    \end{itemize}
+    \item \textbf{Data}: indica la data in cui la modifica descritta nella riga è stata apportata al documento. Compilato dall'autore.
+    \item \textbf{Autore}: indica chi ha apportato la modifica. Compilato dall'autore.
+    \item \textbf{Descrizione}: riassume le modifiche apportate al documento. Compilato dall'autore.
+    \item \textbf{Verificatore}: indica chi ha verificato il documento. Compilato dal revisore solo nella riga della modifica in esame; nelle righe delle modifiche intermedie che la precedono il campo rimane vuoto (\texttt{-}).
+\end{itemize}
+
+\noindent La versione approvata e la relativa data devono corrispondere al contenuto effettivamente approvato e integrato nel repository.
+
+\subsection{Nuove modifiche dopo l'approvazione}
+
+Se, dopo l'approvazione, vengono introdotte modifiche sostanziali alla Pull Request, il revisore deve verificare nuovamente le parti interessate.
+
+\subsection{Eccezioni}
+
+Eventuali eccezioni alle regole di questa sezione devono essere motivate e concordate dal team.
+
+Le eccezioni non devono compromettere la qualità delle modifiche, la tracciabilità delle decisioni o la stabilità del branch \texttt{main}.
+
+\subsection{Modifiche incrementali}
+
+La presente sezione può essere modificata tramite Pull Request quando emergono esigenze organizzative o tecniche che rendono necessario aggiornare le procedure di revisione.
+
+\section{Definition of Done}
+
+Questa sezione elenca i criteri minimi che un'attività deve soddisfare per essere considerata completata e integrata nel \href{https://github.com/On-By-One-Team/On-By-One.github.io}{repository}.
+
+L'obiettivo è garantire che le modifiche introdotte nel repository siano corrette, complete, coerenti con le convenzioni del team, verificate e pronte per l'integrazione nel branch principale secondo il flusso di revisione adottato.
+
+\subsection{Ambito di applicazione}
+
+La \textit{Definition of Done} si applica alle attività che comportano modifiche al repository, tra cui:
+\begin{itemize}
+    \item Documentazione in formato Markdown e LaTeX.
+    \item \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/docs/pdf/verbali}{Verbali delle riunioni} e \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/docs/pdf/candidatura}{materiali relativi alla candidatura}.
+    \item File di configurazione e \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/.github/workflows}{workflow} GitHub Actions.
+    \item \href{https://on-by-one-team.github.io/On-By-One.github.io/}{Sito web} e relativi file HTML e CSS.
+    \item Altri materiali e strumenti di supporto presenti nel repository.
+\end{itemize}
+
+\noindent I criteri devono essere applicati in modo proporzionato alla natura dell'attività e alle modifiche introdotte.
+
+\subsection{Criteri di completamento}
+
+Un'attività può essere considerata completata quando soddisfa tutti i criteri applicabili tra quelli seguenti e le modifiche sono state integrate nel branch di destinazione.
+
+\subsubsection{Requisiti e contenuti}
+
+\begin{itemize}
+    \item Le modifiche soddisfano gli obiettivi e i requisiti dell'attività o dell'issue associata.
+    \item I contenuti sono corretti, completi e coerenti con il contesto.
+    \item Non sono presenti informazioni contraddittorie o ridondanti che compromettano la comprensione.
+    \item I riferimenti a file, documenti e risorse sono corretti.
+\end{itemize}
+
+\subsubsection{Qualità e formattazione}
+
+\begin{itemize}
+    \item I contenuti sono chiari, comprensibili e coerenti dal punto di vista terminologico.
+    \item Sono rispettate le convenzioni generali di \hyperref[subsec:formattazione-del-testo]{formattazione}.
+    \item I documenti LaTeX utilizzano i \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/docs/tex/templates}{template}, ove applicabili.
+    \item Le modifiche mantengono la coerenza con gli altri documenti e materiali del repository.
+\end{itemize}
+
+\subsubsection{Verifiche tecniche}
+
+Quando applicabile, devono essere effettuate le verifiche necessarie per accertare la correttezza delle modifiche:
+
+\begin{itemize}
+    \item I documenti LaTeX interessati vengono compilati correttamente.
+    \item I collegamenti e i riferimenti modificati risultano validi.
+    \item Le modifiche al sito web vengono verificate per accertare il corretto funzionamento e la corretta visualizzazione dei contenuti interessati.
+    \item I file di configurazione e i workflow modificati sono verificati mediante i controlli disponibili, ove applicabili.
+    \item Sono state eseguite le verifiche automatiche pertinenti alle modifiche introdotte.
+\end{itemize}
+
+\subsubsection{Versionamento e tracciabilità}
+
+\begin{itemize}
+    \item Le modifiche sono state apportate su un branch dedicato all'attività, secondo la \hyperref[subsec:creazione-dei-branch]{strategia di branching}.
+    \item I commit rispettano le \hyperref[sec:linee-guida-per-i-commit]{convenzioni adottate dal team}.
+    \item L'issue associata, se presente, è aggiornata e correttamente referenziata.
+    \item Le modifiche sono raccolte in una Pull Request descrittiva e coerente con l'attività svolta.
+\end{itemize}
+
+\subsubsection{Revisione e integrazione}
+
+\begin{itemize}
+    \item La Pull Request è stata revisionata secondo la \hyperref[subsec:approvazione-e-merge]{policy di revisione}.
+    \item È stata ottenuta almeno un'approvazione da un membro del team diverso dall'autore.
+    \item I commenti bloccanti sono stati risolti.
+    \item I controlli automatici obbligatori sono stati superati.
+    \item Non sono presenti conflitti irrisolti con il branch di destinazione.
+    \item La Pull Request è stata integrata nel branch di destinazione secondo la \hyperref[sec:strategia-di-branching]{strategia di branching}.
+\end{itemize}
+
+\subsection{Responsabilità}
+
+L'autore dell'attività è responsabile di verificare che i criteri applicabili siano soddisfatti prima di richiedere l'integrazione delle modifiche.
+
+Il revisore verifica il rispetto dei criteri durante la revisione, segnalando eventuali problemi che devono essere risolti prima del merge.
+
+Il completamento dell'attività deve essere valutato sulla base dei criteri applicabili e delle verifiche effettivamente svolte.
+
+\subsection{Eccezioni}
+
+Eventuali deroghe ai criteri di completamento devono essere motivate, concordate dal team e documentate nella Pull Request. Non possono essere derogati i requisiti essenziali di correttezza, revisione e tracciabilità delle modifiche.
+
+\subsection{Modifiche incrementali}
+
+La presente sezione può essere aggiornata tramite Pull Request quando emergono nuove esigenze organizzative o tecniche o quando cambiano le procedure adottate dal team.
+
+\end{document}
