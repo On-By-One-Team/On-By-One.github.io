@@ -10,6 +10,8 @@
 \usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
 \usepackage{lmodern}      % Rende i font scalabili all'infinito
 \usepackage{anyfontsize}  % Permette di usare dimensioni personalizzate
+\usepackage{xurl}         % Permette ai link lunghi di non uscire dai margini
+\urlstyle{same}           % Usa lo stesso font del documento
 
 \begin{document}
 
@@ -103,6 +105,8 @@
         \hline
         - & - & - & - & - \\
         \hline
+        0.1.1 & 2026/11/13 & Sara Ballardin & Stesura dell'introduzione & - \\
+        \hline
         0.1.0 & 2026/11/09 & Sara Ballardin & Definizione struttura del documento & - \\
         \hline
     \end{tabularx}
@@ -125,17 +129,48 @@
 \section{Introduzione}
 
 \subsection{Scopo del documento}
-Descrivere lo scopo del documento, a chi è rivolto e come guiderà le attività di progettazione, codifica, verifica e validazione.
+Il documento di \textbf{Analisi dei requisiti} raccoglie e descrive le funzionalità e i vincoli del progetto \textbf{AURA} (AI for Understanding, Reasoning and Automation), proposto da Vimar S.P.A. e sviluppato dal gruppo On-By-One.
+
+\noindent L'obiettivo è trasformare le richieste del capitolato e quanto emerso negli incontri con l'azienda in un elenco chiaro e verificabile di requisiti software. Partendo dallo studio degli attori e dei casi d'uso in UML, il documento definisce cosa deve fare il sistema per soddisfare le esigenze dell'utente, lasciando le scelte su come realizzarlo alla successiva fase di progettazione.
+
+\noindent Il documento rappresenta il punto di riferimento per tutti i soggetti coinvolti nel progetto:
+\begin{itemize}
+    \item \textbf{Proponente (Vimar S.P.A.) e committenti (Prof.\ Tullio Vardanega e Prof.\ Riccardo Cardin):} per verificare che le richieste iniziali siano state comprese correttamente e nella loro interezza;
+    \item \textbf{Progettisti e programmatori:} come guida per definire l'architettura del sistema e sviluppare le funzionalità previste;
+    \item \textbf{Verificatori:} come base per scrivere i test e controllare che il prodotto realizzato rispetti tutti i requisiti fissati.
+\end{itemize}
 
 \subsection{Glossario}
-Spiegare la convenzione tipografica adottata per evidenziare i termini tecnici, specialistici o ambigui e rimandare al documento esterno di Glossario.
+Per evitare ambiguità e facilitare la lettura di termini tecnici, acronimi e parole con un significato specifico nel progetto, il gruppo ha redatto un documento interno dedicato chiamato \textbf{\href{https://on-by-one-team.github.io/On-By-One.github.io/docs/pdf/glossario/glossario.pdf}{Glossario}}, che raccoglie tutte le relative definizioni.
 
 \subsection{Riferimenti}
+Di seguito sono elencati i documenti vincolanti di progetto, le regole interne del gruppo e le fonti informative (standard internazionali e materiale del corso) consultate per redigere questo documento.
+
 \subsubsection{Riferimenti normativi}
-Elencare i documenti vincolanti per il progetto (capitolato d’appalto, regolamento del progetto didattico, Norme di Progetto), specificando per ciascuno versione o data di ultima consultazione.
+\begin{itemize}
+    \item Capitolato d'appalto AURA (Vimar S.P.A.) \\
+    \url{https://www.math.unipd.it/~tullio/IS-1/2026/Progetto/C1-AURA.pdf} \\
+    Ultimo accesso: 13 novembre 2026.
+
+    \item Regolamento del progetto didattico \\
+    \url{https://www.math.unipd.it/~tullio/IS-1/2026/Dispense/PD1.pdf} \\
+    Ultimo accesso: 13 novembre 2026.
+
+    \item Norme di progetto (documento interno del gruppo On-By-One) \\
+    \url{https://on-by-one-team.github.io/On-By-One.github.io/docs/pdf/norme-di-progetto-documentazione.pdf} \\
+    Ultimo accesso: 13 novembre 2026.
+\end{itemize}
 
 \subsubsection{Riferimenti informativi}
-Elencare le fonti di approfondimento consultate (slide del corso, standard formali di ingegneria dei requisiti, documentazione tecnica ufficiale delle tecnologie citate), con relativa data di consultazione.
+\begin{itemize}
+    \item Analisi dei requisiti (Prof.\ Tullio Vardanega) \\
+    \url{https://www.math.unipd.it/~tullio/IS-1/2026/Dispense/T05.pdf} \\
+    Ultimo accesso: 13 novembre 2026.
+
+    \item Diagrammi dei casi d'uso (Prof.\ Riccardo Cardin) \\
+    \url{https://www.math.unipd.it/~rcardin/swea/2022/Diagrammi%20Use%20Case.pdf} \\
+    Ultimo accesso: 13 novembre 2026.
+\end{itemize}
 
 \newpage
 
