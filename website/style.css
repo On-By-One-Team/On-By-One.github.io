@@ -301,6 +301,12 @@ summary:focus-visible {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+.card > .doc-list {
+    margin-bottom: 0.75rem;
 }
 
 .doc-list a {
