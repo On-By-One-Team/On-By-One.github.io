@@ -186,29 +186,17 @@ Di seguito sono elencati i documenti vincolanti di progetto, le regole interne d
 
 \subsection{Scopo e obiettivi del prodotto}
 Il progetto consiste nella realizzazione di AURA (\emph{AI for Understanding, Reasoning and Automation}), progettata per l’integrazione avanzata tra l'impianto domotico \emph{View Wireless} e i principali servizi di intelligenza artificiale generativa. 
- Il suo scopo è mostrare la fattibilità e le potenzialità
-dell'integrazione tra l'impianto domotico \emph{View Wireless} e i principali
-servizi di intelligenza artificiale generativa, sfruttando lo standard aperto \emph{Model Context Protocol} (MCP) e le \emph{KNX IoT 3rd-party API} (v2.1.0).
-L'idea di fondo è usare servizi GenAI già esistenti come interfaccia
-in linguaggio naturale verso la smart home, senza sviluppare un
-assistente AI dedicato. Il prodotto non intende sostituire le applicazioni
-esistenti (come l'app Vimar View), ma affiancarle come canale complementare.
+Il suo scopo è mostrare la fattibilità e le potenzialità dell'integrazione tra l'impianto domotico \emph{View Wireless} e i principali servizi di intelligenza artificiale generativa, sfruttando lo standard aperto \emph{Model Context Protocol} (MCP) e le \emph{KNX IoT 3rd-party API} (v2.1.0).
+L'idea di fondo è usare servizi GenAI già esistenti come interfaccia in linguaggio naturale verso la smart home, senza sviluppare un assistente AI dedicato. Il prodotto non intende sostituire le applicazioni esistenti (come l'app Vimar View), ma affiancarle come canale complementare.
 
 Il prodotto deve soddisfare i seguenti obiettivi:
 \begin{itemize}
-    \item realizzare un'infrastruttura \textit{}{Cloud}-ready \textbf{containerizzata},
-    definita come \textit{Infrastructure as Code} e compatibile con AWS;
-    \item realizzare un \textbf{server MCP} e un \textbf{client MCP} che
-    permettano \textbf{lettura} e \textbf{scrittura} sui dispositivi,
-    ricostruendo le relazioni tra \textit{Location}, \textit{Function} e
-    \textit{Datapoint};
-    \item garantire un accesso \textbf{sicuro} all'impianto tramite
-    \textit{OAuth2} e account MyVimar;
-    \item collegare il server a un \textbf{servizio AI commerciale} noto
-    (Claude, ChatGPT, Copilot, Gemini);
-    \item consegnare software \textbf{open source}, documentato e testato,
-    con copertura minima del 75\% per unità e integrazione e dell'80\% per i
-    test end-to-end.
+    \item realizzare un'infrastruttura \textit{}{Cloud}-ready \textbf{containerizzata}, definita come \textit{Infrastructure as Code} e compatibile con AWS;
+    \item realizzare un \textbf{server MCP} e un \textbf{client MCP} che permettano \textbf{lettura} e \textbf{scrittura} sui dispositivi, ricostruendo le relazioni tra \textit{Location}, \textit{Function} e \textit{Datapoint};
+    \item garantire un accesso \textbf{sicuro} all'impianto tramite \textit{OAuth2} e account MyVimar;
+    \item collegare il server a un \textbf{servizio AI commerciale} noto (Claude, ChatGPT, Copilot, Gemini);
+    \item consegnare software \textbf{open source}, documentato e testato, con copertura minima del 75\% per unità e integrazione e dell'80\% per i test end-to-end.
+\end{itemize}
 
 \subsection{Contesto d'uso e prospettiva del prodotto}
 Inquadrare il sistema nel suo ambiente operativo: interazioni con gli utenti, componenti che lo costituiscono e servizi/piattaforme esterne con cui scambia informazioni.
