@@ -105,6 +105,8 @@
         \hline
         - & - & - & - & - \\
         \hline
+        0.1.2 & 2026/11/14 & Simone Giuliano & Stesura paragrafi 3.1 e 3.2 & - \\
+        \hline
         0.1.1 & 2026/11/13 & Sara Ballardin & Stesura dell'introduzione & - \\
         \hline
         0.1.0 & 2026/11/09 & Sara Ballardin & Definizione struttura del documento & - \\
@@ -201,10 +203,33 @@ Descrivere i profili di utilizzatori umani e di sistemi esterni che si interfacc
 \section{Casi d'uso}
 
 \subsection{Introduzione ai casi d'uso}
-Spiegare cos'è un caso d'uso, la convenzione di codifica adottata (UC, sotto-casi d'uso) e come sono letti i diagrammi UML.
- 
+Un \textit{caso d'uso} rappresenta una descrizione chiara e dettagliata di un insieme di \textit{scenari} che condividono il medesimo obiettivo per un \textit{attore}. Tali \textit{scenari} descrivono il modo in cui un \textit{attore} interagisce con il sistema e le funzionalità che quest'ultimo gli fornisce.
+
+ Al fine di garantire l'identificazione e la tracciabilità delle funzionalità, la codifica adottata è \texttt{UC[Codice\_Padre].[Codice\_Figlio]}. I \textit{sotto-casi d'uso} ereditano l'identificativo del \textit{caso d'uso} principale da cui derivano. Ogni livello gerarchico successivo è separato dal precedente tramite il carattere punto (\texttt{.}), definendo così una struttura ad albero.
+Ad integrazione della descrizione testuale, ogni \textit{caso d'uso} è accompagnato da un diagramma UML 2.0 che illustra le interazioni previste tra gli \textit{attori} coinvolti e le funzionalità del sistema.
+
 \subsection{Formato di specifica}
-Definire i campi usati per descrivere ogni caso d'uso: attori, pre-condizioni, post-condizioni, scenario principale, scenari alternativi, inclusioni, estensioni e generalizzazioni.
+All'interno del documento, ogni \textit{caso d'uso} verrà descritto attraverso le seguenti caratteristiche, da intendersi secondo le definizioni di seguito riportate:
+
+\begin{itemize}
+    \item \textbf{Attori principali:} Rappresentano i ruoli assunti dalle entità che interagiscono in modo attivo con il sistema, al fine di raggiungere il proprio obiettivo.
+    
+    \item \textbf{Attori secondari:} Rappresentano eventuali entità esterne coinvolte passivamente nell'interazione per supportare o completare l'esecuzione del \textit{caso d'uso}.
+    
+    \item \textbf{Pre-condizioni:} L'insieme delle condizioni di sistema che devono risultare verificate affinché il \textit{caso d'uso} possa iniziare.
+    
+    \item \textbf{Post-condizioni:} Le condizioni finali che il sistema garantisce al termine dell'esecuzione del \textit{caso d'uso}. Per ogni \textit{scenario} (principale o alternativo) vengono definite specifiche post-condizioni; al termine dell'interazione risulteranno verificate quelle relative allo \textit{scenario} effettivamente percorso.
+    
+    \item \textbf{Scenario principale:} Univoca sequenza ordinata di azioni che rappresenta il percorso standard, privo di errori o eccezioni, che conclude con il completamento del \textit{caso d'uso}.
+    
+    \item \textbf{Scenari alternativi:} Sequenze di eventi (da zero a molteplici) che modellano eccezioni, errori o deviazioni dal flusso standard.
+    
+    \item \textbf{Inclusioni:} Riferimenti ad altri \textit{casi d'uso} che devono obbligatoriamente essere eseguiti per poter concludere il \textit{caso d'uso} includente.
+    
+    \item \textbf{Estensioni:} Riferimenti a \textit{casi d'uso} estendenti che vengono eseguiti solo al verificarsi di specifiche condizioni, che aumentano o alterano le funzionalità in uno \textit{scenario} alternativo.
+
+    \item \textbf{Generalizzazioni:} Relazioni in cui un \textit{caso d'uso} derivato eredita interamente le caratteristiche di un \textit{caso d'uso} base, potendone specializzare il comportamento.
+\end{itemize}
  
 \subsection{Classificazione degli attori}
 \subsubsection{Attori principali}
