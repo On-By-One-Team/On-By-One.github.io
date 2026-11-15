@@ -11,19 +11,18 @@ SPEC = importlib.util.spec_from_file_location(
 generate_site = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = generate_site
 SPEC.loader.exec_module(generate_site)
-from generate_site import Document, sort_documents
 
 
 class GenerateSiteTests(unittest.TestCase):
     def test_dates_are_descending_and_undated_files_are_last(self):
         root = generate_site.PDF_ROOT / "verbali" / "interni"
         items = [
-            Document(root / "2026-10-20-vi.pdf", None),
-            Document(root / "2026-11-10-vi.pdf", None),
-            Document(root / "verbale.pdf", None),
+            generate_site.Document(root / "2026-10-20-vi.pdf", None),
+            generate_site.Document(root / "2026-11-10-vi.pdf", None),
+            generate_site.Document(root / "verbale.pdf", None),
         ]
         self.assertEqual(
-            [item.name for item in sort_documents(items)],
+            [item.name for item in generate_site.sort_documents(items)],
             ["2026-11-10-vi.pdf", "2026-10-20-vi.pdf", "verbale.pdf"],
         )
 
@@ -97,6 +96,28 @@ class GenerateSiteTests(unittest.TestCase):
         self.assertIn("Documenti gestionali", labels)
         self.assertIn("Verbali interni", labels)
         self.assertNotIn("Verbali Interni", labels)
+
+    def test_filename_pattern_is_generic_and_excludes_unmatched_documents(self):
+        root = generate_site.PDF_ROOT / "verbali" / "esterni"
+        items = [
+            generate_site.Document(root / "2026-10-22-ve-firmato.pdf", None),
+            generate_site.Document(root / "2026-10-22-ve.pdf", None),
+        ]
+        entry = {
+            "path": "docs/pdf/verbali/esterni",
+            "filename_pattern": "*-firmato.pdf",
+        }
+        self.assertEqual(
+            [item.name for item in generate_site.configured_documents(items, entry)],
+            ["2026-10-22-ve-firmato.pdf"],
+        )
+
+    def test_external_minutes_publish_only_signed_files(self):
+        content = generate_site.generated_sections(generate_site.documents())
+        self.assertIn("2026-10-22-ve-firmato.pdf", content)
+        self.assertIn("2026-10-28-ve-firmato.pdf", content)
+        self.assertNotIn("2026-10-22-ve.pdf", content)
+        self.assertNotIn("2026-10-28-ve.pdf", content)
 
 
 if __name__ == "__main__":

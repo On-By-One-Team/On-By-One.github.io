@@ -8,6 +8,7 @@ import json
 import re
 from dataclasses import dataclass
 from datetime import date
+from fnmatch import fnmatchcase
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -127,7 +128,15 @@ def path_matches(document: Document, entry: dict) -> bool:
 
 
 def configured_documents(items: list[Document], entry: dict) -> list[Document]:
-    matches = [item for item in items if path_matches(item, entry)]
+    matches = [
+        item
+        for item in items
+        if path_matches(item, entry)
+        and (
+            not entry.get("filename_pattern")
+            or fnmatchcase(item.name, entry["filename_pattern"])
+        )
+    ]
     if not matches:
         return []
     return sort_documents(matches)
@@ -227,7 +236,9 @@ def generated_sections(items: list[Document]) -> str:
         cards = {}
         for entry in section_config["entries"]:
             documents_for_entry = configured_documents(items, entry)
-            matched_paths.update(item.path for item in documents_for_entry)
+            matched_paths.update(
+                item.path for item in items if path_matches(item, entry)
+            )
             card = cards.setdefault(entry["card"], {"title": entry["card_title"], "entries": []})
             card["entries"].append((entry, documents_for_entry))
 

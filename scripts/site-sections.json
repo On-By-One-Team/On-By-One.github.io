@@ -25,7 +25,8 @@
           "path": "docs/pdf/verbali/esterni",
           "card": "verbali",
           "card_title": "Verbali",
-          "group": "Verbali esterni"
+          "group": "Verbali esterni",
+          "filename_pattern": "*-firmato.pdf"
         }
       ]
     },
