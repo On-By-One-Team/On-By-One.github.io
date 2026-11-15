@@ -12,6 +12,7 @@ from fnmatch import fnmatchcase
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+DOCS_ROOT = ROOT / "docs"
 PDF_ROOT = ROOT / "docs" / "pdf"
 DIARY_ROOT = ROOT / "docs" / "diari-di-bordo" / "pdf"
 TEX_ROOT = ROOT / "docs" / "tex"
@@ -23,6 +24,7 @@ END_MARKER = "        <!-- GENERATED DOCUMENTS END -->"
 VERSION_ROW = re.compile(
     r"^\s*([0-9]+\.[0-9]+\.[0-9]+)\s*&\s*[^&]+&", re.MULTILINE
 )
+DRAFT_VERSION_ROW = re.compile(r"^\s*-\s*&", re.MULTILINE)
 DATE_IN_NAME = re.compile(r"(?<!\d)(\d{4}-\d{2}-\d{2})(?!\d)")
 PDF_OBJECT = re.compile(rb"\d+\s+\d+\s+obj(.*?)endobj", re.DOTALL)
 PDF_TITLE = re.compile(rb"/Title\s*\(([^)]*)\)")
@@ -77,6 +79,8 @@ def version_for(pdf_path: Path) -> str | None:
     info_table = document_info[1].split(r"\end{tabularx}", 1)[0]
     if r"\textbf{Versione}" not in info_table:
         return None
+    if DRAFT_VERSION_ROW.search(info_table):
+        return None
     match = VERSION_ROW.search(info_table)
     if not match:
         raise ValueError(f"Versione corrente non interpretabile: {tex_path}")
@@ -85,29 +89,12 @@ def version_for(pdf_path: Path) -> str | None:
 
 def documents() -> list[Document]:
     result = []
-    for root in (PDF_ROOT, DIARY_ROOT):
-        for path in root.rglob("*.pdf"):
-            relative = path.relative_to(ROOT / "docs")
-            if not (
-                relative.parts[:2] in {
-                    ("pdf", "candidatura"),
-                    ("pdf", "gestionali"),
-                    ("pdf", "rtb"),
-                    ("diari-di-bordo", "pdf"),
-                }
-                or relative.parts[:3] in {
-                    ("pdf", "verbali", "interni"),
-                    ("pdf", "verbali", "esterni"),
-                }
-            ):
-                raise ValueError(f"Directory PDF non riconosciuta: {relative}")
-            document = Document(path, version_for(path))
-            title = pdf_info_title(path)
-            if title and title != path.stem:
-                raise ValueError(
-                    f"Titolo PDF non coerente con il nome file: {path}"
-                )
-            result.append(document)
+    for path in DOCS_ROOT.rglob("*.pdf"):
+        document = Document(path, version_for(path))
+        title = pdf_info_title(path)
+        if title and title != path.stem:
+            raise ValueError(f"Titolo PDF non coerente con il nome file: {path}")
+        result.append(document)
     return result
 
 

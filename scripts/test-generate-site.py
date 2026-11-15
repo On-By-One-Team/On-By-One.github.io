@@ -78,14 +78,14 @@ class GenerateSiteTests(unittest.TestCase):
         pdf_path = generate_site.DIARY_ROOT / "2026-11-02-ddb.pdf"
         self.assertEqual(generate_site.pdf_info_title(pdf_path), pdf_path.stem)
 
-    def test_existing_norme_di_progetto_documentazione_has_a_version(self):
+    def test_draft_norme_di_progetto_documentazione_has_no_version(self):
         pdf_path = (
             generate_site.PDF_ROOT
             / "gestionali"
             / "norme-di-progetto"
             / "norme-di-progetto-documentazione.pdf"
         )
-        self.assertEqual(generate_site.version_for(pdf_path), "1.0.0")
+        self.assertIsNone(generate_site.version_for(pdf_path))
 
     def test_editorial_configuration_uses_sentence_case_labels(self):
         labels = [
@@ -96,6 +96,36 @@ class GenerateSiteTests(unittest.TestCase):
         self.assertIn("Documenti gestionali", labels)
         self.assertIn("Verbali interni", labels)
         self.assertNotIn("Verbali Interni", labels)
+
+    def test_documents_scan_new_pdf_directories_without_code_changes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            docs_root = Path(directory)
+            future_directory = docs_root / "pdf" / "futura-milestone"
+            future_directory.mkdir(parents=True)
+            future_pdf = future_directory / "documento.pdf"
+            future_pdf.write_bytes(b"%PDF-1.4\n")
+
+            old_docs_root = generate_site.DOCS_ROOT
+            generate_site.DOCS_ROOT = docs_root
+            try:
+                self.assertEqual(
+                    [item.path for item in generate_site.documents()],
+                    [future_pdf],
+                )
+            finally:
+                generate_site.DOCS_ROOT = old_docs_root
+
+    def test_unconfigured_document_is_rejected(self):
+        document = generate_site.Document(
+            generate_site.ROOT
+            / "docs"
+            / "pdf"
+            / "futura-milestone"
+            / "document.pdf",
+            None,
+        )
+        with self.assertRaisesRegex(ValueError, "PDF senza associazione editoriale"):
+            generate_site.generated_sections(generate_site.documents() + [document])
 
     def test_filename_pattern_is_generic_and_excludes_unmatched_documents(self):
         root = generate_site.PDF_ROOT / "verbali" / "esterni"
