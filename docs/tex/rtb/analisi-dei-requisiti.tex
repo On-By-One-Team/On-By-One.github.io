@@ -186,27 +186,46 @@ Di seguito sono elencati i documenti vincolanti di progetto, le regole interne d
 
 \subsection{Scopo e obiettivi del prodotto}
 Il progetto consiste nella realizzazione di AURA (\emph{AI for Understanding, Reasoning and Automation}), progettata per l’integrazione avanzata tra l'impianto domotico \emph{View Wireless} e i principali servizi di intelligenza artificiale generativa. 
-Il suo scopo è mostrare la fattibilità e le potenzialità dell'integrazione tra l'impianto domotico \emph{View Wireless} e i principali servizi di intelligenza artificiale generativa, sfruttando lo standard aperto \emph{Model Context Protocol} (MCP) e le \emph{KNX IoT 3rd-party API} (v2.1.0).
+ Il suo scopo è mostrare la fattibilità e le potenzialità
+dell'integrazione tra l'impianto domotico \emph{View Wireless} e i principali
+servizi di intelligenza artificiale generativa, sfruttando lo standard aperto \emph{Model Context Protocol} (MCP) e le \emph{KNX IoT 3rd-party API} (v2.1.0).
 L'idea di fondo è usare servizi GenAI già esistenti come interfaccia in linguaggio naturale verso la smart home, senza sviluppare un assistente AI dedicato. Il prodotto non intende sostituire le applicazioni esistenti (come l'app Vimar View), ma affiancarle come canale complementare.
 
 Il prodotto deve soddisfare i seguenti obiettivi:
 \begin{itemize}
     \item realizzare un'infrastruttura \textit{}{Cloud}-ready \textbf{containerizzata}, definita come \textit{Infrastructure as Code} e compatibile con AWS;
-    \item realizzare un \textbf{server MCP} e un \textbf{client MCP} che permettano \textbf{lettura} e \textbf{scrittura} sui dispositivi, ricostruendo le relazioni tra \textit{Location}, \textit{Function} e \textit{Datapoint};
+    \item realizzare un \textbf{server MCP} e un \textbf{client MCP} che permettano \textbf{lettura} e \textbf{scrittura} sui dispositivi, ricostruendo le relazioni tra\textit{Location}, \textit{Function} e \textit{Datapoint};
     \item garantire un accesso \textbf{sicuro} all'impianto tramite \textit{OAuth2} e account MyVimar;
     \item collegare il server a un \textbf{servizio AI commerciale} noto (Claude, ChatGPT, Copilot, Gemini);
     \item consegnare software \textbf{open source}, documentato e testato, con copertura minima del 75\% per unità e integrazione e dell'80\% per i test end-to-end.
 \end{itemize}
 
 \subsection{Contesto d'uso e prospettiva del prodotto}
-Inquadrare il sistema nel suo ambiente operativo: interazioni con gli utenti, componenti che lo costituiscono e servizi/piattaforme esterne con cui scambia informazioni.
+AURA si colloca come strato di integrazione tra il servizio AI scelto dall'utente e il \textbf{Cloud Vimar}. Il server MCP, ospitato nell'infrastruttura Cloud-ready, fa da \textbf{adattatore} tra le due parti: riceve le richieste del servizio AI tramite \textit{client MCP}, le traduce in chiamate alle KNX IoT 3rd-party API, autenticate con OAuth2, e restituisce i risultati. A sua volta il Cloud Vimar comanda i dispositivi tramite \textbf{Gateway BLE} e rete \textit{Bluetooth Mesh}. Il flusso completo, dalla richiesta dell'utente alla risposta, è quindi il seguente:
+\begin{enumerate}
+    \item l'utente invia una richiesta al \textbf{servizio AI esterno};
+    \item il servizio AI interroga il \textbf{server MCP} tramite client MCP;
+    \item il server MCP chiama le \textbf{KNX IoT 3rd-party API};
+    \item il Cloud Vimar esegue il comando sui dispositivi o ne legge lo stato, e il risultato risale lungo la stessa catena.
+\end{enumerate}
 
 \subsection{Funzionalità principali}
-Presentare una panoramica delle macro-funzionalità fornite dal sistema, senza anticipare il livello di dettaglio dei requisiti software.
+Le funzionalità \textbf{obbligatorie} sono:
+\begin{itemize}
+    \item \textbf{autenticazione} con account MyVimar tramite OAuth2 e
+    \textbf{selezione dell'impianto}, mantenuta per tutta la conversazione;
+    \item \textbf{esplorazione} di ambienti, funzioni e dispositivi;
+    \item \textbf{lettura dello stato} per dispositivo, ambiente, tipologia di funzione o intero impianto;
+    \item \textbf{scrittura} su dispositivi singoli, multipli o sull'intero impianto;
+    \item \textbf{gestione del linguaggio naturale}, comprese richieste ambigue, sinonimi, richieste implicite e conferma per i comandi estesi;
+    \item \textbf{gestione degli errori}, con indicazione delle alternative disponibili;
+    \item \textbf{avvio con un solo comando} (\textit{docker compose up}) e configurazione tramite file di variabili d'ambiente.
+\end{itemize}
+
+A queste si aggiungono funzionalità \textbf{opzionali}, che estendono il prodotto senza essere indispensabili: il supporto all'endpoint \emph{Device} delle KNX IoT 3rd-party API, l'uso del client MCP come estensione VSCode o da CLI/TUI, il rilascio effettivo su AWS e una copertura dei test superiore al 90\%. Infine, le funzionalità \textbf{nice-to-have} riguardano richieste su più \emph{impianti}, storico e operazioni sui dati, azioni condizionate, scenari composti, trigger ed eventi 
 
 \subsection{Caratteristiche degli utenti}
-Descrivere i profili di utilizzatori umani e di sistemi esterni che si interfacciano con il prodotto, evidenziandone competenze tecniche attese, mansioni e obiettivi.
-
+L'\textbf{utente residenziale} è il principale destinatario del prodotto. Dispone di un \emph{impianto} View Wireless e di un account MyVimar, e comanda la propria abitazione in linguaggio naturale tramite il servizio AI che preferisce.
 \newpage
 
 
