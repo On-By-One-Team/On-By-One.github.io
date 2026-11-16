@@ -1,0 +1,296 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PACCHETTI ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage[table]{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{lmodern}
+\usepackage{anyfontsize}
+
+\begin{document}
+
+% ==============================================================================
+% FRONTESPIZIO (PAGINA 1)
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+
+    \includegraphics[width=0.45\textwidth]{assets/logo_unipd.jpg}
+    \hfill
+    \includegraphics[width=0.45\textwidth]{assets/logo.png}\par
+    \vspace{0.5cm}
+
+    {\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par}
+    \vspace{1cm}
+
+    {\huge \bfseries Verbale esterno 2026/10/28 \par}
+
+    \vspace{1.5cm}
+
+    {\large
+    \textbf{On-By-One}:\par
+    \vspace{0.3cm}
+    \begin{tabular}{l l}
+        Sara Ballardin & 2101048 \\
+        Shuhui Chen & 2138001 \\
+        Simone Giuliano & 2145591 \\
+        Alvise Greggio & 2141004 \\
+        Daniele Nuzzaci & 2139039 \\
+        Federico Temporin & 2146764 \\
+        Tommaso Zorzetto & 2148629 \\
+    \end{tabular}
+    \par}
+
+    \vfill
+
+    \begin{table}[h]
+        \centering
+        \arrayrulecolor{gray!50}
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabularx}{\textwidth}{|c|c|c|X|}
+            \hline
+            \rowcolor{gray!10} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
+            \hline
+            \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+            \hline
+            1.0.0 & 2026/11/12 & Bozza &
+            On-By-One \newline
+            Prof. Tullio Vardanega \newline
+            Prof. Riccardo Cardin \newline
+            Vimar S.p.A. \newline
+             \\
+            \hline
+        \end{tabularx}
+        \arrayrulecolor{black}
+    \end{table}
+
+    \vspace{0.5cm}
+
+    {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
+
+\end{titlepage}
+
+% ==============================================================================
+% REGISTRO DELLE MODIFICHE (PAGINA 2)
+% ==============================================================================
+\section*{Registro delle modifiche}
+
+\vspace{1cm}
+\begin{center}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
+        \hline
+        \rowcolor{gray!10}
+        \multicolumn{1}{|c|}{\textbf{Versione}} &
+        \multicolumn{1}{c|}{\textbf{Data}} &
+        \multicolumn{1}{c|}{\textbf{Autore}} &
+        \multicolumn{1}{c|}{\textbf{Descrizione}} &
+        \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        1.0.0 & 2026/11/16 & Tommazo Zorzetto & Revisione del verbale & Daniele Nuzzaci \\
+        \hline
+        0.1.0 & 2026/11/16 & Tommazo Zorzetto & Prima stesura del verbale & - \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{center}
+\vfill
+\newpage
+
+% ==============================================================================
+% INDICE (PAGINA 3)
+% ==============================================================================
+\tableofcontents
+\newpage
+
+% ==============================================================================
+% INFORMAZIONI GENERALI
+% ==============================================================================
+\section{Informazioni generali}
+
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|>{\centering\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!10} \multicolumn{2}{|c|}{\textbf{Dettagli della riunione}} \\
+        \hline
+        \textbf{Data} & 2026/11/12 \\ \hline
+        \textbf{Ora inizio} & 16:00 \\ \hline
+        \textbf{Ora fine} & 17:30 \\ \hline
+        \textbf{Modalità} & In presenza \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!10} \multicolumn{3}{|c|}{\textbf{Partecipanti}} \\
+        \hline
+        \rowcolor{gray!10} \textbf{Nome e cognome} & \textbf{Ruolo} & \textbf{Presenza} \\
+        \hline
+        Sara Ballardin & Analista & Assente \\ \hline
+        Shuhui Chen & Analista & Presente \\ \hline
+        Simone Giuliano & Analista & Presente \\ \hline
+        Alvise Greggio & Responsabile & Presente \\ \hline
+        Daniele Nuzzaci & Verificatore & Presente \\ \hline
+        Federico Temporin & Amministratore & Presente \\ \hline
+        Tommaso Zorzetto & Verificatore & Presente \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+\newpage
+
+% ==============================================================================
+% CORPO DEL VERBALE
+% ==============================================================================
+
+\section{Introduzione}
+La riunione si è svolta in presenza con i referenti di Vimar S.p.A. --- Mariano Sciacco (Cloud engineer e sistemi IoT) e Domenico Bevilacqua (Architettura e innovazione), con la partecipazione in via telematica di Alberto Pomella --- con l'obiettivo di presentare la realtà aziendale e il gruppo di lavoro, definire le modalità organizzative e comunicative del progetto, pianificare gli incontri periodici di Stato Avanzamento Lavori (SAL) e gli approfondimenti tecnologici, consegnare e illustrare il kit hardware e la documentazione tecnica e chiarire i primi dubbi tecnici e formali relativi al capitolato.
+
+
+\section{Ordine del giorno}
+\begin{itemize}
+    \item Presentazione aziendale, dei referenti tecnici e del gruppo di lavoro.
+    \item Premessa del progetto e separazione tra ambito accademico e aziendale.
+    \item Organizzazione dei SAL (Stato Avanzamento Lavori) periodici.
+    \item Condivisione di materiali, codice sorgente e canali di comunicazione.
+    \item Incontri di formazione e approfondimento tecnologico.
+    \item Materiale hardware fornito, credenziali e sicurezza dei dati.
+    \item Sessione di domande e risposte (Q\&A) su capitolato, architettura e tecnologie.
+    \item Prossimi passi operativi.
+\end{itemize}
+
+
+\section{Discussioni}
+\subsection{Presentazione aziendale e dei referenti}
+Alberto Pomella, collegato in via telematica, ha aperto l'incontro descrivendo Vimar S.p.A., le sue principali attività e la copertura tecnologica completa offerta dall'azienda, che spazia dalla progettazione hardware allo sviluppo software. Vimar è un'azienda strutturata con numerose sedi e organizzata al proprio interno in diversi gruppi IT specializzati:
+\begin{itemize}
+    \item un gruppo dedicato allo sviluppo di un'unica applicazione per la gestione integrata di tutti i sottosistemi (illuminazione, climatizzazione, telefonia, ecc.);
+    \item un gruppo incaricato dello sviluppo cloud e del software per PC;
+    \item un gruppo dedicato alla cybersecurity;
+    \item un gruppo di test sul sistema dei prodotti, responsabile dell'esecuzione di collaudi complessi e prevalentemente automatizzati;
+    \item un gruppo di gestione progetti, che raccoglie le esigenze del marketing per ciascun dispositivo e coordina le tempistiche complessive di realizzazione.
+\end{itemize}
+Sono stati quindi presentati i referenti tecnici che affiancheranno il gruppo durante il progetto: Mariano Sciacco (Cloud engineer e sistemi IoT) e Domenico Bevilacqua (Architettura e innovazione). A seguire si sono svolte le presentazioni dei componenti del gruppo di lavoro e l'illustrazione delle modalità operative aziendali, lasciando infine spazio alle domande degli studenti.
+
+\subsection{Premessa del progetto e divisione dei ruoli}
+L'azienda ha raccomandato di mantenere una netta separazione tra la componente accademica e quella aziendale del progetto. Per quanto concerne la documentazione e i materiali prodotti dal gruppo che saranno oggetto di valutazione universitaria (aspetti didattici e obiettivi accademici), il riferimento sono i docenti del corso; in particolare, è stato consigliato di rivolgersi al Prof. Tullio Vardanega o al Prof. Riccardo Cardin per risolvere eventuali dubbi o problematiche riguardanti la documentazione. Per tutto ciò che riguarda invece il capitolato, il valore atteso del prodotto, i bisogni degli utenti, gli esempi di utilizzo e i vincoli aziendali o tecnologici, i referenti Vimar hanno invitato il gruppo a rivolgersi direttamente a loro, sottolineando che il supporto aziendale potrà essere fornito efficacemente solo a fronte di domande attive e puntuali da parte degli studenti.
+
+\subsection{Organizzazione dei SAL periodici}
+Sono state definite le modalità di svolgimento degli incontri periodici di Stato Avanzamento Lavori (SAL), articolate in due fasi:
+\begin{itemize}
+    \item \textbf{Fino al Proof of Concept (PoC):} i SAL avranno una durata di 60 minuti con cadenza bisettimanale (ogni due settimane). Si terranno su Microsoft Teams tramite invito periodico inviato dall'azienda, con la possibilità di svolgerli in presenza su richiesta del gruppo. La scelta della fascia oraria è a discrezione del gruppo, escluse le giornate di lunedì alle 16:00 e venerdì alle 16:00. Le riunioni verranno trascritte automaticamente tramite Copilot. Per ciascun SAL è fortemente consigliato predisporre un'agenda e alcune slide di supporto, da inviare il giorno precedente l'incontro, contenenti: i ruoli dei membri, una panoramica punto per punto degli avanzamenti, le attività svolte, quelle pianificate e gli eventuali limiti o blocchi riscontrati. Eventuali domande potranno essere trasmesse anticipatamente via e-mail.
+    \item \textbf{Dopo il PoC:} i SAL diventeranno incontri settimanali della durata di 30 minuti. Anche in questa fase è consigliato presentare un'agenda sintetica in poche slide per illustrare quanto prodotto, le attività successive e mostrare graficamente l'andamento del progetto.
+\end{itemize}
+
+\subsection{Condivisione dei materiali, codice sorgente e comunicazioni}
+\begin{itemize}
+    \item \textbf{Verbali esterni:} è stata presentata una piattaforma dedicata (Round Review) per la gestione del flusso di approvazione dei verbali esterni: il gruppo carica il documento, i referenti aziendali inseriscono eventuali commenti, il gruppo effettua le opportune verifiche e, una volta ottenuto lo stato di approvazione (\emph{approved}), procede alla pubblicazione. Tale piattaforma semplifica e velocizza l'intero processo di revisione.
+    \item \textbf{Codice sorgente:} per le fasi di PoC e MVP l'azienda ha richiesto di aggiungere degli utenti in sola lettura al repository GitHub del progetto per consentire la consultazione del codice. Durante i SAL, in caso di dubbi puntuali su porzioni specifiche di codice, sarà possibile inviare direttamente il collegamento alla singola riga interessata.
+    \item \textbf{Comunicazioni:} i referenti hanno fornito i propri recapiti di posta elettronica e indicato le fasce di disponibilità. Oltre alle riunioni ricorrenti su Microsoft Teams --- la cui chat potrà essere impiegata per brevi chiarimenti al termine delle chiamate --- le comunicazioni ordinarie avverranno tramite e-mail (cui i referenti rispondono dal lunedì al venerdì nella fascia oraria 8:00--17:00) oppure saranno rimandate al SAL successivo.
+\end{itemize}
+
+\subsection{Formazione e approfondimenti tecnologici}
+Vimar mette a disposizione del gruppo incontri di approfondimento tecnologico della durata di un'ora ciascuno sulle tecnologie di riferimento del progetto: KNX IoT, Docker e Model Context Protocol (MCP). Qualora il gruppo si coordini con l'altro team assegnatario del medesimo capitolato, è possibile organizzare sessioni cumulative della durata massima di due ore su tali tematiche. L'azienda richiede agli studenti di arrivare preparati a questi incontri, dichiarandosi disponibile sia a chiarimenti preliminari via e-mail sia ad affrontare più argomenti nella stessa sessione o durante i SAL.
+
+
+\subsection{Materiale hardware fornito e sicurezza}
+Durante l'incontro l'azienda ha consegnato di persona al gruppo un kit d'impianto portatile (dotato di luci, sensori di movimento e modulo Wi-Fi) da collegare all'alimentazione elettrica e alla rete Wi-Fi. Verranno inoltre forniti un account per accedere all'applicazione ``View'' e le relative credenziali per le API con privilegi di amministratore, necessarie per configurare la connessione Wi-Fi del kit. È stata infine mostrata ulteriore documentazione tecnica utile allo studio delle tecnologie, accompagnata da una rigorosa regola di sicurezza: tale documentazione riservata, così come token o informazioni non accessibili pubblicamente, \textbf{non} deve essere inserita all'interno di strumenti di intelligenza artificiale.
+
+\subsection{Domande e risposte emerse (Q\&A)}
+\begin{itemize}
+    \item \textbf{Monitoraggio dello stato delle lampade:} l'accensione e le variazioni di stato dei dispositivi sono visibili in tempo reale sia fisicamente sul kit sia sull'applicazione Vimar, nella quale gli aggiornamenti vengono gestiti tramite WebSocket.
+    \item \textbf{Utilizzo dei sensori e del kit:} durante la riunione è stato mostrato brevemente il funzionamento dell'applicazione e del kit (attualmente indipendente da una lampada tradizionale). Per testare il sensore di movimento è necessario il movimento fisico di una persona a una distanza di circa 3--4 metri; l'azienda ha inoltre consigliato di mantenere le due scatole fornite relativamente vicine tra loro.
+    \item \textbf{Simulazione di consumi energetici elevati (requisito opzionale):} sebbene l'applicazione consenta di monitorare l'energia assorbita, l'azienda ha raccomandato di concentrarsi prioritariamente sui requisiti obbligatori del capitolato prima di affrontare i requisiti opzionali (\emph{nice to have}). Qualora si decidesse di implementare tale funzionalità, è possibile simulare accensioni prolungate delle luci o scenari a basso efficientamento energetico che richiedano l'invio di un avviso da parte dell'applicazione.
+    \item \textbf{Granularità dei casi d'uso:} il punto di partenza deve essere la tabella riportata nel capitolato. Vimar potrà fornire chiarimenti sul contenuto applicativo, mentre per gli aspetti legati al formalismo e all'individuazione dei sistemi coinvolti sarà opportuno confrontarsi anche con i docenti del corso.
+    \item \textbf{Scelta architetturale tra AWS e Docker:} alla domanda se convenisse partire direttamente da AWS in ottica di estensibilità, l'azienda ha consigliato di iniziare dai container Docker, più accessibili, economici e adatti a stabilire convenzioni condivise all'interno del team, oltre a rappresentare un'ottima base per rendere accessibile il server MCP via web. L'eventuale passaggio su AWS potrà essere valutato successivamente, all'avvio della fase di MVP.\newpage
+    \item \textbf{Documentazione KNX IoT e pulsanti:} la documentazione fornita costituisce un utile riferimento da approfondire; i pulsanti inclusi nel kit corrispondono ad applicazioni denominate ``function'' utilizzabili per molteplici scopi, su cui i referenti hanno dato piena disponibilità per ulteriori spiegazioni.
+    \item \textbf{Utilizzo dell'intelligenza artificiale:} l'azienda incoraggia un uso consapevole degli strumenti di IA come supporto allo sviluppo, ribadendo il divieto assoluto di condividere token o dati riservati. È stata inoltre espressa la disponibilità a valutare un eventuale approfondimento sull'uso corretto dell'IA e delle \emph{skill} al fine di ottenere risposte deterministiche.
+\end{itemize}
+
+\subsection{Ultimi passi concordati}
+A conclusione dell'incontro sono stati riepilogati i passi operativi immediati: invio da parte del gruppo dei nominativi e degli indirizzi e-mail dei componenti, stesura e caricamento del presente verbale esterno, aggiunta dei referenti aziendali e invio dell'invito per i SAL periodici da parte di Vimar.
+
+
+
+
+\section{Decisioni}
+
+\begin{itemize}
+    \item \textbf{VE-2026-11-12.1} Condivisione con i referenti aziendali Vimar dei nominativi e dei rispettivi indirizzi e-mail istituzionali di ciascun componente del gruppo.
+
+    \item \textbf{VE-2026-11-12.2} Comunicazione del collegamento al repository GitHub del gruppo\newline(\url{https://github.com/On-By-One-Team/On-By-One.github.io}) e predisposizione dell'accesso in sola lettura per i referenti aziendali nelle fasi di PoC e MVP.
+
+    \item \textbf{VE-2026-11-12.3} Individuazione della fascia oraria indicativa del martedì dalle 16:00 alle 17:00 per lo svolgimento dei SAL periodici con l'azienda.
+
+    \item \textbf{VE-2026-11-12.4} Richiesta di approfondimenti tecnologici su tutti gli argomenti proposti dall'azienda (Model Context Protocol --- MCP, Docker e KNX IoT), con la richiesta aggiuntiva di poter approfondire anche il tema della programmazione con agenti.
+
+    \item \textbf{VE-2026-11-12.5} Coordinamento con l'altro gruppo di progetto assegnatario del medesimo capitolato per sincronizzare la data degli incontri e consentire sessioni cumulative di approfondimento fino a due ore per entrambi i gruppi.
+\end{itemize}
+
+\newpage
+\section{To-do}
+
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{3.5cm}|c|}
+        \hline
+        \rowcolor{gray!10}
+        \textbf{ID issue} &
+        \textbf{Task} &
+        \textbf{Assegnatario} &
+        \textbf{Scadenza} \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/81}{\#81} & Stesura del verbale esterno del 2026/11/12 e caricamento sulla piattaforma Round Review & Tommaso Zorzetto & 2026/11/18 \\
+        \hline
+        - & Contatto e sincronizzazione con l'altro gruppo di progetto per pianificare gli approfondimenti tecnologici congiunti & 
+        Sara Ballardin \newline
+        Shuhui Chen \newline
+        Simone Giuliano \newline
+        Alvise Greggio \newline
+        Daniele Nuzzaci \newline
+        Federico Temporin \newline
+        Tommaso Zorzetto & - \\
+        \hline
+        - & Studio preliminare della documentazione fornita (KNX IoT, Docker, MCP) nel rispetto delle norme di riservatezza & 
+        Sara Ballardin \newline
+        Shuhui Chen \newline
+        Simone Giuliano \newline
+        Alvise Greggio \newline
+        Daniele Nuzzaci \newline
+        Federico Temporin \newline
+        Tommaso Zorzetto & - \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+
+% ==============================================================================
+% APPROVAZIONE
+% ==============================================================================
+\vfill
+\hfill
+\begin{minipage}{0.4\textwidth}
+    \centering
+    \textbf{Firma del revisore esterno}\par
+    \vspace{1.5cm}
+    \rule{\textwidth}{0.4pt}
+\end{minipage}
+
+\vspace{2cm}
+\end{document}
