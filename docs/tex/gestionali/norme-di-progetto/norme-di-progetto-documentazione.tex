@@ -70,7 +70,7 @@
             \hline
             \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
             \hline
-            1.0.0 & 2026-11-08 & Approvato & 
+            2.0.0 & 16/11/2026 & Approvato &
             On-By-One \newline 
             Prof. Tullio Vardanega \newline 
             Prof. Riccardo Cardin \\
@@ -105,6 +105,8 @@
         \multicolumn{1}{c|}{\textbf{Autore}} & 
         \multicolumn{1}{c|}{\textbf{Descrizione}} & 
         \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        2.0.0 & 2026-11-15 & Federico Temporin & Definizione del processo di pubblicazione automatica dei contenuti sul sito & Daniele Nuzzaci \\
         \hline
         1.0.0 & 2026-11-08 & Federico Temporin & Specificazione della compilazione del campo Verificatore nel registro delle modifiche & Daniele Nuzzaci \\
         \hline
@@ -326,17 +328,17 @@ Quando una Pull Request risolve completamente un'issue, è possibile chiuderla a
 
 Esempi di messaggi conformi alle convenzioni:
 \begin{itemize}
-    \item \texttt{docs: aggiornato il README del repository}
-    \item \texttt{admin: modificato il workflow di compilazione LaTeX (\#57)}
-    \item \texttt{website: corretto il collegamento alla documentazione}
+    \item \texttt{docs: aggiornato il README del repository}.
+    \item \texttt{admin: modificato il workflow di compilazione LaTeX (\#57)}.
+    \item \texttt{website: corretto il collegamento alla documentazione}.
 \end{itemize}
 
 \noindent Esempi di messaggi da evitare:
 \begin{itemize}
-    \item \texttt{aggiornamenti vari}
-    \item \texttt{fix}
-    \item \texttt{modifiche al sito.}
-    \item \texttt{Docs: Update README}
+    \item \texttt{aggiornamenti vari}.
+    \item \texttt{fix}.
+    \item \texttt{modifiche al sito}.
+    \item \texttt{Docs: Update README}.
 \end{itemize}
 
 \subsection{Coerenza con il flusso di lavoro}
@@ -354,6 +356,7 @@ L'integrazione nel branch \texttt{main} avviene secondo la \hyperref[subsec:pull
 La presente sezione può essere aggiornata tramite Pull Request quando emergono esigenze di uniformità o miglioramenti nel processo di gestione delle modifiche.
 
 \section{Convenzioni di denominazione e formati standard}
+\label{sec:convenzioni-denominazione}
 
 Le convenzioni di questa sezione si applicano ai file e ai documenti presenti nel \href{https://github.com/On-By-One-Team/On-By-One.github.io}{repository}.
 
@@ -371,8 +374,8 @@ I nomi dei file devono seguire queste convenzioni:
 
 Le date devono essere espresse nel formato \texttt{AAAA-MM-GG}, dove:
 \begin{itemize}
-    \item \texttt{AAAA} indica l'anno a quattro cifre.
-    \item \texttt{MM} indica il mese a due cifre.
+    \item \texttt{AAAA} indica l'anno a quattro cifre;
+    \item \texttt{MM} indica il mese a due cifre;
     \item \texttt{GG} indica il giorno a due cifre.
 \end{itemize}
 
@@ -382,7 +385,11 @@ Le date devono essere espresse nel formato \texttt{AAAA-MM-GG}, dove:
 
 I \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/docs/pdf/verbali}{verbali delle riunioni} devono includere la data della riunione e un suffisso che ne identifichi la tipologia.
 \begin{itemize}
-    \item Verbali esterni: utilizzare il formato \texttt{AAAA-MM-GG-ve}.
+    \item Verbali esterni:
+    \begin{itemize}
+        \item non firmati: utilizzare il formato \texttt{AAAA-MM-GG-ve};
+        \item firmati: utilizzare il formato \texttt{AAAA-MM-GG-ve-firmato}.
+    \end{itemize}
     \item Verbali interni: utilizzare il formato \texttt{AAAA-MM-GG-vi}.
 \end{itemize}
 
@@ -435,7 +442,60 @@ La formattazione deve essere adeguata al formato utilizzato. In particolare:
 
 La presente sezione può essere aggiornata tramite Pull Request quando emergono esigenze di uniformità, leggibilità o organizzazione dei contenuti.
 
+\section{Pubblicazione automatica del sito}
+\label{sec:pubblicazione-automatica}
+
+Il \href{https://on-by-one-team.github.io/On-By-One.github.io/}{sito web} viene aggiornato automaticamente a partire dai documenti presenti nel \href{https://github.com/On-By-One-Team/On-By-One.github.io}{repository}. L'autore dell'attività deve quindi modificare i contenuti sorgente e i materiali documentali, senza intervenire manualmente sulle sezioni generate dell'indice HTML.
+
+\subsection{Documento in una sezione esistente}
+
+Quando il documento appartiene a una sezione già presente nel sito, l'autore deve:
+\begin{enumerate}
+    \item modificare il sorgente nella directory \texttt{docs/tex/}, quando il documento è redatto in LaTeX, oppure preparare il PDF nella directory editoriale prevista;
+    \item rispettare il percorso, il nome del file e il formato della data definiti nelle \hyperref[sec:convenzioni-denominazione]{norme};
+    \item verificare che il metadato \texttt{/Title} del PDF, se presente, corrisponda al nome del file senza estensione;
+    \item eseguire il generatore, i test e il controllo dei collegamenti, verificando che il documento compaia nella sezione prevista.
+\end{enumerate}
+
+\subsection{Nuova sezione o milestone}
+
+Quando il documento appartiene a una nuova sezione, \textit{milestone}, card o gruppo editoriale, l'autore non deve aggiungere manualmente il relativo HTML. Deve invece aggiornare la configurazione editoriale \texttt{scripts/site-sections.json}, definendo almeno identificativo, titolo, ordine, percorso dei documenti, card e \textit{label} editoriali.
+
+Il generatore utilizza la configurazione editoriale per associare i PDF alle sezioni e produrre l'indice. Di conseguenza, l'aggiunta o lo spostamento di documenti tra sezioni richiede una modifica al file JSON e la successiva rigenerazione, non una modifica manuale al file \texttt{website/index.html}.
+
+\subsection{Parametri della configurazione}
+
+Quando necessario, una voce di \texttt{site-sections.json} può specificare:
+\begin{itemize}
+    \item \texttt{recursive}: include nella sezione anche i PDF presenti nelle sottodirectory del percorso configurato.
+    \item \texttt{show\_if\_empty}: stabilisce se mostrare la sezione anche quando non contiene documenti.
+    \item \texttt{filename\_pattern}: limita la pubblicazione ai file il cui nome corrisponde al modello indicato.
+\end{itemize}
+
+\subsection{Scelta del file da modificare}
+
+La modifica deve essere applicata al file appropriato in base allo scenario:
+\begin{itemize}
+    \item l'aggiunta o l'aggiornamento di un PDF in una sezione esistente richiede solo la modifica del documento sorgente o del PDF.
+    \item la modifica di titolo, ordine, badge, card, gruppo, filtro o percorso editoriale richiede l'aggiornamento di \texttt{scripts/site-sections.json}.
+    \item l'aggiunta di una nuova sezione, milestone o tipologia editoriale richiede una nuova voce in \texttt{scripts/site-sections.json}.
+    \item lo spostamento di documenti tra sezioni richiede l'aggiornamento delle associazioni nel file JSON.
+    \item la modifica del layout, della navigazione o di un contenuto statico al di fuori della sezione generata richiede la modifica manuale di \texttt{website/index.html} e, se necessario, di \texttt{website/style.css}.
+    \item la modifica del comportamento generale di riconoscimento, ordinamento o validazione dei documenti richiede l'aggiornamento di \texttt{scripts/generate-site.py} e dei relativi test.
+\end{itemize}
+
+\noindent Il generatore è configurato per scansionare i percorsi documentali definiti dal repository senza dipendere da un elenco \textit{hardcoded} di directory. Pertanto, una nuova famiglia di percorsi può essere associata tramite \texttt{scripts/site-sections.json}; sono necessarie modifiche al generatore solo quando vengono introdotte regole tecniche nuove.
+
+\subsection{Generazione, validazione e pubblicazione}
+
+L'autore e il revisore devono controllare l'esito dei \href{https://github.com/On-By-One-Team/On-By-One.github.io/tree/main/.github/workflows}{workflow} e verificare che il documento sia raggiungibile nella sezione prevista del sito pubblicato.
+
+\subsection{Modifiche incrementali}
+
+La presente sezione deve essere aggiornata quando cambiano i percorsi editoriali, le convenzioni di pubblicazione o i workflow che generano e pubblicano il sito.
+
 \section{Policy di revisione}
+\label{sec:policy-di-revisione}
 
 Questa sezione stabilisce le regole per la revisione delle modifiche proposte nel \href{https://github.com/On-By-One-Team/On-By-One.github.io}{repository}.
 
@@ -505,6 +565,8 @@ Quando la Pull Request riguarda file tecnici, il revisore deve verificare, per q
 Il revisore deve verificare che i controlli automatici previsti per la Pull Request siano stati completati con esito positivo.
 
 Se un controllo fallisce, la causa deve essere esaminata e risolta prima del merge.
+
+Quando la Pull Request modifica contenuti esposti sul sito, il revisore deve verificare anche il rispetto della \hyperref[sec:pubblicazione-automatica]{procedura di pubblicazione automatica}.
 
 \subsection{Gestione dei commenti}
 
@@ -584,6 +646,7 @@ Le eccezioni non devono compromettere la qualità delle modifiche, la tracciabil
 La presente sezione può essere modificata tramite Pull Request quando emergono esigenze organizzative o tecniche che rendono necessario aggiornare le procedure di revisione.
 
 \section{Definition of Done}
+\label{sec:definition-of-done}
 
 Questa sezione elenca i criteri minimi che un'attività deve soddisfare per essere considerata completata e integrata nel \href{https://github.com/On-By-One-Team/On-By-One.github.io}{repository}.
 
@@ -634,6 +697,16 @@ Quando applicabile, devono essere effettuate le verifiche necessarie per accerta
     \item Le modifiche al sito web vengono verificate per accertare il corretto funzionamento e la corretta visualizzazione dei contenuti interessati.
     \item I file di configurazione e i workflow modificati sono verificati mediante i controlli disponibili, ove applicabili.
     \item Sono state eseguite le verifiche automatiche pertinenti alle modifiche introdotte.
+\end{itemize}
+
+\subsubsection{Pubblicazione sul sito}
+
+Quando l'attività modifica contenuti esposti sul sito, devono essere applicati i passaggi descritti nella \hyperref[sec:pubblicazione-automatica]{procedura di pubblicazione automatica}. In particolare:
+\begin{itemize}
+    \item il documento è stato collocato nel percorso editoriale corretto e rispetta la convenzione di denominazione.
+    \item i test del generatore e il controllo dei collegamenti sono terminati con esito positivo.
+    \item dopo il merge su \texttt{main}, la validazione del sito e il deploy su GitHub Pages sono terminati con esito positivo.
+    \item il documento è verificabile nella sezione prevista del sito pubblicato.
 \end{itemize}
 
 \subsubsection{Versionamento e tracciabilità}

@@ -1,0 +1,81 @@
+{
+  "sections": [
+    {
+      "id": "1-Candidatura",
+      "title": "Candidatura",
+      "tag": "Milestone 01",
+      "order": 1,
+      "badge": {
+        "class": "badge-success",
+        "text": "Completata"
+      },
+      "entries": [
+        {
+          "path": "docs/pdf/candidatura",
+          "card": "candidatura",
+          "card_title": "Documenti di candidatura"
+        },
+        {
+          "path": "docs/pdf/verbali/interni",
+          "card": "verbali",
+          "card_title": "Verbali",
+          "group": "Verbali interni"
+        },
+        {
+          "path": "docs/pdf/verbali/esterni",
+          "card": "verbali",
+          "card_title": "Verbali",
+          "group": "Verbali esterni",
+          "filename_pattern": "*-firmato.pdf"
+        }
+      ]
+    },
+    {
+      "id": "diario-di-bordo",
+      "title": "Diario di bordo",
+      "tag": "Documenti",
+      "order": 2,
+      "entries": [
+        {
+          "path": "docs/diari-di-bordo/pdf",
+          "card": "diari",
+          "card_title": "Diari di bordo"
+        }
+      ]
+    },
+    {
+      "id": "documenti-gestionali",
+      "title": "Documenti gestionali",
+      "tag": "Documenti",
+      "order": 3,
+      "entries": [
+        {
+          "path": "docs/pdf/gestionali",
+          "card": "gestionali",
+          "card_title": "Documenti gestionali",
+          "recursive": false
+        },
+        {
+          "path": "docs/pdf/gestionali/norme-di-progetto",
+          "card": "gestionali",
+          "card_title": "Documenti gestionali",
+          "group": "Norme di progetto"
+        }
+      ]
+    },
+    {
+      "id": "2-RTB",
+      "title": "Requirements and technology baseline (RTB)",
+      "tag": "Milestone 02",
+      "order": 4,
+      "show_if_empty": false,
+      "entries": [
+        {
+          "path": "docs/pdf/rtb",
+          "card": "rtb",
+          "card_title": "Documenti ufficiali"
+        }
+      ]
+    }
+  ]
+}

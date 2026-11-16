@@ -26,6 +26,9 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
+      - name: Genera indice del sito dai PDF
+        run: python scripts/generate-site.py
+
       - name: Validazione HTML5
         run: npx --yes htmlhint website/index.html
 
@@ -62,6 +65,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: main
+
+      - name: Genera indice del sito dai PDF
+        run: python scripts/generate-site.py
 
       - name: Prepara index.html e style.css nella root per il deploy
         run: |
