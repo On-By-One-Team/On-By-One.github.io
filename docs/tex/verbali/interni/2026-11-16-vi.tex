@@ -1,0 +1,234 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PACCHETTI ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
+\usepackage{graphicx}               % Per inserire il logo
+\usepackage{tabularx}               % Per tabelle larghe quanto la pagina
+\usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
+\usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
+\usepackage{lmodern}                % Rende i font scalabili
+\usepackage{anyfontsize}            % Permette dimensioni personalizzate
+
+\begin{document}
+
+% ==============================================================================
+% FRONTESPIZIO (PAGINA 1)
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+
+    % LOGHI
+    \includegraphics[width=0.45\textwidth]{assets/logo_unipd.jpg}
+    \hfill
+    \includegraphics[width=0.45\textwidth]{assets/logo.png}\par
+    \vspace{0.5cm}
+
+    % NOME DEL GRUPPO
+    {\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par} 
+    \vspace{1cm}
+
+    % TITOLO DEL VERBALE
+    {\huge \bfseries Verbale interno 2026/11/16 \par}
+    
+    \vspace{1.5cm}
+
+    % MEMBRI DEL GRUPPO
+    {\large
+    \textbf{On-By-One}:\par
+    \vspace{0.3cm}
+    \begin{tabular}{l l}
+        Sara Ballardin & 2101048 \\
+        Shuhui Chen & 2138001 \\
+        Simone Giuliano & 2145591 \\
+        Alvise Greggio & 2141004 \\
+        Daniele Nuzzaci & 2139039 \\
+        Federico Temporin & 2146764 \\
+        Tommaso Zorzetto & 2148629 \\
+    \end{tabular}
+    \par}
+
+    \vfill
+
+    % TABELLA INFORMAZIONI DOCUMENTO E DESTINATARI
+    \begin{table}[h]
+        \centering
+        \arrayrulecolor{gray!50}
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabularx}{\textwidth}{|c|c|c|X|}
+            \hline
+            \rowcolor{gray!10} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
+            \hline
+            \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+            \hline
+            1.0.0 & 2026/11/16 & Bozza & 
+            On-By-One \newline 
+            Prof. Tullio Vardanega \newline 
+            Prof. Riccardo Cardin \\
+            \hline
+        \end{tabularx}
+        \arrayrulecolor{black}
+    \end{table}
+    
+    \vspace{0.5cm}
+    
+    % CONTATTI
+    {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
+    
+\end{titlepage}
+
+\newpage
+
+% ==============================================================================
+% REGISTRO DELLE MODIFICHE
+% ==============================================================================
+\section*{Registro delle modifiche}
+
+\vspace{1cm}
+\begin{center}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
+        \hline
+        \rowcolor{gray!10} 
+        \multicolumn{1}{|c|}{\textbf{Versione}} & 
+        \multicolumn{1}{c|}{\textbf{Data}} & 
+        \multicolumn{1}{c|}{\textbf{Autore}} & 
+        \multicolumn{1}{c|}{\textbf{Descrizione}} & 
+        \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        1.0.0 & 2026/11/16 & Daniele Nuzzaci & Stesura del verbale & Tommaso Zorzetto \\
+        \hline
+        0.1.0 & 2026/11/16 & Daniele Nuzzaci & Stesura bozza iniziale & - \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{center}
+\vfill
+\newpage
+
+% ==============================================================================
+% INDICE
+% ==============================================================================
+\tableofcontents
+\newpage
+
+% ==============================================================================
+% INFORMAZIONI GENERALI
+% ==============================================================================
+\section{Informazioni generali}
+
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|>{\centering\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!10} \multicolumn{2}{|c|}{\textbf{Dettagli della riunione}} \\
+        \hline
+        \textbf{Data} & 2026/11/16 \\ \hline
+        \textbf{Ora inizio} & 15:00 \\ \hline
+        \textbf{Ora fine} & 17:30 \\ \hline
+        \textbf{Modalità} & Discord \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray|50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!10} \multicolumn{3}{|c|}{\textbf{Partecipanti}} \\
+        \hline
+        \rowcolor{gray!10} \textbf{Nome e cognome} & \textbf{Ruolo} & \textbf{Presenza} \\
+        \hline
+        Sara Ballardin & Analista & Presente \\ \hline
+        Shuhui Chen & Analista & Presente \\ \hline
+        Simone Giuliano & Analista & Presente \\ \hline
+        Alvise Greggio & Responsabile & Presente \\ \hline
+        Daniele Nuzzaci & Verificatore & Presente \\ \hline
+        Federico Temporin & Amministratore & Presente \\ \hline
+        Tommaso Zorzetto & Verificatore & Presente \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+% ==============================================================================
+% CORPO DEL VERBALE
+% ==============================================================================
+
+\section{Ordine del giorno}
+\begin{itemize}
+    \item Gestione dei branch di lavoro e dei commit per la stesura dei Casi d'Uso nell'\textit{Analisi dei Requisiti}.
+    \item Revisione e chiarimento sulle politiche di versionamento dei documenti e gestione del registro delle modifiche.
+    \item Verifica dello stato di avanzamento dei workflow di GitHub Actions per la compilazione automatica e la pubblicazione su sito web.
+    \item Organizzazione delle presentazioni e della rotazione dei ruoli per i prossimi incontri con Vimar.
+    \item Pianificazione delle scadenze intermedie, delle milestone e dei criteri di rendicontazione oraria per i ruoli di progetto.
+\end{itemize}
+
+\newpage
+
+\section{Discussioni}
+
+\subsection{Strategia di branch e commit per i Casi d'Uso}
+Il gruppo ha discusso l'organizzazione operativa per la redazione dei casi d'uso all'interno dell'\textit{Analisi dei Requisiti}. Si è deciso di aprire branch di lavoro specifici (strutturati secondo le convenzioni con il numero di issue di riferimento), invitando ciascun membro a operare localmente sul proprio branch e a gestire l'allineamento tramite Pull Request per prevenire conflitti complessi e semplificare il controllo dei verificatori.
+
+\subsection{Politiche di versionamento e registro delle modifiche}
+È stata affrontata la questione relativa alla gestione delle versioni dei documenti e all'aggiornamento dei registri delle modifiche. Si è stabilito che ogni modifica significativa debba essere tracciata puntualmente, chiarendo il ruolo del verificatore nell'approvazione delle versioni finali e concordando di mantenere una coerenza rigorosa con le norme di progetto vigenti.
+
+\subsection{Automazione e workflow di GitHub Actions}
+Il team ha esaminato il funzionamento dei workflow automatizzati per la generazione dei documenti PDF e la validazione dei link sul sito web. Si è discusso di alcune criticità legate agli errori di compilazione, concordando di rifinire gli script per rendere il processo di continuous deployment più resiliente.
+
+\subsection{Incontri aziendali}
+Si è discusso della pianificazione dei prossimi incontri con Vimar e della necessità di creare le presentazioni per esporre gli argomenti da trattare durante le riunioni. 
+
+\subsection{Rotazione dei ruoli}
+Il gruppo ha esaminato il bisogno di ruotare i ruoli all'interno del gruppo. In particolare, si è discusso chi debba assumere il ruolo di responsabile del gruppo.
+
+\subsection{Conteggio delle ore}
+È stata trattata l'importanza di bilanciare le ore di lavoro effettive dedicate allo studio e alla produzione documentale, definendo stime realistiche per evitare scostamenti eccessivi rispetto al preventivo.
+
+\newpage
+
+\section{Decisioni}
+\begin{itemize}
+    \item \texttt{VI-2026-11-16.1} Adozione di branch dedicati per la stesura parallela dei Casi d'Uso e integrazione tramite Pull Request controllate.
+    \item \texttt{VI-2026-11-16.2} Conferma delle direttive di versionamento e aggiornamento formale dei registri delle modifiche in accordo con le Norme di Progetto.
+    \item \texttt{VI-2026-11-16.3} Pianificazione di interventi di manutenzione sui workflow di GitHub Actions per la generazione dei PDF e il controllo dei link.
+    \item \texttt{VI-2026-11-16.4} Assegnazione della creazione della presentazione per l'incontro con l'azienda affidata al responsabile.
+    \item \texttt{VI-2026-11-16.5} Scelta del prossimo responsabile per la presentazione del prossimo diario di bordo.
+    \item \texttt{VI-2026-11-16.6} Condivisione delle linee guida per la stima e la rendicontazione delle ore di lavoro relative alle attività di analisi e redazione documentale.
+\end{itemize}
+
+\section{To-do}
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|X|p{3.15cm}|c|}
+        \hline
+        \rowcolor{gray!10} 
+        \multicolumn{1}{|c|}{\textbf{ID issue}} & 
+        \multicolumn{1}{c|}{\textbf{Task}} & 
+        \multicolumn{1}{c|}{\textbf{Assegnatario}} & 
+        \multicolumn{1}{c|}{\textbf{Scadenza}} \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/83}{\#83} & Correzione dei workflow di GitHub Actions & Federico Temporin & 2026/11/20 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/84}{\#84} & Stesura del verbale interno del 2026/11/16 & Daniele Nuzzaci & 2026/11/18 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/85}{\#85} & Aggiornamento del Piano di Progetto e consuntivi & Federico Temporin & 2026/11/22 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/86}{\#86} & Automazione del registro delle modifiche & Federico Temporin & 2026/11/22 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/87}{\#87} & Creazione presentazione per incontro Vimar & Alvise Greggio & 2026/11/17 \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\end{document}
