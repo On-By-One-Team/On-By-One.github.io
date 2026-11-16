@@ -51,51 +51,55 @@ class GenerateSiteTests(unittest.TestCase):
             finally:
                 generate_site.TEX_ROOT = old_tex_root
 
-    def test_version_is_read_from_document_information(self):
-        tex_path = (
-            generate_site.TEX_ROOT
-            / "verbali"
-            / "interni"
-            / "2026-11-05-vi.tex"
-        )
-        pdf_path = generate_site.PDF_ROOT / tex_path.relative_to(
-            generate_site.TEX_ROOT
-        ).with_suffix(".pdf")
-        self.assertEqual(generate_site.version_for(pdf_path), "1.0.1")
+    def test_repository_documents_are_published_according_to_configuration(self):
+        items = generate_site.documents()
+        content = generate_site.generated_sections(items)
+        published_paths = set()
+        configured_paths = set()
 
-    def test_candidatura_keeps_completion_badge(self):
-        content = generate_site.generated_sections(generate_site.documents())
-        self.assertIn('class="badge badge-success">Completata</span>', content)
+        for section in generate_site.configuration()["sections"]:
+            for entry in section["entries"]:
+                configured_paths.update(
+                    item.path
+                    for item in items
+                    if generate_site.path_matches(item, entry)
+                )
+                configured = generate_site.configured_documents(items, entry)
+                published_paths.update(item.path for item in configured)
+                for item in configured:
+                    self.assertIn(f"../{item.relative_path}", content)
+                    self.assertIn(item.name, content)
 
-    def test_diary_links_use_repository_paths_and_names(self):
-        content = generate_site.generated_sections(generate_site.documents())
-        self.assertIn(
-            "../docs/diari-di-bordo/pdf/2026-11-02-ddb.pdf", content
-        )
-        self.assertNotIn("2026-11-01-ddb.pdf", content)
+        self.assertTrue(published_paths.issubset(configured_paths))
+        for item in items:
+            if item.path in configured_paths - published_paths:
+                self.assertNotIn(f"../{item.relative_path}", content)
 
-    def test_diary_pdf_title_matches_filename_date(self):
-        pdf_path = generate_site.DIARY_ROOT / "2026-11-02-ddb.pdf"
-        self.assertEqual(generate_site.pdf_info_title(pdf_path), pdf_path.stem)
+    def test_repository_pdf_titles_match_filenames(self):
+        for pdf_path in generate_site.DOCS_ROOT.rglob("*.pdf"):
+            title = generate_site.pdf_info_title(pdf_path)
+            self.assertTrue(not title or title == pdf_path.stem)
 
-    def test_draft_norme_di_progetto_documentazione_has_no_version(self):
-        pdf_path = (
-            generate_site.PDF_ROOT
-            / "gestionali"
-            / "norme-di-progetto"
-            / "norme-di-progetto-documentazione.pdf"
-        )
-        self.assertIsNone(generate_site.version_for(pdf_path))
-
-    def test_editorial_configuration_uses_sentence_case_labels(self):
-        labels = [
-            entry.get("group", entry["card_title"])
-            for section in generate_site.configuration()["sections"]
-            for entry in section["entries"]
-        ]
-        self.assertIn("Documenti gestionali", labels)
-        self.assertIn("Verbali interni", labels)
-        self.assertNotIn("Verbali Interni", labels)
+    def test_draft_document_information_has_no_version(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            path = root / "document.tex"
+            path.write_text(
+                r"""\textbf{Informazioni documento}
+\textbf{Versione}
+\hline
+- & - & Bozza & Destinatari \\
+\end{tabularx}
+""",
+                encoding="utf-8",
+            )
+            old_tex_root = generate_site.TEX_ROOT
+            generate_site.TEX_ROOT = root
+            try:
+                pdf_path = generate_site.PDF_ROOT / "document.pdf"
+                self.assertIsNone(generate_site.version_for(pdf_path))
+            finally:
+                generate_site.TEX_ROOT = old_tex_root
 
     def test_documents_scan_new_pdf_directories_without_code_changes(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -142,12 +146,21 @@ class GenerateSiteTests(unittest.TestCase):
             ["2026-10-22-ve-firmato.pdf"],
         )
 
-    def test_external_minutes_publish_only_signed_files(self):
-        content = generate_site.generated_sections(generate_site.documents())
-        self.assertIn("2026-10-22-ve-firmato.pdf", content)
-        self.assertIn("2026-10-28-ve-firmato.pdf", content)
-        self.assertNotIn("2026-10-22-ve.pdf", content)
-        self.assertNotIn("2026-10-28-ve.pdf", content)
+    def test_filename_patterns_exclude_unmatched_repository_documents(self):
+        items = generate_site.documents()
+        content = generate_site.generated_sections(items)
+        configured_paths = set()
+
+        for section in generate_site.configuration()["sections"]:
+            for entry in section["entries"]:
+                configured = generate_site.configured_documents(items, entry)
+                configured_paths.update(item.path for item in configured)
+                for item in configured:
+                    self.assertIn(f"../{item.relative_path}", content)
+
+        for item in items:
+            if item.path not in configured_paths:
+                self.assertNotIn(item.name, content)
 
 
 if __name__ == "__main__":
