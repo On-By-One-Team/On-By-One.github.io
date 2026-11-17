@@ -1,0 +1,147 @@
+name: Aggiorna registro delle modifiche
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: change-log-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  update-from-pull-request:
+    if: github.event_name == 'pull_request_target'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verifica repository del branch
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "::error::Il workflow aggiorna solo branch appartenenti al repository principale."
+          exit 1
+      - name: Checkout del branch della Pull Request
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+      - name: Prepara lo script attendibile e il branch della Pull Request
+        run: |
+          cp scripts/docs-versioning.py "$RUNNER_TEMP/docs-versioning.py"
+          git fetch origin "${{ github.event.pull_request.head.sha }}"
+          git checkout --detach "${{ github.event.pull_request.head.sha }}"
+      - name: Aggiorna le righe della Pull Request
+        run: |
+          RECIPIENT_TYPE=""
+          for label in client proposer; do
+            if [[ " ${{ join(github.event.pull_request.labels.*.name, ' ') }} " == *" $label "* ]]; then
+              if [[ -n "$RECIPIENT_TYPE" ]]; then
+                echo "::error::Usare una sola label tra client e proposer"
+                exit 1
+              fi
+              RECIPIENT_TYPE="$label"
+            fi
+          done
+          if [[ -z "$RECIPIENT_TYPE" ]]; then
+            echo "::error::La PR deve avere la label client o proposer"
+            exit 1
+          fi
+          CHANGELOG_ROOT="$GITHUB_WORKSPACE" python "$RUNNER_TEMP/docs-versioning.py" pr \
+            --base-sha "${{ github.event.pull_request.base.sha }}" \
+            --head-sha "${{ github.event.pull_request.head.sha }}" \
+            --pr-number "${{ github.event.pull_request.number }}" \
+            --title "${{ github.event.pull_request.title }}" \
+            --author-id "${{ github.event.pull_request.user.id }}" \
+            --date "${{ github.event.pull_request.updated_at }}" \
+            --recipient-type "$RECIPIENT_TYPE"
+      - name: Commit e push delle righe aggiornate
+        run: |
+          if git diff --quiet; then
+            echo "Nessuna riga del registro da aggiornare"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/tex/
+          git commit -m "docs: aggiornato registro PR #${{ github.event.pull_request.number }} [skip ci]"
+          git push origin HEAD:"${{ github.event.pull_request.head.ref }}"
+
+  update-from-review:
+    if: github.event_name == 'pull_request_review' && (github.event.review.state == 'approved' || github.event.review.state == 'changes_requested')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verifica repository del branch
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "::error::Il workflow aggiorna solo branch appartenenti al repository principale."
+          exit 1
+      - name: Checkout del branch della Pull Request
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          fetch-depth: 0
+      - name: Prepara lo script attendibile e il branch della Pull Request
+        run: |
+          cp scripts/docs-versioning.py "$RUNNER_TEMP/docs-versioning.py"
+          git fetch origin "${{ github.event.pull_request.head.sha }}"
+          git checkout --detach "${{ github.event.pull_request.head.sha }}"
+      - name: Aggiorna versione e verificatore
+        env:
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
+        run: |
+          RECIPIENT_TYPE=""
+          for label in client proposer; do
+            if [[ " $PR_LABELS " == *" $label "* ]]; then
+              if [[ -n "$RECIPIENT_TYPE" ]]; then
+                echo "::error::Usare una sola label tra client e proposer"
+                exit 1
+              fi
+              RECIPIENT_TYPE="$label"
+            fi
+          done
+          if [[ -z "$RECIPIENT_TYPE" ]]; then
+            echo "::error::La PR deve avere la label client o proposer"
+            exit 1
+          fi
+          KIND_ARGS=()
+          if [[ "${{ github.event.review.state }}" = "changes_requested" ]]; then
+            KIND=""
+            for label in major minor; do
+              if [[ " $PR_LABELS " == *" $label "* ]]; then
+                if [[ -n "$KIND" ]]; then
+                  echo "::error::Usare una sola label tra major e minor"
+                  exit 1
+                fi
+                KIND="$label"
+              fi
+            done
+            if [[ -z "$KIND" ]]; then
+              echo "::error::La PR deve avere la label major o minor"
+              exit 1
+            fi
+            KIND_ARGS=(--kind "$KIND")
+          fi
+          CHANGELOG_ROOT="$GITHUB_WORKSPACE" python "$RUNNER_TEMP/docs-versioning.py" review \
+            --base-sha "${{ github.event.pull_request.base.sha }}" \
+            --head-sha "${{ github.event.pull_request.head.sha }}" \
+            --pr-number "${{ github.event.pull_request.number }}" \
+            --reviewer-id "${{ github.event.review.user.id }}" \
+            --state "${{ github.event.review.state }}" \
+            --date "${{ github.event.review.submitted_at }}" \
+            --recipient-type "$RECIPIENT_TYPE" \
+            "${KIND_ARGS[@]}"
+      - name: Commit e push della revisione
+        run: |
+          if git diff --quiet; then
+            echo "Nessuna riga del registro da aggiornare"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/tex/
+          git commit -m "docs: aggiornato registro revisione PR #${{ github.event.pull_request.number }} [skip ci]"
+          git push origin HEAD:"${{ github.event.pull_request.head.ref }}"
