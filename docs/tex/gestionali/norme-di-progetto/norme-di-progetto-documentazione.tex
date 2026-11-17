@@ -70,7 +70,7 @@
             \hline
             \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
             \hline
-            2.0.0 & 16/11/2026 & Approvato &
+            3.0.0 & 2026-11-16 & Approvato &
             On-By-One \newline 
             Prof. Tullio Vardanega \newline 
             Prof. Riccardo Cardin \\
@@ -105,6 +105,8 @@
         \multicolumn{1}{c|}{\textbf{Autore}} & 
         \multicolumn{1}{c|}{\textbf{Descrizione}} & 
         \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        3.0.0 & 2026-11-16 & Federico Temporin & Modifica della convenzione di versionamento nel processo di approvazione dei documenti & Daniele Nuzzaci \\
         \hline
         2.0.0 & 2026-11-15 & Federico Temporin & Definizione del processo di pubblicazione automatica dei contenuti sul sito & Daniele Nuzzaci \\
         \hline
@@ -602,7 +604,7 @@ L'approvazione della Pull Request non sostituisce la responsabilità dell'autore
 
 \subsubsection{Approvazione dei documenti}
 
-Per i documenti che richiedono approvazione formale e una cronologia delle versioni consultabile dal lettore del documento stesso, sono previste due tabelle: \textbf{Informazioni documento} e \textbf{Registro delle modifiche}. La prima riporta le informazioni relative alla versione corrente approvata del documento, mentre la seconda tiene traccia delle modifiche apportate al documento.
+Per i documenti che richiedono approvazione formale e una cronologia delle versioni consultabile dai lettori, sono previste due tabelle: \textbf{Informazioni documento} e \textbf{Registro delle modifiche}. La prima riporta le informazioni relative alla versione corrente approvata del documento, mentre la seconda tiene traccia delle modifiche apportate al documento.
 
 \paragraph{Informazioni documento}
 
@@ -618,10 +620,22 @@ La tabella \textit{Informazioni documento} contiene i seguenti campi:
 
 La tabella \textit{Registro delle modifiche} contiene i seguenti campi:
 \begin{itemize}
-    \item \textbf{Versione}: l'autore assegna una versione a ogni riga del registro delle modifiche, incrementando di uno il contatore più a destra rispetto alla versione della riga precedente. Se il contatore più a destra raggiunge \texttt{9}, l'incremento successivo lo azzera e incrementa di uno il contatore centrale. La versione iniziale assegnata alla prima modifica del documento è \texttt{0.1.0}. Nella riga relativa all'ultima modifica apportata prima dell'apertura della Pull Request, l'autore lascia il campo vuoto (\texttt{-}), affinché il revisore possa assegnare la versione in base all'esito della revisione:
+    \item \textbf{Versione}: l'autore assegna una versione a ogni riga del registro delle modifiche (ordinate per versione in senso decrescente), ad eccezione della prima, utilizzando il formato \texttt{X.Y.Z}, in cui:
     \begin{itemize}
-        \item \textbf{Revisione non superata}: il revisore assegna alla modifica in esame la versione successiva a quella dell'ultima modifica registrata, proseguendo la numerazione secondo le regole sopra definite. Il documento rimane in stato \texttt{Bozza}.
-        \item \textbf{Revisione superata}: il revisore assegna la versione \texttt{1.0.0} se si tratta della prima approvazione del documento; negli altri casi incrementa di uno il contatore più a sinistra rispetto all'ultima versione e azzera gli altri due contatori.
+        \item \textbf{Contatore sinistro (X)}: indica il numero di approvazioni del documento. Viene incrementato di uno a ogni nuova approvazione.
+        \item \textbf{Contatore centrale (Y)}: indica il numero di modifiche maggiori apportate al documento. Viene incrementato di uno quando viene introdotta una modifica sostanziale.
+        \item \textbf{Contatore destro (Z)}: indica il numero di modifiche minori apportate al documento. Viene incrementato di uno quando viene introdotta una modifica non sostanziale.
+    \end{itemize}
+    I contatori possono assumere qualsiasi valore intero non negativo e non sono soggetti a un limite massimo. Quando viene incrementato un contatore, tutti i contatori alla sua destra vengono azzerati. Pertanto:
+    \begin{itemize}
+        \item l'incremento del contatore destro lascia invariati gli altri contatori;
+        \item l'incremento del contatore centrale azzera il contatore destro;
+        \item l'incremento del contatore sinistro azzera sia il contatore centrale sia quello destro.
+    \end{itemize}
+    La versione iniziale assegnata alla prima modifica del documento è \texttt{0.1.0}. Nella riga relativa all'ultima modifica apportata prima dell'apertura della Pull Request, l'autore lascia il campo vuoto (\texttt{-}), affinché il revisore possa assegnare la versione in base all'esito della revisione:
+    \begin{itemize}
+        \item \textbf{Revisione non superata}: il revisore assegna alla modifica in esame la versione successiva a quella dell'ultima modifica registrata, incrementando di uno il contatore corrispondente alla tipologia di modifica (maggiore o minore) e azzerando gli eventuali contatori alla sua destra. Il documento rimane in stato \texttt{Bozza}.
+        \item \textbf{Revisione superata}: il revisore assegna la versione \texttt{1.0.0} se si tratta della prima approvazione del documento; negli altri casi incrementa di uno il contatore sinistro dell'ultima versione e azzera gli altri due contatori.
     \end{itemize}
     \item \textbf{Data}: indica la data in cui la modifica descritta nella riga è stata apportata al documento. Compilato dall'autore.
     \item \textbf{Autore}: indica chi ha apportato la modifica. Compilato dall'autore.
