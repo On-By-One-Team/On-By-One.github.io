@@ -6,12 +6,14 @@ from __future__ import annotations
 import argparse
 import os
 import re
+import sys
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(os.environ.get("CHANGELOG_ROOT", Path(__file__).resolve().parents[1]))
 TEX_ROOT = ROOT / "docs" / "tex"
+TEMPLATES_ROOT = TEX_ROOT / "templates"
 PR_MARKER = "% change-log-pr:"
 RECIPIENTS = {
     "client": r"On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin",
@@ -233,11 +235,16 @@ def changed_documents(base_sha: str, head_sha: str) -> list[Path]:
         capture_output=True,
         text=True,
     )
-    return [
-        ROOT / relative
-        for relative in result.stdout.splitlines()
-        if relative.endswith(".tex") and (ROOT / relative).is_file()
-    ]
+    documents = []
+    for relative in result.stdout.splitlines():
+        path = ROOT / relative
+        if (
+            relative.endswith(".tex")
+            and path.is_file()
+            and not path.is_relative_to(TEMPLATES_ROOT)
+        ):
+            documents.append(path)
+    return documents
 
 
 def author_name(account_id: str) -> str:
@@ -247,10 +254,36 @@ def author_name(account_id: str) -> str:
         raise ValueError(f"Account GitHub non mappato: {account_id}") from error
 
 
-def validate_recipient_type(recipient_type: str) -> str:
-    if recipient_type not in RECIPIENTS:
-        raise ValueError("La PR deve avere una sola label tra client e proposer")
-    return recipient_type
+def current_recipient_type(content: str) -> str | None:
+    """Detect the recipient type from the Informazioni documento table."""
+    lines = content.splitlines(keepends=True)
+    try:
+        separator, end, _ = information_bounds(lines)
+    except ValueError:
+        return None
+    for index in range(separator + 1, end):
+        line = lines[index]
+        # Check longer values first to avoid partial matches.
+        for key in sorted(RECIPIENTS, key=lambda k: len(RECIPIENTS[k]), reverse=True):
+            if RECIPIENTS[key] in line:
+                return key
+    return None
+
+
+def resolve_recipient_type(path: Path, explicit: str) -> str:
+    """Return *explicit* when provided, otherwise detect from the document."""
+    if explicit:
+        if explicit not in RECIPIENTS:
+            raise ValueError("La PR deve avere una sola label tra client e proposer")
+        return explicit
+    content = path.read_text(encoding="utf-8")
+    detected = current_recipient_type(content)
+    if detected is None:
+        raise ValueError(
+            f"Destinatari non rilevabili in {path.name}: "
+            "usare la label client o proposer nella PR"
+        )
+    return detected
 
 
 def current_document_version(content: str) -> str | None:
@@ -323,7 +356,6 @@ def update_review_row(path: Path, pr_number: int, version: str, verifier: str) -
 
 def update_pr(args: argparse.Namespace) -> int:
     author = author_name(args.author_id)
-    recipient_type = validate_recipient_type(args.recipient_type)
     description = args.title.strip() or args.fallback_description.strip()
     if not description:
         raise ValueError("Titolo PR e fallback del commit non possono essere vuoti")
@@ -333,6 +365,7 @@ def update_pr(args: argparse.Namespace) -> int:
             registry_bounds(path.read_text(encoding="utf-8").splitlines(keepends=True))
         except ValueError:
             continue
+        recipient_type = resolve_recipient_type(path, args.recipient_type)
         changed |= update_pr_row(
             path,
             ChangeRow("-", iso_date(args.date), author, description, "-"),
@@ -346,7 +379,6 @@ def update_pr(args: argparse.Namespace) -> int:
 
 def update_review(args: argparse.Namespace) -> int:
     verifier = author_name(args.reviewer_id)
-    recipient_type = validate_recipient_type(args.recipient_type)
     paths = changed_documents(args.base_sha, args.head_sha)
     changed = False
     for path in paths:
@@ -354,6 +386,7 @@ def update_review(args: argparse.Namespace) -> int:
             registry_bounds(path.read_text(encoding="utf-8").splitlines(keepends=True))
         except ValueError:
             continue
+        recipient_type = resolve_recipient_type(path, args.recipient_type)
         version = (
             approved_version(path, args.pr_number)
             if args.state == "approved"
@@ -382,7 +415,7 @@ def parser() -> argparse.ArgumentParser:
     pr.add_argument("--fallback-description", default="")
     pr.add_argument("--author-id", required=True)
     pr.add_argument("--date", required=True)
-    pr.add_argument("--recipient-type", required=True)
+    pr.add_argument("--recipient-type", default="")
     pr.set_defaults(function=update_pr)
     review = subparsers.add_parser("review")
     review.add_argument("--base-sha", required=True)
@@ -392,11 +425,15 @@ def parser() -> argparse.ArgumentParser:
     review.add_argument("--state", choices=("approved", "changes_requested"), required=True)
     review.add_argument("--kind", choices=("major", "minor"))
     review.add_argument("--date", required=True)
-    review.add_argument("--recipient-type", required=True)
+    review.add_argument("--recipient-type", default="")
     review.set_defaults(function=update_review)
     return parser
 
 
 if __name__ == "__main__":
     arguments = parser().parse_args()
-    raise SystemExit(arguments.function(arguments))
+    try:
+        arguments.function(arguments)
+    except (ValueError, FileNotFoundError) as error:
+        print(f"::error::{error}", file=sys.stderr)
+        raise SystemExit(1)

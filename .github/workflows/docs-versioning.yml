@@ -46,9 +46,9 @@ jobs:
               RECIPIENT_TYPE="$label"
             fi
           done
-          if [[ -z "$RECIPIENT_TYPE" ]]; then
-            echo "::error::La PR deve avere la label client o proposer"
-            exit 1
+          RECIPIENT_ARGS=()
+          if [[ -n "$RECIPIENT_TYPE" ]]; then
+            RECIPIENT_ARGS=(--recipient-type "$RECIPIENT_TYPE")
           fi
           CHANGELOG_ROOT="$GITHUB_WORKSPACE" python "$RUNNER_TEMP/docs-versioning.py" pr \
             --base-sha "${{ github.event.pull_request.base.sha }}" \
@@ -57,7 +57,7 @@ jobs:
             --title "${{ github.event.pull_request.title }}" \
             --author-id "${{ github.event.pull_request.user.id }}" \
             --date "${{ github.event.pull_request.updated_at }}" \
-            --recipient-type "$RECIPIENT_TYPE"
+            "${RECIPIENT_ARGS[@]}"
       - name: Commit e push delle righe aggiornate
         run: |
           if git diff --quiet; then
@@ -103,9 +103,9 @@ jobs:
               RECIPIENT_TYPE="$label"
             fi
           done
-          if [[ -z "$RECIPIENT_TYPE" ]]; then
-            echo "::error::La PR deve avere la label client o proposer"
-            exit 1
+          RECIPIENT_ARGS=()
+          if [[ -n "$RECIPIENT_TYPE" ]]; then
+            RECIPIENT_ARGS=(--recipient-type "$RECIPIENT_TYPE")
           fi
           KIND_ARGS=()
           if [[ "${{ github.event.review.state }}" = "changes_requested" ]]; then
@@ -132,7 +132,7 @@ jobs:
             --reviewer-id "${{ github.event.review.user.id }}" \
             --state "${{ github.event.review.state }}" \
             --date "${{ github.event.review.submitted_at }}" \
-            --recipient-type "$RECIPIENT_TYPE" \
+            "${RECIPIENT_ARGS[@]}" \
             "${KIND_ARGS[@]}"
       - name: Commit e push della revisione
         run: |
