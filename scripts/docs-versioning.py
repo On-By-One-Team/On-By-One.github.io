@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import os
 import re
+import sys
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -399,4 +400,8 @@ def parser() -> argparse.ArgumentParser:
 
 if __name__ == "__main__":
     arguments = parser().parse_args()
-    raise SystemExit(arguments.function(arguments))
+    try:
+        arguments.function(arguments)
+    except (ValueError, FileNotFoundError) as error:
+        print(f"::error::{error}", file=sys.stderr)
+        raise SystemExit(1)
