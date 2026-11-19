@@ -1,0 +1,58 @@
+name: 'Compila documenti LaTeX'
+description: 'Compila i file LaTeX in PDF e pulisce i file temporanei'
+
+inputs:
+  changed-files:
+    description: 'Percorso del file contenente i .tex da compilare'
+    required: false
+    default: 'changed.txt'
+  deleted-files:
+    description: 'Percorso del file contenente i .tex eliminati'
+    required: false
+    default: 'deleted.txt'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Compila i file LaTeX
+      shell: bash
+      run: |
+        file_list="${{ inputs.changed-files }}"
+        if [ -f "$file_list" ] && [ -s "$file_list" ]; then
+          cat "$file_list" | docker run --rm -i -v "${{ github.workspace }}:/workspace" -w /workspace ghcr.io/xu-cheng/texlive-alpine:latest sh -c '
+            while IFS= read -r tex_file || [ -n "$tex_file" ]; do
+              tex_file=$(echo "$tex_file" | tr -d "\r" | xargs)
+              [ -z "$tex_file" ] && continue
+              case "$tex_file" in docs/tex/templates/*) continue ;; esac
+              [ -f "$tex_file" ] || continue
+              grep -q "documentclass" "$tex_file" || continue
+
+              outdir=$(dirname "$tex_file" | sed "s|^docs/tex|docs/pdf|")
+              mkdir -p "$outdir"
+
+              echo "Compilando: $tex_file in $outdir"
+              latexmk -pdf -interaction=nonstopmode -output-directory="$outdir" "$tex_file"
+            done
+          '
+        else
+          echo "Nessun file LaTeX da compilare."
+        fi
+
+    - name: Pulizia file temporanei di LaTeX
+      shell: bash
+      run: |
+        # Elimina i file spazzatura di latexmk, tenendo solo .pdf e .gitkeep
+        if [ -d "docs/pdf" ]; then
+          find docs/pdf -type f -not -name '*.pdf' -not -name '.gitkeep' -delete
+        fi
+
+        deleted_list="${{ inputs.deleted-files }}"
+        if [ -f "$deleted_list" ] && [ -s "$deleted_list" ]; then
+          while IFS= read -r tex_file || [ -n "$tex_file" ]; do
+            tex_file=$(echo "$tex_file" | tr -d "\r" | xargs)
+            [ -z "$tex_file" ] && continue
+            pdf_file="${tex_file/docs\/tex/docs\/pdf}"
+            pdf_file="${pdf_file%.tex}.pdf"
+            rm -f "$pdf_file"
+          done < "$deleted_list"
+        fi
