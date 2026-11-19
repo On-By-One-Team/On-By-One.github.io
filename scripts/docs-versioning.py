@@ -254,6 +254,10 @@ def author_name(account_id: str) -> str:
         raise ValueError(f"Account GitHub non mappato: {account_id}") from error
 
 
+def normalize_whitespace(value: str) -> str:
+    return " ".join(value.split())
+
+
 def current_recipient_type(content: str) -> str | None:
     """Detect the recipient type from the Informazioni documento table."""
     lines = content.splitlines(keepends=True)
@@ -261,12 +265,10 @@ def current_recipient_type(content: str) -> str | None:
         separator, end, _ = information_bounds(lines)
     except ValueError:
         return None
-    for index in range(separator + 1, end):
-        line = lines[index]
-        # Check longer values first to avoid partial matches.
-        for key in sorted(RECIPIENTS, key=lambda k: len(RECIPIENTS[k]), reverse=True):
-            if RECIPIENTS[key] in line:
-                return key
+    table_content = normalize_whitespace("".join(lines[separator + 1 : end]))
+    for key in sorted(RECIPIENTS, key=lambda k: len(RECIPIENTS[k]), reverse=True):
+        if normalize_whitespace(RECIPIENTS[key]) in table_content:
+            return key
     return None
 
 
