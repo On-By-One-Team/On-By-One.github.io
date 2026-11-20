@@ -14,6 +14,64 @@ SPEC.loader.exec_module(generate_site)
 
 
 class GenerateSiteTests(unittest.TestCase):
+    def test_milestone_status_generates_correct_badge(self):
+        self.assertEqual(
+            generate_site.badge_for_status("completed"),
+            {"class": "badge-success", "text": "Completata"},
+        )
+        self.assertEqual(
+            generate_site.badge_for_status("in_progress"),
+            {"class": "badge-inprogress", "text": "In corso"},
+        )
+        self.assertIsNone(generate_site.badge_for_status(None))
+
+    def test_card_omits_heading_when_title_is_null(self):
+        markup = generate_site.card(None, [])
+        self.assertNotIn("<h3>", markup)
+
+    def test_card_renders_heading_when_title_is_present(self):
+        markup = generate_site.card("Documenti gestionali", [])
+        self.assertIn(
+            "<h3>Documenti gestionali</h3>",
+            markup,
+        )
+
+    def test_documents_are_filtered_by_milestone_period(self):
+        root = generate_site.PDF_ROOT / "verbali" / "interni"
+        items = [
+            generate_site.Document(root / "2026-10-27-vi.pdf", None),
+            generate_site.Document(root / "2026-11-05-vi.pdf", None),
+        ]
+        entry = {
+            "path": "docs/pdf/verbali/interni",
+            "filter_by_date": True,
+        }
+
+        candidatura = generate_site.configured_documents(
+            items,
+            entry,
+            {"date_end": "2026-11-03"},
+        )
+        rtb = generate_site.configured_documents(
+            items,
+            entry,
+            {"date_start": "2026-11-04"},
+        )
+
+        self.assertEqual([item.name for item in candidatura], ["2026-10-27-vi.pdf"])
+        self.assertEqual([item.name for item in rtb], ["2026-11-05-vi.pdf"])
+
+    def test_section_omits_milestone_tag_when_tag_is_null(self):
+        markup = generate_site.section("test", "Test", "", tag=None)
+        self.assertNotIn("milestone-tag", markup)
+
+    def test_section_renders_milestone_tag_when_tag_is_present(self):
+        markup = generate_site.section("test", "Test", "", tag="Milestone 01")
+        self.assertIn(
+            '<span class="milestone-tag">Milestone 01</span>',
+            markup,
+        )
+
     def test_dates_are_descending_and_undated_files_are_last(self):
         root = generate_site.PDF_ROOT / "verbali" / "interni"
         items = [
@@ -57,14 +115,18 @@ class GenerateSiteTests(unittest.TestCase):
         published_paths = set()
         configured_paths = set()
 
-        for section in generate_site.configuration()["sections"]:
-            for entry in section["entries"]:
+        for section_config in generate_site.configuration()["sections"]:
+            for entry in section_config["entries"]:
                 configured_paths.update(
                     item.path
                     for item in items
                     if generate_site.path_matches(item, entry)
                 )
-                configured = generate_site.configured_documents(items, entry)
+                configured = generate_site.configured_documents(
+                    items,
+                    entry,
+                    section_config,
+                )
                 published_paths.update(item.path for item in configured)
                 for item in configured:
                     self.assertIn(f"../{item.relative_path}", content)
@@ -151,9 +213,13 @@ class GenerateSiteTests(unittest.TestCase):
         content = generate_site.generated_sections(items)
         configured_paths = set()
 
-        for section in generate_site.configuration()["sections"]:
-            for entry in section["entries"]:
-                configured = generate_site.configured_documents(items, entry)
+        for section_config in generate_site.configuration()["sections"]:
+            for entry in section_config["entries"]:
+                configured = generate_site.configured_documents(
+                    items,
+                    entry,
+                    section_config,
+                )
                 configured_paths.update(item.path for item in configured)
                 for item in configured:
                     self.assertIn(f"../{item.relative_path}", content)

@@ -114,7 +114,23 @@ def path_matches(document: Document, entry: dict) -> bool:
     )
 
 
-def configured_documents(items: list[Document], entry: dict) -> list[Document]:
+def date_matches_period(document: Document, section: dict) -> bool:
+    if not document.date:
+        return False
+    date_start = section.get("date_start")
+    date_end = section.get("date_end")
+    if date_start and document.date < date.fromisoformat(date_start):
+        return False
+    if date_end and document.date > date.fromisoformat(date_end):
+        return False
+    return True
+
+
+def configured_documents(
+    items: list[Document],
+    entry: dict,
+    section: dict | None = None,
+) -> list[Document]:
     matches = [
         item
         for item in items
@@ -122,6 +138,13 @@ def configured_documents(items: list[Document], entry: dict) -> list[Document]:
         and (
             not entry.get("filename_pattern")
             or fnmatchcase(item.name, entry["filename_pattern"])
+        )
+        and (
+            not entry.get("filter_by_date")
+            or (
+                section is not None
+                and date_matches_period(item, section)
+            )
         )
     ]
     if not matches:
@@ -170,10 +193,15 @@ def list_markup(items: list[Document], compact: bool = False) -> str:
     )
 
 
-def card(title: str, items: list[Document]) -> str:
+def card(title: str | None, items: list[Document]) -> str:
+    title_markup = (
+        f'                    <h3>{html.escape(title)}</h3>\n'
+        if title
+        else ""
+    )
     return (
         '                <div class="card">\n'
-        f'                    <h3>{html.escape(title)}</h3>\n'
+        f'{title_markup}'
         f'{list_markup(items)}\n'
         '                </div>'
     )
@@ -188,13 +216,25 @@ def accordion(title: str, items: list[Document]) -> str:
     )
 
 
+def badge_for_status(status: str | None) -> dict | None:
+    statuses = {
+        "completed": {"class": "badge-success", "text": "Completata"},
+        "in_progress": {"class": "badge-inprogress", "text": "In corso"},
+        "not_started": {"class": "badge-notstarted", "text": "Non iniziata"},
+    }
+    return statuses.get(status) if status else None
+
+
 def section(
     section_id: str,
     title: str,
     content: str,
-    tag: str = "Documenti",
+    tag: str | None = None,
     badge: dict | None = None,
 ) -> str:
+    tag_markup = ""
+    if tag:
+        tag_markup = f'\n                    <span class="milestone-tag">{html.escape(tag)}</span>'
     badge_markup = ""
     if badge:
         badge_markup = (
@@ -203,8 +243,7 @@ def section(
         )
     return f"""        <section id="{section_id}" class="milestone-section" aria-labelledby="title-{section_id}">
             <div class="milestone-header">
-                <div>
-                    <span class="milestone-tag">{html.escape(tag)}</span>
+                <div>{tag_markup}
                     <h2 id="title-{section_id}">{html.escape(title)}</h2>
                 </div>{badge_markup}
             </div>
@@ -220,11 +259,20 @@ def generated_sections(items: list[Document]) -> str:
     matched_paths = set()
     sections = []
     for section_config in sorted(config["sections"], key=lambda item: item["order"]):
+        date_start = section_config.get("date_start")
+        date_end = section_config.get("date_end")
+        if date_start and date_end and date.fromisoformat(date_start) > date.fromisoformat(date_end):
+            raise ValueError(
+                f"Intervallo date non valido nella sezione {section_config['id']}"
+            )
+
         cards = {}
         for entry in section_config["entries"]:
-            documents_for_entry = configured_documents(items, entry)
+            documents_for_entry = configured_documents(items, entry, section_config)
             matched_paths.update(
-                item.path for item in items if path_matches(item, entry)
+                item.path
+                for item in items
+                if path_matches(item, entry)
             )
             card = cards.setdefault(entry["card"], {"title": entry["card_title"], "entries": []})
             card["entries"].append((entry, documents_for_entry))
@@ -244,9 +292,14 @@ def generated_sections(items: list[Document]) -> str:
                     contents.append(accordion(entry["group"], documents_for_entry))
                 else:
                     contents.append(list_markup(documents_for_entry))
+            title_markup = (
+                f'                    <h3>{html.escape(card_config["title"])}</h3>\n'
+                if card_config["title"]
+                else ""
+            )
             card_markup.append(
                 "                <div class=\"card\">\n"
-                f'                    <h3>{html.escape(card_config["title"])}</h3>\n'
+                f'{title_markup}'
                 + "\n".join(contents)
                 + "\n                </div>"
             )
@@ -256,8 +309,9 @@ def generated_sections(items: list[Document]) -> str:
                 section_config["id"],
                 section_config["title"],
                 "\n\n".join(card_markup),
-                section_config.get("tag", "Documenti"),
-                section_config.get("badge"),
+                section_config.get("tag"),
+                badge_for_status(section_config.get("status"))
+                or section_config.get("badge"),
             )
         )
 
