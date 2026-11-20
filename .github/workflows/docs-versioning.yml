@@ -32,8 +32,12 @@ jobs:
       - name: Prepara lo script attendibile e il branch della Pull Request
         run: |
           cp scripts/docs-versioning.py "$RUNNER_TEMP/docs-versioning.py"
+          mkdir -p "$RUNNER_TEMP/compile-latex"
+          cp -r .github/actions/compile-latex/* "$RUNNER_TEMP/compile-latex/"
           git fetch origin "${{ github.event.pull_request.head.sha }}"
           git checkout --detach "${{ github.event.pull_request.head.sha }}"
+          mkdir -p .github/actions/compile-latex
+          cp -r "$RUNNER_TEMP/compile-latex/"* .github/actions/compile-latex/
       - name: Aggiorna le righe della Pull Request
         run: |
           RECIPIENT_TYPE=""
@@ -58,16 +62,38 @@ jobs:
             --author-id "${{ github.event.pull_request.user.id }}" \
             --date "${{ github.event.pull_request.updated_at }}" \
             "${RECIPIENT_ARGS[@]}"
-      - name: Commit e push delle righe aggiornate
+      - name: Trova i .tex da compilare
         run: |
-          if git diff --quiet; then
-            echo "Nessuna riga del registro da aggiornare"
+          : > changed.txt
+          : > deleted.txt
+          git diff --name-status --diff-filter=AMDR "${{ github.event.pull_request.base.sha }}" -- ':(glob)docs/tex/**/*.tex' |
+            while IFS="$(printf '\t')" read -r status old_path new_path; do
+              case "$status" in
+                A|M) echo "$old_path" >> changed.txt ;;
+                D) echo "$old_path" >> deleted.txt ;;
+                R*) echo "$old_path" >> deleted.txt; echo "$new_path" >> changed.txt ;;
+              esac
+            done
+          echo "File da compilare:"
+          cat changed.txt
+          echo "PDF da rimuovere:"
+          cat deleted.txt
+      - name: Compila i documenti LaTeX
+        uses: ./.github/actions/compile-latex
+        with:
+          changed-files: changed.txt
+          deleted-files: deleted.txt
+      - name: Commit e push delle righe e dei PDF aggiornati
+        run: |
+          if git diff --quiet docs/tex/ docs/pdf/; then
+            echo "Nessuna modifica a registro o PDF da aggiornare"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/tex/
-          git commit -m "docs: aggiornato registro PR #${{ github.event.pull_request.number }} [skip ci]"
+          git add docs/tex/ docs/pdf/
+          git commit -m "docs: aggiornato registro e PDF PR #${{ github.event.pull_request.number }} [skip ci]"
+          git pull --rebase origin "${{ github.event.pull_request.head.ref }}"
           git push origin HEAD:"${{ github.event.pull_request.head.ref }}"
 
   update-from-review:
@@ -87,8 +113,12 @@ jobs:
       - name: Prepara lo script attendibile e il branch della Pull Request
         run: |
           cp scripts/docs-versioning.py "$RUNNER_TEMP/docs-versioning.py"
+          mkdir -p "$RUNNER_TEMP/compile-latex"
+          cp -r .github/actions/compile-latex/* "$RUNNER_TEMP/compile-latex/"
           git fetch origin "${{ github.event.pull_request.head.sha }}"
           git checkout --detach "${{ github.event.pull_request.head.sha }}"
+          mkdir -p .github/actions/compile-latex
+          cp -r "$RUNNER_TEMP/compile-latex/"* .github/actions/compile-latex/
       - name: Aggiorna versione e verificatore
         env:
           PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
@@ -134,14 +164,36 @@ jobs:
             --date "${{ github.event.review.submitted_at }}" \
             "${RECIPIENT_ARGS[@]}" \
             "${KIND_ARGS[@]}"
-      - name: Commit e push della revisione
+      - name: Trova i .tex da compilare
         run: |
-          if git diff --quiet; then
-            echo "Nessuna riga del registro da aggiornare"
+          : > changed.txt
+          : > deleted.txt
+          git diff --name-status --diff-filter=AMDR "${{ github.event.pull_request.base.sha }}" -- ':(glob)docs/tex/**/*.tex' |
+            while IFS="$(printf '\t')" read -r status old_path new_path; do
+              case "$status" in
+                A|M) echo "$old_path" >> changed.txt ;;
+                D) echo "$old_path" >> deleted.txt ;;
+                R*) echo "$old_path" >> deleted.txt; echo "$new_path" >> changed.txt ;;
+              esac
+            done
+          echo "File da compilare:"
+          cat changed.txt
+          echo "PDF da rimuovere:"
+          cat deleted.txt
+      - name: Compila i documenti LaTeX
+        uses: ./.github/actions/compile-latex
+        with:
+          changed-files: changed.txt
+          deleted-files: deleted.txt
+      - name: Commit e push della revisione e dei PDF
+        run: |
+          if git diff --quiet docs/tex/ docs/pdf/; then
+            echo "Nessuna modifica a registro o PDF da aggiornare"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/tex/
-          git commit -m "docs: aggiornato registro revisione PR #${{ github.event.pull_request.number }} [skip ci]"
+          git add docs/tex/ docs/pdf/
+          git commit -m "docs: aggiornato registro revisione e PDF PR #${{ github.event.pull_request.number }} [skip ci]"
+          git pull --rebase origin "${{ github.event.pull_request.head.ref }}"
           git push origin HEAD:"${{ github.event.pull_request.head.ref }}"
