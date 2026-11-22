@@ -134,6 +134,22 @@ class DocsVersioningTests(unittest.TestCase):
         )
         self.assertEqual(docs_versioning.current_recipient_type(tex_proposer), "proposer")
 
+    def test_current_recipient_type_detects_multiline_recipients(self):
+        multiline_proposer = TEX.replace(
+            "Team \\\\",
+            "\nOn-By-One \\newline \nProf. Tullio Vardanega \\newline \nProf. Riccardo Cardin \\newline \nVimar S.p.A. \\\\",
+        )
+        self.assertEqual(
+            docs_versioning.current_recipient_type(multiline_proposer), "proposer"
+        )
+        multiline_client = TEX.replace(
+            "Team \\\\",
+            "\nOn-By-One \\newline \nProf. Tullio Vardanega \\newline \nProf. Riccardo Cardin \\\\",
+        )
+        self.assertEqual(
+            docs_versioning.current_recipient_type(multiline_client), "client"
+        )
+
     def test_current_recipient_type_returns_none_for_unknown(self):
         self.assertIsNone(docs_versioning.current_recipient_type(TEX))
 

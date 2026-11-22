@@ -2,7 +2,7 @@ name: Controllo Link Sito
 
 on:
   workflow_run:
-    workflows: ["Compila documenti LaTeX"]
+    workflows: ["Compila documenti LaTeX", "Aggiorna registro delle modifiche"]
     types:
       - completed
   push:

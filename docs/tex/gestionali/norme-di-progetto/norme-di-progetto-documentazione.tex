@@ -70,10 +70,7 @@
             \hline
             \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
             \hline
-            3.0.0 & 2026-11-16 & Approvato &
-            On-By-One \newline 
-            Prof. Tullio Vardanega \newline 
-            Prof. Riccardo Cardin \\
+            3.0.0 & 2026-11-19 & Approvato & On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin \\
             \hline
         \end{tabularx}
         \arrayrulecolor{black}
@@ -106,8 +103,7 @@
         \multicolumn{1}{c|}{\textbf{Descrizione}} & 
         \multicolumn{1}{c|}{\textbf{Verificatore}} \\
         \hline
-        3.0.0 & 2026-11-16 & Federico Temporin & Modifica della convenzione di versionamento nel processo di approvazione dei documenti & Daniele Nuzzaci \\
-        \hline
+        3.0.0 & 2026-11-19 & Federico Temporin & Aggiornamento delle norme di tracciabilità dei documenti rispetto alla relativa automazione & Tommaso Zorzetto \\ % change-log-pr: 98
         2.0.0 & 2026-11-15 & Federico Temporin & Definizione del processo di pubblicazione automatica dei contenuti sul sito & Daniele Nuzzaci \\
         \hline
         1.0.0 & 2026-11-08 & Federico Temporin & Specificazione della compilazione del campo Verificatore nel registro delle modifiche & Daniele Nuzzaci \\
@@ -254,6 +250,7 @@ Ogni Pull Request deve:
 \begin{itemize}
     \item Avere un titolo chiaro e descrittivo.
     \item Descrivere le modifiche introdotte e la loro motivazione.
+    \item Applicare le label richieste per la tracciabilità dei documenti, secondo le regole definite nella \hyperref[subsec:approvazione-e-merge]{policy di revisione}.
     \item Fare riferimento all'issue associata, se presente.
     \item Essere sottoposta a revisione secondo la \hyperref[subsec:regole-generali]{policy del repository}.
     \item Superare i controlli automatici richiesti.
@@ -591,7 +588,7 @@ Per i commenti non bloccanti, l'autore e il revisore concordano se apportare le 
 
 Una Pull Request può essere integrata nel branch \texttt{main} quando sono soddisfatte tutte le seguenti condizioni:
 \begin{itemize}
-    \item Ha ricevuto almeno un'approvazione da un membro del team diverso dall'autore.
+    \item L'ultima revisione conclusiva relativa alle modifiche correnti della Pull Request ha avuto esito positivo ed è stata effettuata da un membro del team diverso dall'autore.
     \item I controlli automatici obbligatori sono stati superati.
     \item Non presenta conflitti irrisolti con il branch di destinazione.
     \item Tutti i commenti bloccanti sono stati risolti.
@@ -604,50 +601,91 @@ L'approvazione della Pull Request non sostituisce la responsabilità dell'autore
 
 \subsubsection{Approvazione dei documenti}
 
-Per i documenti che richiedono approvazione formale e una cronologia delle versioni consultabile dai lettori, sono previste due tabelle: \textbf{Informazioni documento} e \textbf{Registro delle modifiche}. La prima riporta le informazioni relative alla versione corrente approvata del documento, mentre la seconda tiene traccia delle modifiche apportate al documento.
+Per i documenti che richiedono un'approvazione formale e una cronologia delle versioni consultabile dai lettori, sono previste due tabelle: \textbf{Informazioni documento} e \textbf{Registro delle modifiche}. La prima riporta le informazioni relative allo stato corrente del documento, mentre la seconda tiene traccia delle modifiche apportate nel tempo.
+
+La compilazione e l'aggiornamento di entrambe le tabelle sono gestiti automaticamente attraverso un'apposita automazione, attivata dagli eventi relativi alle Pull Request (PR) che modificano i documenti (esclusi i file in \texttt{docs/tex/templates}). L'automazione utilizza le label e il titolo della PR, le informazioni relative al suo autore e alle \textit{review}, nonché le associazioni tra gli account GitHub dei membri del team e i rispettivi nomi e cognomi.
+
+Non è pertanto richiesto agli autori o ai revisori di compilare manualmente le tabelle. È responsabilità dell'autore della PR applicare le label richieste e assegnare alla PR un titolo che descriva adeguatamente le modifiche introdotte. Le eventuali condizioni di errore segnalate dall'automazione devono essere risolte affinché le informazioni riportate nelle tabelle siano coerenti.
 
 \paragraph{Informazioni documento}
 
-La tabella \textit{Informazioni documento} contiene i seguenti campi:
+La tabella \textit{Informazioni documento} contiene una sola riga di contenuto, oltre alla riga di intestazione, e riporta i seguenti campi:
+
 \begin{itemize}
-    \item \textbf{Versione}: indica la versione corrente approvata del documento. Compilato dal revisore.
-    \item \textbf{Data}: indica la data di approvazione. Compilato dal revisore.
-    \item \textbf{Stato}: l'autore imposta il valore \texttt{Bozza} quando il documento viene modificato rispetto all'ultima versione approvata e rimane tale per tutta la fase di revisione. Solo in seguito all'approvazione, il revisore aggiorna il campo al valore \texttt{Approvato}.
-    \item \textbf{Destinatari}: indica i destinatari del documento. Compilato dall'autore.
+    \item \textbf{Versione}: indica la versione del documento. Prima e durante la revisione di una PR il campo assume il valore \texttt{-}. In seguito a una revisione con esito positivo (approvazione), viene valorizzato automaticamente con la versione calcolata e assegnata alla modifica corrispondente nel \textit{Registro delle modifiche}.
+
+    \item \textbf{Data}: indica la data di approvazione della versione. Prima e durante la revisione di una PR il campo assume il valore \texttt{-}. In seguito all'approvazione, viene valorizzato automaticamente con la data in cui è stata sottomessa la review di approvazione.
+
+    \item \textbf{Stato}: indica lo stato corrente del documento. Assume il valore \texttt{Bozza} all'apertura o all'aggiornamento della PR e mantiene tale valore durante l'intera fase di revisione (o in caso di richieste di modifica). In seguito all'approvazione della revisione, l'automazione aggiorna il campo al valore \texttt{Approvato}.
+
+    \item \textbf{Destinatari}: indica i destinatari del documento. Il valore viene determinato automaticamente sulla base delle label associate alla PR:
+    \begin{itemize}
+        \item label \texttt{client}:
+        \texttt{On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin};
+        \item label \texttt{proposer}:
+        \texttt{On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin \newline Vimar S.p.A.}.
+    \end{itemize}
+    Nella PR che introduce per la prima volta il documento nel repository deve essere presente esattamente una tra le label \texttt{client} e \texttt{proposer}. L'automazione compila immediatamente il campo all'apertura della PR; l'assenza di entrambe o la presenza contemporanea di entrambe comporta un errore dell'automazione.
+
+    Per le PR successive, relative a documenti già presenti nel repository, l'indicazione di una delle due label non è obbligatoria: in assenza di entrambe, il valore del campo viene rilevato dal documento e mantenuto invariato. La presenza contemporanea di entrambe le label comporta comunque un errore. Qualora sia presente una sola delle due label, il valore viene aggiornato di conseguenza.
 \end{itemize}
+
+Per i documenti già presenti nel repository, le regole descritte si applicano a ogni PR che ne modifica il contenuto.
 
 \paragraph{Registro delle modifiche}
 
-La tabella \textit{Registro delle modifiche} contiene i seguenti campi:
+La tabella \textit{Registro delle modifiche} contiene una riga per ogni PR che introduce modifiche al documento. La riga viene generata e inserita automaticamente dall'automazione all'apertura della PR, con valori provvisori (\texttt{-}) per la versione e il verificatore. Gli aggiornamenti successivi della stessa PR modificano la riga già associata ad essa, senza generarne ulteriori. Le righe sono ordinate per versione in senso decrescente.
+
+La tabella contiene i seguenti campi:
+
 \begin{itemize}
-    \item \textbf{Versione}: l'autore assegna una versione a ogni riga del registro delle modifiche (ordinate per versione in senso decrescente), ad eccezione della prima, utilizzando il formato \texttt{X.Y.Z}, in cui:
+    \item \textbf{Versione}: identifica la versione assegnata alle modifiche introdotte dalla PR. Il formato adottato è \texttt{X.Y.Z}, in cui:
     \begin{itemize}
-        \item \textbf{Contatore sinistro (X)}: indica il numero di approvazioni del documento. Viene incrementato di uno a ogni nuova approvazione.
-        \item \textbf{Contatore centrale (Y)}: indica il numero di modifiche maggiori apportate al documento. Viene incrementato di uno quando viene introdotta una modifica sostanziale.
-        \item \textbf{Contatore destro (Z)}: indica il numero di modifiche minori apportate al documento. Viene incrementato di uno quando viene introdotta una modifica non sostanziale.
+        \item \textbf{Contatore sinistro (X)}: indica il numero di approvazioni del documento. Viene incrementato di uno a ogni nuova approvazione;
+        \item \textbf{Contatore centrale (Y)}: indica il numero di modifiche maggiori apportate al documento dall'ultima approvazione. Viene incrementato di uno quando viene introdotta una modifica sostanziale;
+        \item \textbf{Contatore destro (Z)}: indica il numero di modifiche minori apportate al documento dall'ultima modifica maggiore o approvazione. Viene incrementato di uno quando viene introdotta una modifica non sostanziale.
     \end{itemize}
+
     I contatori possono assumere qualsiasi valore intero non negativo e non sono soggetti a un limite massimo. Quando viene incrementato un contatore, tutti i contatori alla sua destra vengono azzerati. Pertanto:
     \begin{itemize}
         \item l'incremento del contatore destro lascia invariati gli altri contatori;
         \item l'incremento del contatore centrale azzera il contatore destro;
         \item l'incremento del contatore sinistro azzera sia il contatore centrale sia quello destro.
     \end{itemize}
-    La versione iniziale assegnata alla prima modifica del documento è \texttt{0.1.0}. Nella riga relativa all'ultima modifica apportata prima dell'apertura della Pull Request, l'autore lascia il campo vuoto (\texttt{-}), affinché il revisore possa assegnare la versione in base all'esito della revisione:
+
+    Fino a quando non è disponibile un esito conclusivo della revisione, il campo rimane valorizzato a \texttt{-}. L'assegnazione finale della versione avviene all'atto della review:
     \begin{itemize}
-        \item \textbf{Revisione non superata}: il revisore assegna alla modifica in esame la versione successiva a quella dell'ultima modifica registrata, incrementando di uno il contatore corrispondente alla tipologia di modifica (maggiore o minore) e azzerando gli eventuali contatori alla sua destra. Il documento rimane in stato \texttt{Bozza}.
-        \item \textbf{Revisione superata}: il revisore assegna la versione \texttt{1.0.0} se si tratta della prima approvazione del documento; negli altri casi incrementa di uno il contatore sinistro dell'ultima versione e azzera gli altri due contatori.
+        \item \textbf{Revisione non superata} (\textit{Changes requested}): l'automazione determina la tipologia della modifica sulla base delle label associate alla PR:
+        \begin{itemize}
+            \item label \texttt{minor}: incrementa di uno il contatore destro;
+            \item label \texttt{major}: incrementa di uno il contatore centrale e azzera il contatore destro.
+        \end{itemize}
+        Nel caso in cui il documento non abbia ancora alcuna versione registrata nel documento, la label \texttt{major} assegna la versione iniziale \texttt{0.1.0}, mentre la label \texttt{minor} assegna la versione iniziale \texttt{0.0.1}.
+        In caso di revisione non superata, la PR deve contenere esattamente una tra le label \texttt{minor} e \texttt{major}; l'assenza o la presenza contemporanea di entrambe comporta un errore bloccante dell'automazione.
+
+        \item \textbf{Revisione superata} (\textit{Approved}): l'automazione incrementa di uno il contatore sinistro dell'ultima versione registrata e azzera gli altri due contatori, indipendentemente dalla presenza delle label \texttt{minor} e \texttt{major}. Se si tratta della prima approvazione del documento, la versione assegnata è \texttt{1.0.0}.
     \end{itemize}
-    \item \textbf{Data}: indica la data in cui la modifica descritta nella riga è stata apportata al documento. Compilato dall'autore.
-    \item \textbf{Autore}: indica chi ha apportato la modifica. Compilato dall'autore.
-    \item \textbf{Descrizione}: riassume le modifiche apportate al documento. Compilato dall'autore.
-    \item \textbf{Verificatore}: indica chi ha verificato il documento. Compilato dal revisore solo nella riga della modifica in esame; nelle righe delle modifiche intermedie che la precedono il campo rimane vuoto (\texttt{-}).
+
+    Le label \texttt{minor} e \texttt{major} determinano quindi la tipologia della modifica soltanto in caso di revisione non superata, mentre in caso di revisione superata prevale sempre l'incremento del contatore sinistro.
+
+    \item \textbf{Data}: indica la data dell'ultimo aggiornamento della PR. Viene aggiornata automaticamente in occasione degli eventi \texttt{opened}, \texttt{reopened} e \texttt{synchronize} della PR, e rimane invariata durante la fase di review.
+
+    \item \textbf{Autore}: indica l'autore della PR, identificato tramite l'ID dell'account GitHub mappato al rispettivo nome e cognome. Il valore rimane invariato anche nel caso in cui vengano effettuati commit nella PR da parte di altri collaboratori.
+
+    \item \textbf{Descrizione}: riporta il titolo della PR associata alle modifiche, compilato automaticamente dall'automazione.
+
+    \item \textbf{Verificatore}: indica l'autore dell'ultima revisione conclusiva elaborata dall'automazione (\textit{Approved} o \textit{Changes requested}). Il nominativo viene determinato associando l'ID dell'account GitHub del revisore al rispettivo nome e cognome. Il campo rimane valorizzato a \texttt{-} fino alla sottomissione di una revisione conclusiva.
 \end{itemize}
 
-\noindent La versione approvata e la relativa data devono corrispondere al contenuto effettivamente approvato e integrato nel repository.
+\noindent La versione e lo stato \texttt{Approvato} vengono consolidati definitivamente nella cronologia del branch \texttt{main} solo al momento del merge della Pull Request approvata.
 
 \subsection{Nuove modifiche dopo l'approvazione}
 
-Se, dopo l'approvazione, vengono introdotte modifiche sostanziali alla Pull Request, il revisore deve verificare nuovamente le parti interessate.
+Se, dopo una revisione conclusiva positiva, vengono introdotte nuove modifiche alla Pull Request, l'approvazione precedente non è più sufficiente a considerare approvato il contenuto aggiornato. La Pull Request deve essere sottoposta a una nuova revisione prima del merge.
+
+Durante questa fase il documento torna nello stato \texttt{Bozza}. I campi \textbf{Versione} e \textbf{Data} della tabella \textit{Informazioni documento} assumono nuovamente il valore \texttt{-}. L'automazione aggiorna la riga già associata alla Pull Request nel \textit{Registro delle modifiche}, senza generarne una nuova.
+
+L'approvazione deve quindi riferirsi al contenuto effettivamente integrato nel branch \texttt{main}.
 
 \subsection{Eccezioni}
 
@@ -730,6 +768,9 @@ Quando l'attività modifica contenuti esposti sul sito, devono essere applicati 
     \item I commit rispettano le \hyperref[sec:linee-guida-per-i-commit]{convenzioni adottate dal team}.
     \item L'issue associata, se presente, è aggiornata e correttamente referenziata.
     \item Le modifiche sono raccolte in una Pull Request descrittiva e coerente con l'attività svolta.
+    \item Le label richieste per la corretta elaborazione della Pull Request sono state applicate, ove previste.
+    \item L'automazione relativa alla compilazione delle tabelle di tracciabilità è stata eseguita correttamente.
+    \item Le tabelle \textit{Informazioni documento} e \textit{Registro delle modifiche}, ove previste, riportano informazioni coerenti con l'esito della revisione e con le modifiche effettivamente integrate nel repository.
 \end{itemize}
 
 \subsubsection{Revisione e integrazione}
