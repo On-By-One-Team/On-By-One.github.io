@@ -2,16 +2,65 @@
 
 % --- PACCHETTI ---
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}            % Migliora la codifica dei font e la sillabazione
+\usepackage{lmodern}                % Rende i font scalabili all'infinito
+\usepackage{anyfontsize}            % Permette di usare dimensioni personalizzate
 \usepackage[italian]{babel}
 \usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
 \usepackage{graphicx}               % Per inserire il logo
 \usepackage{tabularx}               % Per tabelle larghe quanto la pagina
 \usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
+\usepackage{pifont}                 % Per simboli speciali negli elenchi
+\usepackage{amssymb}                % Per simboli matematici e grafici aggiuntivi
+\usepackage{enumitem}               % Per personalizzare stile e spaziatura degli elenchi
+\usepackage{titlesec}               % Per personalizzare la formattazione dei titoli
 \usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
-\usepackage{lmodern}      % Rende i font scalabili all'infinito
-\usepackage{anyfontsize}  % Permette di usare dimensioni personalizzate
-\usepackage{xurl}         % Permette ai link lunghi di non uscire dai margini
-\urlstyle{same}           % Usa lo stesso font del documento
+\usepackage{xurl}                   % Permette ai link lunghi di non uscire dai margini
+\urlstyle{same}                     % Usa lo stesso font del documento
+
+
+% --- SPAZIATURA DEGLI ELENCHI ---
+\setlist{itemsep=0.4ex, topsep=0.8ex}
+
+% --- SUPPORTO CARATTERE TRIANGOLINO NEGLI ELENCHI ---
+\DeclareUnicodeCharacter{2023}{\ding{227}}
+
+% --- PROFONDITÀ NUMERAZIONE E INDICE ---
+% Estende la numerazione e la visibilità nell'indice fino al livello subparagraph (5)
+\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+
+% --- FORMATTAZIONE TITOLI PARAGRAPH E SUBPARAGRAPH ---
+% Forza paragraph e subparagraph ad andare a capo come veri titoli di sezione
+% (senza numerazione automatica: il numero è già nel titolo "UC1 --- ...")
+\titleformat{\paragraph}[hang]{\normalfont\normalsize\bfseries}{}{0pt}{}
+\titleformat{\subparagraph}[hang]{\normalfont\normalsize\bfseries}{}{0pt}{}
+\titlespacing*{\paragraph}{0pt}{2.5ex plus 1ex minus .2ex}{0.8ex}
+\titlespacing*{\subparagraph}{0pt}{2.5ex plus 1ex minus .2ex}{0.8ex}
+
+% --- NUMERAZIONE AUTOMATICA E RIFERIMENTI DEI CASI D'USO ---
+\newcounter{uc}                            % Contatore per i casi d'uso principali
+\newcounter{ucsub}[uc]                     % Contatore per i sotto-casi
+\renewcommand{\theucsub}{\theuc.\arabic{ucsub}}
+
+% \UC{chiave}{titolo}: caso d'uso principale (livello subsubsection nell'indice)
+\newcommand{\UC}[2]{%
+  \refstepcounter{uc}%
+  \subsubsection*{UC\theuc{} --- #2}%
+  \addcontentsline{toc}{subsubsection}{UC\theuc{} --- #2}%
+  \label{uc:#1}}
+
+% \UCsub{chiave}{titolo}: sotto-caso d'uso (livello paragraph nell'indice)
+\newcommand{\UCsub}[2]{%
+  \refstepcounter{ucsub}%
+  \paragraph*{UC\theucsub{} --- #2}%
+  \addcontentsline{toc}{paragraph}{UC\theucsub{} --- #2}%
+  \label{uc:#1}}
+
+% Riferimenti incrociati: \ucref{chiave} -> "UC2.1"
+\newcommand{\ucref}[1]{UC\ref{uc:#1}}
+\newcommand{\ucp}[1]{(UC\ref{uc:#1})}
+
 
 \begin{document}
 
@@ -99,7 +148,7 @@
         \multicolumn{1}{c|}{\textbf{Descrizione}} & 
         \multicolumn{1}{c|}{\textbf{Verificatore}} \\
         \hline
-        - & 2026-11-22 & Sara Ballardin & Revisione stilistica e aggiunta classificazione degli attori & - \\ % change-log-pr: 97
+        0.1.4 & 2026-11-22 & Sara Ballardin & Revisione stilistica e aggiunta classificazione degli attori & Daniele Nuzzaci \\ % change-log-pr: 97
         0.1.3 & 2026/11/14 & Shuhui Chen & Stesura sezione Descrizione del prodotto & Daniele Nuzzaci \\
         \hline
         0.1.2 & 2026/11/14 & Simone Giuliano & Stesura paragrafi 3.1 e 3.2 & Daniele Nuzzaci \\
@@ -305,22 +354,364 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 
 
 \subsection{Elenco dei casi d'uso}
-Di seguito sono riportati i casi d'uso identificati per il sistema, raggruppati per area funzionale per facilitarne la consultazione.
 
-\subsubsection{Autenticazione e gestione della sessione}
-Questa categoria raccoglie i casi d'uso relativi alla sicurezza e all'identificazione. 
+% ------------------------------------------------------------------------------
+% AUTENTICAZIONE E GESTIONE DELLA SESSIONE
+\begingroup
+\setlist{nosep}
+\setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
+\setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
 
-\subsubsection{Gestione degli impianti}
-I casi d'uso di questa sezione definiscono le operazioni per la visualizzazione e la selezione degli impianti domotici associati all'account dell'utente.
+% Scrivere qui i casi d'uso
 
-\subsubsection{Esplorazione della topologia e struttura dell'impianto}
-Questa area funzionale raggruppa le interazioni che permettono di esplorare e navigare la struttura dell'impianto selezionato. Include la ricerca e la visualizzazione degli ambienti (\texttt{Location}) e delle funzioni domotiche disponibili, aiutando l'utente e il sistema a comprendere dove sono collocati i dispositivi.
+\endgroup
 
-\subsubsection{Lettura dello stato di dispositivi e sensori}
-I casi d'uso di questa sezione riguardano esclusivamente operazioni di interrogazione passiva. Permettono di conoscere in tempo reale il valore misurato da un sensore (come temperatura o presenza) o lo stato attuale di un dispositivo (se una luce è accesa o una tapparella aperta), senza apportare alcuna modifica al sistema fisico.
+% ------------------------------------------------------------------------------
+% GESTIONE DEGLI IMPIANTI
+\begingroup
+\setlist{nosep}
+\setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
+\setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
 
-\subsubsection{Comando e controllo dei dispositivi}
-Questa categoria raccoglie le interazioni attive tramite le quali l'utente impartisce comandi per alterare lo stato dell'impianto. Include l'accensione e lo spegnimento, le regolazioni continue (come l'intensità luminosa o i gradi del termostato) e i comandi estesi a interi ambienti o a tutta l'abitazione.
+\UC{struttura}{Visualizzazione struttura generale dell'impianto}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato è autenticato nel sistema
+    \item L'Utente autenticato ha selezionato un impianto
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra gli ambienti dell'impianto con le relative funzioni
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione della struttura generale dell'impianto;
+    \item L'Utente autenticato visualizza gli ambienti dell'impianto;
+    \item L'Utente autenticato visualizza le funzioni presenti in ciascun ambiente.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'impianto non contiene alcun ambiente
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-in-elenco}
+    \item \ucref{funzioni-ambiente}
+  \end{itemize}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{elenco-ambienti}{Visualizzazione elenco ambienti (Locations)}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato è autenticato nel sistema
+    \item L'Utente autenticato ha selezionato un impianto
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra l'elenco degli ambienti dell'impianto
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione dell'elenco degli ambienti dell'impianto;
+    \item L'Utente autenticato visualizza l'elenco degli ambienti, ciascuno con il proprio nome.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'impianto non contiene alcun ambiente
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-in-elenco}
+  \end{itemize}
+\end{itemize}
+
+\UCsub{ambiente-in-elenco}{Visualizzazione singolo ambiente in elenco}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha recuperato l'elenco degli ambienti dell'impianto
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra il nome dell'ambiente
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza il nome dell'ambiente.
+  \end{enumerate}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{dettaglio-ambiente}{Visualizzazione dettaglio singolo ambiente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato è autenticato nel sistema
+    \item L'Utente autenticato ha selezionato un impianto
+    \item L'ambiente richiesto esiste nell'impianto selezionato
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra il nome dell'ambiente e le relative funzioni
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione del dettaglio di un ambiente;
+    \item L'Utente autenticato visualizza il nome dell'ambiente;
+    \item L'Utente autenticato visualizza le funzioni presenti nell'ambiente.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'ambiente richiesto non esiste
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-inesistente}
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{nome-ambiente}
+    \item \ucref{funzioni-ambiente}
+  \end{itemize}
+\end{itemize}
+
+\UCsub{nome-ambiente}{Visualizzazione nome ambiente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha identificato l'ambiente richiesto nell'impianto selezionato
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra il nome dell'ambiente
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza il nome dell'ambiente.
+  \end{enumerate}
+\end{itemize}
+
+\UCsub{funzioni-ambiente}{Visualizzazione funzioni presenti nell'ambiente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha identificato l'ambiente richiesto nell'impianto selezionato
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra le funzioni associate all'ambiente
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza l'elenco delle funzioni presenti nell'ambiente, ciascuna con nome, tipologia e stato.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'ambiente non contiene alcuna funzione
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{funzione-in-elenco}
+  \end{itemize}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{funzione-in-elenco}{Visualizzazione singola funzione in elenco}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha recuperato le funzioni dell'ambiente
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra nome, tipologia e stato della funzione
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza il nome della funzione;
+    \item L'Utente autenticato visualizza la tipologia della funzione;
+    \item L'Utente autenticato visualizza lo stato della funzione.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item Lo stato della funzione non è disponibile
+  \end{itemize}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{ambiente-inesistente}{Ambiente richiesto inesistente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato è autenticato nel sistema
+    \item L'Utente autenticato ha selezionato un impianto
+    \item L'ambiente indicato non esiste nell'impianto selezionato
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema informa l'Utente autenticato che l'ambiente non esiste e mostra gli ambienti disponibili
+    \item Il sistema non esegue alcuna operazione di lettura o scrittura sull'impianto
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato indica un ambiente non presente nell'impianto;
+    \item L'Utente autenticato visualizza il messaggio di ambiente non trovato;
+    \item L'Utente autenticato visualizza gli ambienti disponibili.
+  \end{enumerate}
+  \item \textbf{Estende:}
+  \begin{itemize}[label=‣]
+    \item \ucref{dettaglio-ambiente}
+    \item \ucref{funzioni-comandabili}
+    \item \ucref{comando-ambiente}
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-in-elenco}
+  \end{itemize}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{funzioni-comandabili}{Visualizzazione funzioni comandabili in un ambiente \textit{(Nice-to-Have)}}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato è autenticato nel sistema
+    \item L'Utente autenticato ha selezionato un impianto
+    \item L'ambiente richiesto esiste nell'impianto selezionato
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra le funzioni comandabili dell'ambiente e le relative operazioni disponibili
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione delle funzioni comandabili di un ambiente;
+    \item L'Utente autenticato visualizza l'elenco delle funzioni comandabili dell'ambiente, ciascuna con le operazioni disponibili.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'ambiente richiesto non esiste
+    \item L'ambiente non contiene funzioni comandabili
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-inesistente}
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{operazioni-funzione}
+  \end{itemize}
+\end{itemize}
+
+\UCsub{operazioni-funzione}{Visualizzazione operazioni disponibili per funzione}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha individuato una funzione comandabile nell'ambiente
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra le operazioni supportate dalla funzione, senza eseguirle
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza le operazioni disponibili per la funzione.
+  \end{enumerate}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{comando-ambiente}{Comando su più dispositivi dello stesso ambiente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato è autenticato nel sistema
+    \item L'Utente autenticato ha selezionato un impianto
+    \item L'ambiente indicato esiste nell'impianto selezionato
+    \item L'ambiente contiene almeno una funzione del tipo indicato
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema esegue il comando su tutte le funzioni del tipo indicato presenti nell'ambiente
+    \item Il sistema informa l'Utente autenticato dell'esito dell'operazione
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato indica l'ambiente su cui operare;
+    \item L'Utente autenticato indica il tipo di funzione e l'operazione da eseguire;
+    \item L'Utente autenticato invia il comando;
+    \item L'Utente autenticato visualizza l'esito dell'operazione.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'ambiente indicato non esiste
+    \item L'ambiente non contiene funzioni del tipo indicato
+    \item Il comando non riesce su una o più funzioni
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-inesistente}
+  \end{itemize}
+\end{itemize}
+
+\endgroup
+
+% ------------------------------------------------------------------------------
+% ESPLORAZIONE DELLA TOPOLOGIA E STRUTTURA DELL'IMPIANTO
+\begingroup
+\setlist{nosep}
+\setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
+\setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
+
+% Scrivere qui i casi d'uso
+
+\endgroup
+
+% ------------------------------------------------------------------------------
+% LETTURA DELLO STATO DI DISPOSITIVI E SENSORI
+\begingroup
+\setlist{nosep}
+\setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
+\setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
+
+% Scrivere qui i casi d'uso
+
+\endgroup
+
+% ------------------------------------------------------------------------------
+% COMANDO E CONTROLLO DEI DISPOSITIVI
+\begingroup
+\setlist{nosep}
+\setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
+\setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
+
+% Scrivere qui i casi d'uso
+
+\endgroup
 
 \newpage
 
