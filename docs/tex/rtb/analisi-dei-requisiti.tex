@@ -6,6 +6,9 @@
 \usepackage{lmodern}                % Rende i font scalabili all'infinito
 \usepackage{anyfontsize}            % Permette di usare dimensioni personalizzate
 \usepackage[italian]{babel}
+\addto\captionsitalian{%
+  \renewcommand{\listfigurename}{Indice delle figure}%
+}
 \usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
 \usepackage{graphicx}               % Per inserire il logo
 \usepackage{tabularx}               % Per tabelle larghe quanto la pagina
@@ -16,6 +19,7 @@
 \usepackage{titlesec}               % Per personalizzare la formattazione dei titoli
 \usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
 \usepackage{xurl}                   % Permette ai link lunghi di non uscire dai margini
+\usepackage{float}                  % Per immagini
 \urlstyle{same}                     % Usa lo stesso font del documento
 
 
@@ -61,7 +65,9 @@
 \newcommand{\ucref}[1]{UC\ref{uc:#1}}
 \newcommand{\ucp}[1]{(UC\ref{uc:#1})}
 \newcommand{\ucrefplain}[1]{UC\ref*{uc:#1}}
-
+\usepackage[titles]{tocloft}
+\renewcommand{\cftfigpresnum}{Figura~}
+\addtolength{\cftfignumwidth}{3.5em}
 
 \begin{document}
 
@@ -153,13 +159,13 @@
         \hline
         0.2.0 & 2026-11-22 & Sara Ballardin & Revisione stilistica e aggiunta classificazione degli attori & Daniele Nuzzaci \\ % change-log-pr: 97
         \hline
-        0.1.3 & 2026/11/14 & Shuhui Chen & Stesura sezione Descrizione del prodotto & Daniele Nuzzaci \\
+        0.1.3 & 2026-11-14 & Shuhui Chen & Stesura sezione Descrizione del prodotto & Daniele Nuzzaci \\
         \hline
-        0.1.2 & 2026/11/14 & Simone Giuliano & Stesura paragrafi 3.1 e 3.2 & Daniele Nuzzaci \\
+        0.1.2 & 2026-11-14 & Simone Giuliano & Stesura paragrafi 3.1 e 3.2 & Daniele Nuzzaci \\
         \hline
-        0.1.1 & 2026/11/13 & Sara Ballardin & Stesura dell'introduzione & Daniele Nuzzaci \\
+        0.1.1 & 2026-11-13 & Sara Ballardin & Stesura dell'introduzione & Daniele Nuzzaci \\
         \hline
-        0.1.0 & 2026/11/09 & Sara Ballardin & Definizione struttura del documento & Daniele Nuzzaci \\
+        0.1.0 & 2026-11-09 & Sara Ballardin & Definizione struttura del documento & Daniele Nuzzaci \\
         \hline
     \end{tabularx}
     \arrayrulecolor{black}
@@ -174,6 +180,13 @@
 \tableofcontents
 \newpage
 
+% ==============================================================================
+% INDICE DELLE FIGURE (PAGINA 4)
+% ==============================================================================
+\phantomsection
+\addcontentsline{toc}{section}{\listfigurename}
+\listoffigures
+\newpage
 
 % ==============================================================================
 % 1. INTRODUZIONE
@@ -379,6 +392,11 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 
 %------------------------------------------------------------
 \UC{elenco-impianti}{Visualizzazione elenco impianti associati all'account}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth, height=0.35\textheight, keepaspectratio]{assets/UML1.png}
+    \caption{\protect\ucrefplain{elenco-impianti} -- \protect\ucrefplain{singolo-impianto}, \protect\ucrefplain{nessun-impianto}}
+\end{figure}
 
 \begin{itemize}[label=\textbullet]
   \item \textbf{Attore principale:} Utente autenticato
@@ -408,6 +426,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
     \item \ucref{nessun-impianto}
   \end{itemize}
 \end{itemize}
+
 
 \UCsub{singolo-impianto}{Visualizzazione singolo impianto in elenco}
 
@@ -454,7 +473,11 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 
 %------------------------------------------------------------
 \UC{selezione-impianto}{Selezione impianto attivo nella sessione}
-
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth, height=0.35\textheight, keepaspectratio]{assets/UML2.png}
+    \caption{\protect\ucrefplain{selezione-impianto} -- \protect\ucrefplain{selezione-impianto-inesistente}, \protect\ucrefplain{singolo-impianto}}
+\end{figure}
 \begin{itemize}[label=\textbullet]
   \item \textbf{Attore principale:} Utente autenticato
   \item \textbf{Pre-condizioni:}
@@ -481,6 +504,8 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
     \item \ucref{selezione-impianto-inesistente}
   \end{itemize}
 \end{itemize}
+
+
 
 %------------------------------------------------------------
 \UC{selezione-impianto-inesistente}{Impianto richiesto inesistente in fase di selezione}
@@ -516,6 +541,11 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 
 %------------------------------------------------------------
 \UC{cambio-impianto}{Cambio impianto attivo nella sessione}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth, height=0.35\textheight, keepaspectratio]{assets/UML3.png}
+    \caption{\protect\ucrefplain{cambio-impianto} -- \protect\ucrefplain{cambio-impianto-inesistente}, \protect\ucrefplain{singolo-impianto}}
+\end{figure}
 
 \begin{itemize}[label=\textbullet]
   \item \textbf{Attore principale:} Utente autenticato
@@ -611,6 +641,12 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
 \end{itemize}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth, height=0.35\textheight, keepaspectratio]{assets/UML4.png}
+    \caption{\protect\ucrefplain{dettagli-impianto-attivo} -- \protect\ucrefplain{singolo-impianto}, \protect\ucrefplain{nessun-impianto-attivo}}
+\end{figure}
+
 %------------------------------------------------------------
 \UC{nessun-impianto-attivo}{Nessun impianto attivo nella sessione}
 
@@ -642,7 +678,6 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 \end{itemize}
 
 \endgroup
-
 % ------------------------------------------------------------------------------
 % ESPLORAZIONE DELLA TOPOLOGIA E STRUTTURA DELL'IMPIANTO
 \begingroup
