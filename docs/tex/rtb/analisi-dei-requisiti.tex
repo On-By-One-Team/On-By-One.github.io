@@ -65,6 +65,7 @@
 \newcommand{\ucref}[1]{UC\ref{uc:#1}}
 \newcommand{\ucp}[1]{(UC\ref{uc:#1})}
 \newcommand{\ucrefplain}[1]{UC\ref*{uc:#1}}
+
 \usepackage[titles]{tocloft}
 \renewcommand{\cftfigpresnum}{Figura~}
 \addtolength{\cftfignumwidth}{3.5em}
@@ -318,6 +319,7 @@ Ogni caso d'uso è descritto attraverso le seguenti caratteristiche:
     \item \textbf{Scenari alternativi:} Eventuali sequenze di eventi che modellano eccezioni, errori o deviazioni dal flusso standard.
     \item \textbf{Inclusioni:} Riferimenti ad altri casi d'uso che devono obbligatoriamente essere eseguiti per concludere il caso d'uso includente.
     \item \textbf{Estensioni:} Riferimenti a casi d'uso estendenti che vengono eseguiti solo al verificarsi di specifiche condizioni, ampliando o alterando le funzionalità in uno scenario alternativo.
+    \item \textbf{Estende:} Riferimenti a casi d'uso base di cui il caso d'uso corrente rappresenta un'estensione.
     \item \textbf{Generalizzazioni:} Relazioni in cui un caso d'uso derivato eredita le caratteristiche di un caso d'uso base, specializzandone il comportamento.
 \end{itemize}
 
@@ -342,7 +344,7 @@ Gli attori primari avviano attivamente le interazioni con il sistema per raggiun
         \hline
         \textbf{Utente tecnico} & Figura che si occupa dell'installazione, della configurazione iniziale e dell'eventuale manutenzione o risoluzione dei problemi del sistema. \\
         \hline
-        \textbf{Cloud} (KNX IoT API) & Agisce da attore primario solo quando invia notifiche automatiche al sistema (esempio:\ un sensore che cambia stato), senza aspettare una richiesta dell'utente. \\
+        \textbf{Cloud Vimar} (KNX IoT API) & Agisce da attore primario solo quando invia notifiche automatiche al sistema (esempio:\ un sensore che cambia stato), senza aspettare una richiesta dell'utente. \\
         \hline
     \end{tabularx}
     \arrayrulecolor{black}
@@ -361,7 +363,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
         \multicolumn{1}{|c|}{\textbf{Attore}} & 
         \multicolumn{1}{c|}{\textbf{Descrizione}} \\
         \hline
-        \textbf{Cloud} (KNX IoT API \& \texttt{OAuth2}) & Servizio esterno interrogato dal sistema per validare le credenziali, leggere lo stato dei dispositivi e inoltrare i comandi fisici. \\
+        \textbf{Cloud Vimar} (KNX IoT API \& \texttt{OAuth2}) & Servizio esterno interrogato dal sistema per validare le credenziali, leggere lo stato dei dispositivi e inoltrare i comandi fisici. \\
         \hline
         \textbf{Servizio AI esterno} & Servizio (esempio:\ Claude, ChatGPT, Gemini) che funge da interfaccia conversazionale. \\
         \hline
@@ -392,30 +394,37 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 
 %------------------------------------------------------------
 \UC{elenco-impianti}{Visualizzazione elenco impianti associati all'account}
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth, height=0.35\textheight, keepaspectratio]{assets/UML1.png}
-    \caption{\protect\ucrefplain{elenco-impianti} -- \protect\ucrefplain{singolo-impianto}, \protect\ucrefplain{nessun-impianto}}
+    \includegraphics[width=0.85\textwidth, height=0.35\textheight, keepaspectratio]{assets/uc-elenco-impianti.png}
+    \caption{Diagramma dei casi d'uso: \protect\ucrefplain{elenco-impianti}, \protect\ucrefplain{singolo-impianto}, \protect\ucrefplain{nessun-impianto}}
+    \label{fig:uc-elenco-impianti}
 \end{figure}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
+    \item L'Utente autenticato è autenticato nel sistema.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra l'elenco degli impianti associati all'account
+    \item Il sistema mostra l'elenco degli impianti associati all'account.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
     \item L'Utente autenticato invia la richiesta di visualizzazione dell'elenco degli impianti associati al proprio account;
-    \item L'Utente autenticato visualizza l'elenco degli impianti, ciascuno con il proprio nome.
+    \item L'Utente autenticato visualizza l'elenco degli impianti, ciascuno con il proprio nome (\ucref{singolo-impianto}).
   \end{enumerate}
   \item \textbf{Scenari alternativi:}
   \begin{itemize}[label=‣]
-    \item Nessun impianto è associato all'account
+    \item Nessun impianto è associato all'account (\ucref{nessun-impianto}).
   \end{itemize}
   \item \textbf{Inclusioni:}
   \begin{itemize}[label=‣]
@@ -431,14 +440,18 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 \UCsub{singolo-impianto}{Visualizzazione singolo impianto in elenco}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Servizio AI esterno
+  \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema ha recuperato l'elenco degli impianti associati all'account
+    \item Il sistema ha recuperato l'elenco degli impianti associati all'account.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra esclusivamente il nome dell'impianto
+    \item Il sistema mostra esclusivamente il nome dell'impianto.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -450,15 +463,20 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 \UC{nessun-impianto}{Nessun impianto associato all'account}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item Non risulta alcun impianto associato all'account
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item Non risulta alcun impianto associato all'account.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema informa l'Utente autenticato dell'assenza di impianti associati all'account
+    \item Il sistema informa l'Utente autenticato dell'assenza di impianti associati all'account.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -473,22 +491,30 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 
 %------------------------------------------------------------
 \UC{selezione-impianto}{Selezione impianto attivo nella sessione}
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth, height=0.35\textheight, keepaspectratio]{assets/UML2.png}
-    \caption{\protect\ucrefplain{selezione-impianto} -- \protect\ucrefplain{selezione-impianto-inesistente}, \protect\ucrefplain{singolo-impianto}}
+    \includegraphics[width=0.85\textwidth, height=0.35\textheight, keepaspectratio]{assets/uc-selezione-impianto.png}
+    \caption{Diagramma dei casi d'uso: \protect\ucrefplain{selezione-impianto}, \protect\ucrefplain{selezione-impianto-inesistente}, \protect\ucrefplain{singolo-impianto}}
+    \label{fig:uc-selezione-impianto}
 \end{figure}
+
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item Almeno un impianto è associato all'account dell'Utente autenticato
-    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item Almeno un impianto è associato all'account dell'Utente autenticato;
+    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'impianto indicato è impostato come impianto attivo per la sessione corrente
+    \item L'impianto indicato è impostato come impianto attivo per la sessione corrente.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -497,7 +523,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{enumerate}
   \item \textbf{Scenari alternativi:}
   \begin{itemize}[label=‣]
-    \item L'impianto indicato non esiste o non è associato all'account
+    \item L'impianto indicato non esiste o non è associato all'account (\ucref{selezione-impianto-inesistente}).
   \end{itemize}
   \item \textbf{Estensioni:}
   \begin{itemize}[label=‣]
@@ -505,29 +531,32 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
 \end{itemize}
 
-
-
 %------------------------------------------------------------
 \UC{selezione-impianto-inesistente}{Impianto richiesto inesistente in fase di selezione}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente
-    \item L'Utente autenticato ha indicato un impianto non presente tra quelli associati al proprio account
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente;
+    \item L'Utente autenticato ha indicato un impianto non presente tra quelli associati al proprio account.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema informa l'Utente autenticato che l'impianto non esiste e mostra gli impianti disponibili
-    \item Nessun impianto risulta impostato come attivo nella sessione corrente
+    \item Il sistema informa l'Utente autenticato che l'impianto non esiste e mostra gli impianti disponibili;
+    \item Nessun impianto risulta impostato come attivo nella sessione corrente.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
     \item L'Utente autenticato indica un impianto non associato al proprio account;
     \item L'Utente autenticato visualizza il messaggio di impianto non trovato;
-    \item L'Utente autenticato visualizza gli impianti disponibili.
+    \item L'Utente autenticato visualizza gli impianti disponibili (\ucref{singolo-impianto}).
   \end{enumerate}
   \item \textbf{Estende:}
   \begin{itemize}[label=‣]
@@ -541,24 +570,31 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 
 %------------------------------------------------------------
 \UC{cambio-impianto}{Cambio impianto attivo nella sessione}
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.85\textwidth, height=0.35\textheight, keepaspectratio]{assets/UML3.png}
-    \caption{\protect\ucrefplain{cambio-impianto} -- \protect\ucrefplain{cambio-impianto-inesistente}, \protect\ucrefplain{singolo-impianto}}
+    \includegraphics[width=0.85\textwidth, height=0.35\textheight, keepaspectratio]{assets/uc-cambio-impianto.png}
+    \caption{Diagramma dei casi d'uso: \protect\ucrefplain{cambio-impianto}, \protect\ucrefplain{cambio-impianto-inesistente}, \protect\ucrefplain{singolo-impianto}}
+    \label{fig:uc-cambio-impianto}
 \end{figure}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item Almeno un impianto è associato all'account dell'Utente autenticato
-    \item Un impianto è già impostato come attivo nella sessione corrente
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item Almeno un impianto è associato all'account dell'Utente autenticato;
+    \item Un impianto è già impostato come attivo nella sessione corrente.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il nuovo impianto indicato sostituisce il precedente come impianto attivo per la sessione corrente
-    \item Il sistema informa l'Utente autenticato dell'avvenuto cambio di impianto
+    \item Il nuovo impianto indicato sostituisce il precedente come impianto attivo per la sessione corrente;
+    \item Il sistema informa l'Utente autenticato dell'avvenuto cambio di impianto.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -568,8 +604,8 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{enumerate}
   \item \textbf{Scenari alternativi:}
   \begin{itemize}[label=‣]
-    \item L'impianto indicato non esiste o non è associato all'account
-    \item L'impianto indicato coincide con quello già attivo nella sessione corrente
+    \item L'impianto indicato non esiste o non è associato all'account (\ucref{cambio-impianto-inesistente});
+    \item L'impianto indicato coincide con quello già attivo nella sessione corrente.
   \end{itemize}
   \item \textbf{Estensioni:}
   \begin{itemize}[label=‣]
@@ -581,23 +617,28 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 \UC{cambio-impianto-inesistente}{Impianto richiesto inesistente in fase di cambio}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item Un impianto è già impostato come attivo nella sessione corrente
-    \item L'Utente autenticato ha indicato un impianto non presente tra quelli associati al proprio account
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item Un impianto è già impostato come attivo nella sessione corrente;
+    \item L'Utente autenticato ha indicato un impianto non presente tra quelli associati al proprio account.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema informa l'Utente autenticato che l'impianto non esiste e mostra gli impianti disponibili
-    \item L'impianto precedentemente attivo rimane selezionato nella sessione corrente
+    \item Il sistema informa l'Utente autenticato che l'impianto non esiste e mostra gli impianti disponibili;
+    \item L'impianto precedentemente attivo rimane selezionato nella sessione corrente.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
     \item L'Utente autenticato indica un impianto non associato al proprio account;
     \item L'Utente autenticato visualizza il messaggio di impianto non trovato;
-    \item L'Utente autenticato visualizza gli impianti disponibili.
+    \item L'Utente autenticato visualizza gli impianti disponibili (\ucref{singolo-impianto}).
   \end{enumerate}
   \item \textbf{Estende:}
   \begin{itemize}[label=‣]
@@ -612,24 +653,36 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 %------------------------------------------------------------
 \UC{dettagli-impianto-attivo}{Visualizzazione dettagli impianto attivo}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth, height=0.35\textheight, keepaspectratio]{assets/uc-dettagli-impianto-attivo.png}
+    \caption{Diagramma dei casi d'uso: \protect\ucrefplain{dettagli-impianto-attivo}, \protect\ucrefplain{singolo-impianto}, \protect\ucrefplain{nessun-impianto-attivo}}
+    \label{fig:uc-dettagli-impianto-attivo}
+\end{figure}
+
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
+    \item L'Utente autenticato è autenticato nel sistema.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra i dettagli dell'impianto attivo nella sessione corrente
+    \item Il sistema mostra i dettagli dell'impianto attivo nella sessione corrente.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
     \item L'Utente autenticato invia la richiesta di visualizzazione dei dettagli dell'impianto attivo;
-    \item L'Utente autenticato visualizza i dettagli dell'impianto attivo nella sessione corrente.
+    \item L'Utente autenticato visualizza i dettagli dell'impianto attivo nella sessione corrente (\ucref{singolo-impianto}).
   \end{enumerate}
   \item \textbf{Scenari alternativi:}
   \begin{itemize}[label=‣]
-    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente
+    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente (\ucref{nessun-impianto-attivo}).
   \end{itemize}
   \item \textbf{Inclusioni:}
   \begin{itemize}[label=‣]
@@ -641,31 +694,30 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
 \end{itemize}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth, height=0.35\textheight, keepaspectratio]{assets/UML4.png}
-    \caption{\protect\ucrefplain{dettagli-impianto-attivo} -- \protect\ucrefplain{singolo-impianto}, \protect\ucrefplain{nessun-impianto-attivo}}
-\end{figure}
-
 %------------------------------------------------------------
 \UC{nessun-impianto-attivo}{Nessun impianto attivo nella sessione}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema informa l'Utente autenticato che nessun impianto è attualmente attivo e mostra gli impianti disponibili
+    \item Il sistema informa l'Utente autenticato che nessun impianto è attualmente attivo e mostra gli impianti disponibili.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
     \item L'Utente autenticato invia la richiesta di visualizzazione dei dettagli dell'impianto attivo;
     \item L'Utente autenticato visualizza il messaggio relativo all'assenza di un impianto attivo;
-    \item L'Utente autenticato visualizza gli impianti disponibili.
+    \item L'Utente autenticato visualizza gli impianti disponibili (\ucref{singolo-impianto}).
   \end{enumerate}
   \item \textbf{Estende:}
   \begin{itemize}[label=‣]
