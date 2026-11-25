@@ -40,7 +40,54 @@ class DocsVersioningTests(unittest.TestCase):
             self.assertFalse(docs_versioning.update_pr_row(path, row, 86))
             content = path.read_text(encoding="utf-8")
             self.assertEqual(content.count("% change-log-pr: 86"), 1)
-            self.assertIn("- & 2026-11-17 & Federico Temporin & Aggiornata la norma & -", content)
+            self.assertIn(
+                "- & 2026-11-17 & Federico Temporin & Aggiornata la norma & - \\\\ % change-log-pr: 86\n\\hline\n",
+                content,
+            )
+
+    def test_update_pr_and_review_add_missing_hline(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "document.tex"
+            missing_hline = TEX.replace(
+                "1.2.3 & 2026-11-01 & Sara Ballardin & Vecchia modifica & Daniele Nuzzaci \\\\",
+                "- & 2026-11-17 & Federico Temporin & PR & - \\\\ % change-log-pr: 86\n1.2.3 & 2026-11-01 & Sara Ballardin & Vecchia modifica & Daniele Nuzzaci \\\\",
+            )
+            path.write_text(missing_hline, encoding="utf-8")
+            row = docs_versioning.ChangeRow("-", "2026-11-17", "Federico Temporin", "PR", "-")
+            self.assertTrue(docs_versioning.update_pr_row(path, row, 86))
+            self.assertFalse(docs_versioning.update_pr_row(path, row, 86))
+            content = path.read_text(encoding="utf-8")
+            self.assertIn(
+                "- & 2026-11-17 & Federico Temporin & PR & - \\\\ % change-log-pr: 86\n\\hline\n1.2.3 &",
+                content,
+            )
+
+            path.write_text(missing_hline, encoding="utf-8")
+            self.assertTrue(
+                docs_versioning.update_review_row(path, 86, "2.0.0", "Daniele Nuzzaci")
+            )
+            content = path.read_text(encoding="utf-8")
+            self.assertIn(
+                "2.0.0 & 2026-11-17 & Federico Temporin & PR & Daniele Nuzzaci \\\\ % change-log-pr: 86\n\\hline\n1.2.3 &",
+                content,
+            )
+
+    def test_update_information_adds_missing_hline(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "document.tex"
+            missing_hline = TEX.replace(
+                "1.2.3 & 2026-11-01 & Approvato & Team \\\\\n\\hline\n\\end{tabularx}",
+                "1.2.3 & 2026-11-01 & Approvato & Team \\\\\n\\end{tabularx}",
+            )
+            path.write_text(missing_hline, encoding="utf-8")
+            self.assertTrue(
+                docs_versioning.update_information(path, "-", "-", "Bozza", "client")
+            )
+            content = path.read_text(encoding="utf-8")
+            self.assertIn(
+                "- & - & Bozza & On-By-One \\newline Prof. Tullio Vardanega \\newline Prof. Riccardo Cardin \\\\\n\\hline\n\\end{tabularx}",
+                content,
+            )
 
     def test_approved_version_increments_left_counter(self):
         with tempfile.TemporaryDirectory() as directory:

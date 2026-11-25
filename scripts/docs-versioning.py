@@ -123,15 +123,23 @@ def information_bounds(lines: list[str]) -> tuple[int, int, int]:
             for index in range(start, len(lines))
             if r"\textbf{Destinatari}" in lines[index]
         )
-        separator = next(
+        table_end = next(
             index
             for index in range(header + 1, len(lines))
+            if r"\end{tabularx}" in lines[index]
+        )
+        separator = next(
+            index
+            for index in range(header + 1, table_end)
             if r"\hline" in lines[index]
         )
         end = next(
-            index
-            for index in range(separator + 1, len(lines))
-            if r"\hline" in lines[index]
+            (
+                index
+                for index in range(separator + 1, table_end)
+                if r"\hline" in lines[index]
+            ),
+            table_end,
         )
     except StopIteration as error:
         raise ValueError("Tabella Informazioni documento non trovata") from error
@@ -168,19 +176,31 @@ def information_row_line(
     )
 
 
+def ensure_hline_after(lines: list[str], index: int, indentation: str) -> None:
+    for next_index in range(index + 1, len(lines)):
+        stripped = lines[next_index].strip()
+        if not stripped:
+            continue
+        if stripped.startswith(r"\hline"):
+            return
+        break
+    lines.insert(index + 1, f"{indentation}\\hline\n")
+
+
 def update_information(
     path: Path, version: str, date: str, status: str, recipient_type: str
 ) -> bool:
     date = iso_date(date)
-    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+    original = path.read_text(encoding="utf-8")
+    lines = original.splitlines(keepends=True)
     separator, end, _ = information_bounds(lines)
     indentation = re.match(r"\s*", lines[separator]).group(0)
     replacement = information_row_line(
         version, date, status, recipient_type, indentation
     )
     lines[separator + 1 : end] = [replacement]
+    ensure_hline_after(lines, separator + 1, indentation)
     updated = "".join(lines)
-    original = path.read_text(encoding="utf-8")
     if updated == original:
         return False
     path.write_text(updated, encoding="utf-8")
@@ -206,10 +226,12 @@ def insert_row(lines: list[str], start: int, end: int, row: ChangeRow, pr_number
         raise ValueError("Separatore dell'intestazione non trovato")
     indentation = re.match(r"\s*", lines[separator]).group(0)
     lines.insert(separator + 1, row_line(row, indentation, pr_number))
+    ensure_hline_after(lines, separator + 1, indentation)
 
 
 def update_pr_row(path: Path, row: ChangeRow, pr_number: int) -> bool:
-    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+    original = path.read_text(encoding="utf-8")
+    lines = original.splitlines(keepends=True)
     start, end = registry_bounds(lines)
     existing = marker_line(lines, start, end, pr_number)
     if existing is None:
@@ -217,8 +239,8 @@ def update_pr_row(path: Path, row: ChangeRow, pr_number: int) -> bool:
     else:
         indentation = re.match(r"\s*", lines[existing]).group(0)
         lines[existing] = row_line(row, indentation, pr_number)
+        ensure_hline_after(lines, existing, indentation)
     updated = "".join(lines)
-    original = path.read_text(encoding="utf-8")
     if updated == original:
         return False
     path.write_text(updated, encoding="utf-8")
@@ -338,7 +360,8 @@ def failed_review_version(path: Path, pr_number: int, kind: str) -> str:
 
 
 def update_review_row(path: Path, pr_number: int, version: str, verifier: str) -> bool:
-    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+    original = path.read_text(encoding="utf-8")
+    lines = original.splitlines(keepends=True)
     start, end = registry_bounds(lines)
     index = marker_line(lines, start, end, pr_number)
     if index is None:
@@ -348,11 +371,12 @@ def update_review_row(path: Path, pr_number: int, version: str, verifier: str) -
         raise ValueError(f"Riga della PR #{pr_number} non interpretabile in {path}")
     updated_row = ChangeRow(version, row.date, row.author, row.description, verifier)
     indentation = re.match(r"\s*", lines[index]).group(0)
-    replacement = row_line(updated_row, indentation, pr_number)
-    if replacement == lines[index]:
+    lines[index] = row_line(updated_row, indentation, pr_number)
+    ensure_hline_after(lines, index, indentation)
+    updated = "".join(lines)
+    if updated == original:
         return False
-    lines[index] = replacement
-    path.write_text("".join(lines), encoding="utf-8")
+    path.write_text(updated, encoding="utf-8")
     return True
 
 
