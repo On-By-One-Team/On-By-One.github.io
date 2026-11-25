@@ -96,11 +96,9 @@ class DocsVersioningTests(unittest.TestCase):
             row = docs_versioning.ChangeRow("-", "2026-11-17", "Federico Temporin", "PR", "-")
             docs_versioning.update_pr_row(path, row, 86)
             docs_versioning.update_information(path, "-", "-", "Bozza", "client")
-            self.assertEqual(
-                docs_versioning.next_version(path, 86, "completed-milestone"), "2.0.0"
-            )
-            self.assertEqual(docs_versioning.next_version(path, 86, "major"), "1.3.0")
-            self.assertEqual(docs_versioning.next_version(path, 86, "minor"), "1.2.4")
+            self.assertEqual(docs_versioning.next_version(path, 86, "major"), "2.0.0")
+            self.assertEqual(docs_versioning.next_version(path, 86, "minor"), "1.3.0")
+            self.assertEqual(docs_versioning.next_version(path, 86, "patch"), "1.2.4")
 
     def test_first_version_defaults_to_1_0_0_for_any_valid_label(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -115,7 +113,7 @@ class DocsVersioningTests(unittest.TestCase):
             path.write_text(first_document, encoding="utf-8")
             row = docs_versioning.ChangeRow("-", "2026-11-17", "Federico Temporin", "PR", "-")
             docs_versioning.update_pr_row(path, row, 86)
-            for kind in ("completed-milestone", "major", "minor"):
+            for kind in ("major", "minor", "patch"):
                 self.assertEqual(docs_versioning.next_version(path, 86, kind), "1.0.0")
 
     def test_next_version_requires_valid_label(self):
@@ -135,10 +133,10 @@ class DocsVersioningTests(unittest.TestCase):
             r"On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin",
         )
         for state, kind, expected_ver, expected_status in (
-            ("approved", "minor", "1.2.4", "Approvato"),
-            ("approved", "major", "1.3.0", "Approvato"),
-            ("approved", "completed-milestone", "2.0.0", "Approvato"),
-            ("changes_requested", "completed-milestone", "2.0.0", "Bozza"),
+            ("approved", "patch", "1.2.4", "Approvato"),
+            ("approved", "minor", "1.3.0", "Approvato"),
+            ("approved", "major", "2.0.0", "Approvato"),
+            ("changes_requested", "major", "2.0.0", "Bozza"),
         ):
             with tempfile.TemporaryDirectory() as directory:
                 path = Path(directory) / "document.tex"

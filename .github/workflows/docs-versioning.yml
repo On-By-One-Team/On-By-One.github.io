@@ -169,10 +169,10 @@ jobs:
             RECIPIENT_ARGS=(--recipient-type "$RECIPIENT_TYPE")
           fi
           KIND=""
-          for label in completed-milestone major minor; do
+          for label in major minor patch; do
             if [[ " $PR_LABELS " == *" $label "* ]]; then
               if [[ -n "$KIND" ]]; then
-                echo "::error::Usare una sola label tra completed-milestone, major e minor"
+                echo "::error::Usare una sola label tra major, minor e patch"
                 exit 1
               fi
               KIND="$label"

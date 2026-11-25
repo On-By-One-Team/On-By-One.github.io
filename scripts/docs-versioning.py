@@ -29,7 +29,7 @@ ACCOUNT_NAMES = {
     "237098663": "Tommaso Zorzetto",
 }
 VERSION = re.compile(r"^\d+\.\d+\.\d+$")
-VERSION_KINDS = ("completed-milestone", "major", "minor")
+VERSION_KINDS = ("major", "minor", "patch")
 
 
 @dataclass(frozen=True)
@@ -369,15 +369,15 @@ def next_version(path: Path, pr_number: int, kind: str | None) -> str:
     if kind not in VERSION_KINDS:
         raise ValueError(
             "La Pull Request deve avere esattamente una label tra "
-            "completed-milestone, major e minor"
+            "major, minor e patch"
         )
     versions = numeric_versions(path, pr_number)
     if not versions:
         return "1.0.0"
     major, minor, patch = versions[0]
-    if kind == "completed-milestone":
-        return f"{major + 1}.0.0"
     if kind == "major":
+        return f"{major + 1}.0.0"
+    if kind == "minor":
         return f"{major}.{minor + 1}.0"
     return f"{major}.{minor}.{patch + 1}"
 
