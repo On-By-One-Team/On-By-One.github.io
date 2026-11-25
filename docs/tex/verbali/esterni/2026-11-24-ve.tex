@@ -1,0 +1,256 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PACCHETTI ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
+\usepackage{graphicx}               % Per inserire il logo
+\usepackage{tabularx}               % Per tabelle larghe quanto la pagina
+\usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
+\usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
+\usepackage{lmodern}                % Rende i font scalabili all'infinito
+\usepackage{anyfontsize}            % Permette di usare dimensioni personalizzate
+
+\begin{document}
+
+% ==============================================================================
+% FRONTESPIZIO (PAGINA 1)
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+
+    % LOGHI
+    \includegraphics[width=0.45\textwidth]{assets/logo_unipd.jpg}
+    \hfill
+    \includegraphics[width=0.45\textwidth]{assets/logo.png}\par
+    \vspace{0.5cm}
+
+    % NOME DEL GRUPPO
+    {\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par} 
+    \vspace{1cm}
+
+    % TITOLO DEL VERBALE
+    {\huge \bfseries Verbale esterno 2026-11-24 \par}
+    
+    \vspace{1.5cm}
+
+    % MEMBRI DEL GRUPPO
+    {\large
+    \textbf{On-By-One}:\par
+    \vspace{0.3cm}
+    \begin{tabular}{l l}
+        Sara Ballardin & 2101048 \\
+        Shuhui Chen & 2138001 \\
+        Simone Giuliano & 2145591 \\
+        Alvise Greggio & 2141004 \\
+        Daniele Nuzzaci & 2139039 \\
+        Federico Temporin & 2146764 \\
+        Tommaso Zorzetto & 2148629 \\
+    \end{tabular}
+    \par}
+
+    \vfill
+
+    % TABELLA INFORMAZIONI DOCUMENTO E DESTINATARI
+    \begin{table}[h]
+        \centering
+        \arrayrulecolor{gray!50}
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabularx}{\textwidth}{|c|c|c|X|}
+            \hline
+            \rowcolor{gray!10} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
+            \hline
+            \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+            \hline
+            - & - & Bozza & On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin \newline Vimar S.p.A. \\
+            \hline
+        \end{tabularx}
+        \arrayrulecolor{black}
+    \end{table}
+    
+    \vspace{0.5cm}
+    
+    % CONTATTI
+    {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
+    
+\end{titlepage}
+
+\newpage
+
+% ==============================================================================
+% REGISTRO DELLE MODIFICHE (PAGINA 2)
+% ==============================================================================
+\section*{Registro delle modifiche}
+
+\vspace{1cm}
+\begin{center}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
+        \hline
+        \rowcolor{gray!10} 
+        \multicolumn{1}{|c|}{\textbf{Versione}} & 
+        \multicolumn{1}{c|}{\textbf{Data}} & 
+        \multicolumn{1}{c|}{\textbf{Autore}} & 
+        \multicolumn{1}{c|}{\textbf{Descrizione}} & 
+        \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        0.2.0 & 2026-11-25 & Sara Ballardin & Stesura del verbale esterno & - \\
+        \hline
+        0.1.0 & 2026-11-24 & Sara Ballardin & Bozza iniziale del verbale esterno con trascrizione degli appunti del segretario e delle informazioni dalla trascrizione della riunione & - \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{center}
+\vfill
+\newpage
+
+% ==============================================================================
+% INDICE (PAGINA 3)
+% ==============================================================================
+\tableofcontents
+\newpage
+
+% ==============================================================================
+% INFORMAZIONI GENERALI
+% ==============================================================================
+\section{Informazioni generali}
+
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|>{\centering\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!10} \multicolumn{2}{|c|}{\textbf{Dettagli della riunione}} \\
+        \hline
+        \textbf{Data} & 2026-11-24 \\ \hline
+        \textbf{Ora inizio} & 16:00 \\ \hline
+        \textbf{Ora fine} & 17:20 \\ \hline
+        \textbf{Modalità} & Teams \\ \hline
+        \textbf{Segretario} & Simone Giuliano \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!10} \multicolumn{3}{|c|}{\textbf{Partecipanti}} \\
+        \hline
+        \rowcolor{gray!10} \textbf{Nome e cognome} & \textbf{Ruolo} & \textbf{Presenza} \\
+        \hline
+        Sara Ballardin & Verificatore & Presente \\ \hline
+        Shuhui Chen & Responsabile & Presente \\ \hline
+        Simone Giuliano & Amministratore & Presente \\ \hline
+        Alvise Greggio & Analista & Presente \\ \hline
+        Daniele Nuzzaci & Amministratore & Presente \\ \hline
+        Federico Temporin & Analista & Presente \\ \hline
+        Tommaso Zorzetto & Analista & Presente \\ \hline
+        Mariano Sciacco & Referente Vimar S.p.A. & Presente \\ \hline
+        Domenico Bevilacqua & Referente Vimar S.p.A. & Presente \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+\newpage
+
+% ==============================================================================
+% CORPO DEL VERBALE
+% ==============================================================================
+\section{Introduzione}
+Il presente documento riassume i contenuti del primo incontro di Stato Avanzamento Lavori (SAL) tra il gruppo On-By-One e l'azienda proponente Vimar S.p.A., tenutosi al termine del primo sprint. La riunione ha permesso di presentare le attività svolte, confrontarsi sulla gestione del \textit{repository} e sul versionamento e chiarire i dubbi emersi durante la stesura dei primi casi d'uso nell'\textit{Analisi dei requisiti}.
+
+\section{Ordine del giorno}
+\begin{itemize}
+    \item Ruoli dei membri del gruppo allo stato corrente.
+    \item Panoramica generale degli avanzamenti del primo sprint e gestione del repository Git.
+    \item Stato delle attività svolte: versionamento semantico, automazioni e stesura dei casi d'uso nell'\textit{Analisi dei requisiti}.
+    \item Dubbi emersi durante l'analisi: granularità dei casi d'uso, scenari impliciti e ruolo dell'AI.
+    \item Attività programmate per le prossime settimane, studio pratico delle tecnologie e proposte di date per i prossimi incontri.
+\end{itemize}
+
+\section{Discussioni}
+Seguendo i punti dell'ordine del giorno, il confronto si è articolato nei seguenti temi:
+
+\subsection{Ruoli, avanzamento dello sprint e gestione del repository}
+\begin{itemize}
+    \item \textbf{Avanzamento del primo sprint e ruoli:} Il gruppo ha illustrato la ripartizione dei ruoli dello sprint 1 e le attività svolte nelle prime due settimane: l'avvio dello studio tecnologico su MCP e KNX, l'impostazione del \textit{Piano di Progetto}, l'organizzazione del \textit{repository} per i contenuti RTB e l'inizio dell'\textit{Analisi dei requisiti}. È stato suggerito al gruppo di inserire nelle slide dei prossimi incontri una \textit{timeline} dell'avanzamento e una sezione dedicata ai quesiti.
+    \item \textbf{Gestione Git e ciclo di vita dei branch:} È stato descritto il flusso adottato per \textit{branch}, \textit{issue} e \textit{pull request}: ogni branch è legato a una specifica issue (salvo correzioni minime), resta aperto fino al completamento delle revisioni e viene riallineato rispetto a \texttt{main} prima di riprendere il lavoro. Il referente aziendale ha raccomandato di approfondire le operazioni di \textit{merge}, \textit{rebase} e gestione dei conflitti per gestire al meglio eventuali divergenze da \texttt{main}.
+    \item \textbf{Versionamento semantico (SemVer):} Riguardo alla notazione SemVer (\texttt{X.Y.Z}), è stato chiarito che il contatore \textit{patch} (\texttt{Z}) va riservato a correzioni stilistiche o minime, il \textit{minor} (\texttt{Y}) all'aggiunta o rimozione di sezioni e il \textit{major} (\texttt{X}) a modifiche sostanziali. Il gruppo dovrà definire come collegare l'incremento major alle \textit{milestone} e documentare chiaramente ogni intervento nel registro delle modifiche.
+    \item \textbf{Automazione del registro e controlli di verifica:} Il team ha spiegato che lo script di aggiornamento automatico del registro delle modifiche è stato sospeso sia perché la convenzione di versionamento non era ancora chiaramente definita, sia perché la necessità di inserire codice LaTeX nei titoli delle pull request ne inquinava la visualizzazione. Una volta definito il versionamento, si valuterà di prelevare il testo dalla descrizione della pull request, procedendo nel frattempo alla compilazione manuale. Il referente ha consigliato di valutare se non sia più pratico compilare il registro manualmente oppure, in alternativa, privilegiare automazioni di verifica che controllino la compilazione del registro e l'incremento della versione.
+\end{itemize}
+
+\subsection{Analisi dei requisiti, casi d'uso e dubbi emersi}
+\begin{itemize}
+    \item \textbf{Ruolo dell'AI:} In merito al dubbio se modellare l'assistente AI come attore secondario o come parte del sistema, è stato consigliato di sottoporre ai docenti una proposta già argomentata che illustri entrambe le alternative e le relative motivazioni.
+    \item \textbf{Granularità, rifattorizzazione e scenari impliciti:} Sul livello di dettaglio dei casi d'uso è stato suggerito di raggruppare i flussi comuni ed estrarre sottofunzionalità riutilizzabili. È stato inoltre raccomandato di includere gli scenari impliciti.
+    \item \textbf{Livello di astrazione:} È stato ribadito di mantenere la descrizione dei casi d'uso ad alto livello, senza vincolarla alle specificità implementative delle tecnologie. Lo studio tecnico a basso livello resta comunque utile per far emergere vincoli, condizioni di errore e scenari alternativi da valutare nell'analisi.
+\end{itemize}
+
+\subsection{Attività programmate e coordinamento}
+\begin{itemize}
+    \item \textbf{Studio pratico delle tecnologie:} Per acquisire una conoscenza concreta del sistema, è stato consigliato di studiare e sperimentare le tecnologie, organizzando il lavoro a coppie su temi specifici e condividendo poi quanto appreso con il resto del team tramite brevi spiegazioni interne.
+    \item \textbf{Aggiornamento documentale e rotazione ruoli:} Il gruppo proseguirà la stesura dei casi d'uso nell'\textit{Analisi dei requisiti}, aggiornerà il \textit{Piano di Progetto} e avvierà il \textit{Piano di Qualifica}. In vista del passaggio a sprint settimanali, è stato consigliato di valutare con i docenti il mantenimento della rotazione dei ruoli ogni due sprint in modo da garantire maggiore continuità.
+    \item \textbf{Segnalazione sul redirect URI OAuth2:} Durante la riunione è stato segnalato che l'altro gruppo di progetto ha riscontrato un problema con il \textit{redirect URI} per l'autenticazione \texttt{OAuth2} delle KNX IoT API e che l'indirizzo valido è stato aggiornato. L'URI valido è stato poi comunicato al gruppo via email.
+    \item \textbf{Proposte di date per i prossimi incontri:} Sono state proposte le date del 9 o 10 dicembre per il prossimo SAL ordinario e del 10, 11 o 14 dicembre per una sessione formativa congiunta (in modalità telematica, in presenza o ibrida), rispetto alle quali il gruppo comunicherà la propria disponibilità.
+\end{itemize}
+
+\section{Note finali}
+Al termine dell'incontro viene redatto il presente verbale esterno che, a seguito della verifica interna, verrà caricato sulla piattaforma Round Review per consentire eventuali osservazioni e l'approvazione finale da parte di Vimar S.p.A..
+
+\section{Decisioni}
+\begin{itemize}
+    \item \textbf{VE-2026-11-24.1} Adottare una convenzione di versionamento semantico (\texttt{X.Y.Z}) coerente con le indicazioni ricevute, con \texttt{Z} per correzioni minori, \texttt{Y} per l'aggiunta o rimozione di sezioni e \texttt{X} per modifiche sostanziali, definendo come collegare l'incremento di \texttt{X} alle milestone e documentando in modo esplicito ogni intervento nel registro delle modifiche.
+
+    \item \textbf{VE-2026-11-24.2} Valutare se compilare il registro delle modifiche manualmente oppure introdurre controlli automatici nelle pull request per verificare la compilazione del registro e il corretto incremento della versione.
+
+    \item \textbf{VE-2026-11-24.3} Rifattorizzare i casi d'uso nell'\textit{Analisi dei requisiti} raggruppando i flussi comuni e includendo gli scenari impliciti.
+
+    \item \textbf{VE-2026-11-24.4} Sottoporre ai docenti una proposta argomentata sul ruolo dell'AI (attore secondario o parte del sistema) e sull'opportunità di mantenere la rotazione dei ruoli ogni due sprint.
+
+    \item \textbf{VE-2026-11-24.5} Organizzare attività pratiche di scouting tecnologico a coppie sulle tecnologie del progetto (MCP, KNX IoT e Docker) con successiva condivisione interna al team.
+
+    \item \textbf{VE-2026-11-24.6} Inserire nelle slide dei prossimi incontri SAL una tabella iniziale con i ruoli aggiornati, una timeline dell'avanzamento dello sprint e una sezione dedicata ai quesiti.
+\end{itemize}
+
+\section{To-do}
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|>{\raggedright\arraybackslash}X|>{\centering\arraybackslash}p{3.5cm}|c|}
+        \hline
+        \rowcolor{gray!10}
+        \textbf{ID issue} &
+        \textbf{Task} &
+        \textbf{Assegnatario} &
+        \textbf{Scadenza} \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/121}{\#121} & Stesura del verbale esterno del 2026-11-24 e caricamento sulla piattaforma Round Review & Sara Ballardin & 2026-11-26 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/110}{\#110} & Definizione del versionamento semantico (e delle milestone intermedie), sistemazione dell'automazione del registro delle modifiche e valutazione di controlli automatici & Daniele Nuzzaci \par Simone Giuliano & 2026-12-09 \\
+        \hline
+        \begin{tabular}[t]{@{}c@{}}
+            \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/105}{\#105} \\
+            \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/117}{\#117} \\
+            \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/118}{\#118}
+        \end{tabular} & Prosecuzione della stesura dei casi d'uso nell'\textit{Analisi dei requisiti}, con rifattorizzazione dei flussi comuni e integrazione degli scenari impliciti & Federico Temporin \par Alvise Greggio \par Tommaso Zorzetto & 2026-12-09 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/123}{\#123} & Aggiornamento del \textit{Piano di Progetto} & Shuhui Chen & 2026-12-09 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/124}{\#124} & Avvio del \textit{Piano di Qualifica} & Shuhui Chen & 2026-12-09 \\
+        \hline
+        - & Organizzazione e svolgimento delle attività pratiche a coppie su MCP, KNX IoT e Docker con allineamento interno & Sara Ballardin \par Shuhui Chen \par Simone Giuliano \par Alvise Greggio \par Daniele Nuzzaci \par Federico Temporin \par Tommaso Zorzetto & 2026-12-09 \\
+        \hline
+        - & Comunicazione della disponibilità del gruppo per il prossimo SAL e per la sessione formativa congiunta di dicembre & Shuhui Chen & 2026-11-26 \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\end{document}
