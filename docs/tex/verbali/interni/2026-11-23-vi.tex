@@ -1,0 +1,230 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PACCHETTI ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
+\usepackage{graphicx}               % Per inserire il logo
+\usepackage{tabularx}               % Per tabelle larghe quanto la pagina
+\usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
+\usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
+\usepackage{lmodern}                % Rende i font scalabili all'infinito
+\usepackage{anyfontsize}            % Permette di usare dimensioni personalizzate
+\usepackage[T1]{fontenc}
+
+\begin{document}
+
+% ==============================================================================
+% FRONTESPIZIO (PAGINA 1)
+% ==============================================================================
+\begin{titlepage}
+    \centering
+    \vspace*{0.5cm}
+
+    % LOGHI
+    \includegraphics[width=0.45\textwidth]{assets/logo_unipd.jpg}
+    \hfill
+    \includegraphics[width=0.45\textwidth]{assets/logo.png}\par
+    \vspace{0.5cm}
+
+    % NOME DEL GRUPPO
+    {\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par} 
+    \vspace{1cm}
+
+    % TITOLO DEL VERBALE
+    {\huge \bfseries Verbale interno 2026-11-23 \par}
+    
+    \vspace{1.5cm}
+
+    % MEMBRI DEL GRUPPO
+    {\large
+    \textbf{On-By-One}:\par
+    \vspace{0.3cm}
+    \begin{tabular}{l l}
+        Sara Ballardin & 2101048 \\
+        Shuhui Chen & 2138001 \\
+        Simone Giuliano & 2145591 \\
+        Alvise Greggio & 2141004 \\
+        Daniele Nuzzaci & 2139039 \\
+        Federico Temporin & 2146764 \\
+        Tommaso Zorzetto & 2148629 \\
+    \end{tabular}
+    \par}
+
+    \vfill
+
+    % TABELLA INFORMAZIONI DOCUMENTO E DESTINATARI
+    \begin{table}[h]
+        \centering
+        \arrayrulecolor{gray!50}
+        \renewcommand{\arraystretch}{1.5}
+        \begin{tabularx}{\textwidth}{|c|c|c|X|}
+            \hline
+            \rowcolor{gray!10} \multicolumn{4}{|c|}{\textbf{Informazioni documento}} \\
+            \hline
+            \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+            \hline
+            1.0.0 & 2026-11-25 & Approvato & 
+            On-By-One \newline 
+            Prof. Tullio Vardanega \newline 
+            Prof. Riccardo Cardin \\
+            \hline
+        \end{tabularx}
+        \arrayrulecolor{black}
+    \end{table}
+    
+    \vspace{0.5cm}
+    
+    % CONTATTI
+    {\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
+    
+\end{titlepage}
+
+\newpage
+
+% ==============================================================================
+% REGISTRO DELLE MODIFICHE (PAGINA 2)
+% ==============================================================================
+\section*{Registro delle modifiche}
+
+\vspace{1cm}
+\begin{center}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
+        \hline
+        \rowcolor{gray!10} 
+        \multicolumn{1}{|c|}{\textbf{Versione}} & 
+        \multicolumn{1}{c|}{\textbf{Data}} & 
+        \multicolumn{1}{c|}{\textbf{Autore}} & 
+        \multicolumn{1}{c|}{\textbf{Descrizione}} & 
+        \multicolumn{1}{c|}{\textbf{Verificatore}} \\
+        \hline
+        1.0.0 & 2026-11-25 & Sara Ballardin & Aggiornamento dei campi degli assegnatari & Simone Giuliano \\
+        \hline
+        0.2.0 & 2026-11-24 & Sara Ballardin & Stesura del verbale interno & - \\
+        \hline
+        0.1.0 & 2026-11-23 & Sara Ballardin & Bozza iniziale & - \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{center}
+\vfill
+\newpage
+
+% ==============================================================================
+% INDICE (PAGINA 3)
+% ==============================================================================
+\tableofcontents
+\newpage
+
+% ==============================================================================
+% INFORMAZIONI GENERALI
+% ==============================================================================
+\section{Informazioni generali}
+
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|>{\centering\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!10} \multicolumn{2}{|c|}{\textbf{Dettagli della riunione}} \\
+        \hline
+        \textbf{Data} & 2026-11-23 \\ \hline
+        \textbf{Ora inizio} & 15:00 \\ \hline
+        \textbf{Ora fine} & 17:50 \\ \hline
+        \textbf{Modalità} & Discord \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|>{\centering\arraybackslash}X|}
+        \hline
+        \rowcolor{gray!10} \multicolumn{3}{|c|}{\textbf{Partecipanti}} \\
+        \hline
+        \rowcolor{gray!10} \textbf{Nome e cognome} & \textbf{Ruolo} & \textbf{Presenza} \\
+        \hline
+        Sara Ballardin & Verificatore & Presente \\ \hline
+        Shuhui Chen & Responsabile & Presente \\ \hline
+        Simone Giuliano & Amministratore & Presente \\ \hline
+        Alvise Greggio & Analista & Presente \\ \hline
+        Daniele Nuzzaci & Amministratore & Presente \\ \hline
+        Federico Temporin & Analista & Presente \\ \hline
+        Tommaso Zorzetto & Analista & Presente \\ \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{table}
+
+% ==============================================================================
+% CORPO DEL VERBALE
+% ==============================================================================
+
+\section{Ordine del giorno}
+\begin{itemize}
+    \item Punto sui lavori svolti, difficoltà riscontrate e retrospettiva dello sprint concluso.
+    \item Rotazione e ribilanciamento dei ruoli per lo sprint 2.
+    \item Revisione e organizzazione dell'esposizione per l'incontro SAL con Vimar S.p.A. del 2026-11-24.
+    \item Valutazione degli strumenti UML, gestione delle \textit{milestone} e revisione dell'automazione documentale.
+\end{itemize}
+
+\section{Discussioni}
+La riunione si è aperta con un confronto sullo stato dei lavori svolti e riorganizzando i ruoli per lo sprint 2. Considerato il carico legato all'infrastruttura e alla gestione dei \textit{workflow}, il gruppo ha deciso di ribilanciare le risorse spostando un membro dal ruolo di Verificatore a quello di Amministratore. Subito dopo si è svolta una retrospettiva sullo sprint appena concluso per confrontarsi sulle difficoltà incontrate e raccogliere consigli pratici a supporto di chi subentra nei nuovi incarichi.
+
+\noindent Sul piano organizzativo, il team ha rivisto le slide già predisposte per l'incontro SAL con Vimar S.p.A. del 2026-11-24, confermandone i contenuti e verificando che non ci fossero altri dubbi da aggiungere; ci si è poi suddivisi l'esposizione dei vari punti in base ai ruoli ricoperti durante lo sprint. Per i diagrammi UML, vista l'incertezza tra \texttt{draw.io}, \texttt{Mermaid} e \texttt{PlantUML}, si è scelto di sperimentarli prima per poi confrontarsi su quale strumento risulti più comodo e adatto ai diagrammi da produrre. Per tracciare con più ordine le parti dei documenti che proseguono oltre il singolo sprint, si è deciso di ricorrere alle milestone su GitHub; al momento l'unica individuata è \textit{Casi d'uso - RTB}.
+
+\noindent Infine, sono stati esaminati alcuni problemi dello script che aggiorna in automatico il registro delle modifiche: manca la riga separatrice \texttt{\textbackslash hline}, il campo descrizione va popolato dalla descrizione della \textit{Pull Request} anziché dal titolo (evitando codice LaTeX nei titoli) e va rivista la gestione del versionamento (\texttt{X.Y.Z}). In attesa delle modifiche, l'automazione resta sospesa e si procede manualmente. Si è stabilito di uniformare tutte le date dei documenti nel formato con trattini (\texttt{YYYY-MM-DD}).
+
+\section{Retrospettiva}
+Dal confronto sullo sprint appena concluso sono emersi alcuni consigli pratici per chi subentra nei vari ruoli:
+\begin{itemize}
+    \item \textbf{Responsabile:} Leggere regolarmente tutti i verbali per monitorare rischi e pianificazione, compilare con cura la rendicontazione delle ore e tenere aggiornato passo dopo passo il \textit{Piano di Progetto}. Sfruttare le tabelle dei \textit{to-do} sia per il \textit{Diario di Bordo} sia per i SAL aziendali, favorendo un confronto aperto con il gruppo per evitare fraintendimenti.
+    \item \textbf{Amministratore:} Valutare il supporto di strumenti AI con modalità di pianificazione (esempio:\ Copilot, Antigravity), sfruttando i piani studenti per gestire i workflow con una visione d'insieme. È inoltre fondamentale avvisare tempestivamente il team ogni volta che vengono introdotte modifiche agli strumenti o alle modalità operative.
+    \item \textbf{Analista:} Iniziare da una visione d'insieme per suddividere il lavoro in modo equilibrato, partendo sempre dallo studio delle tecnologie coinvolte per comprenderne il funzionamento reale prima della stesura dei casi d'uso.
+    \item \textbf{Verificatore:} Registrare le riunioni o prendere appunti precisi e tenere sempre aggiornati rendicontazione, tabelle delle PR verificate e \textit{issue} in stato \textit{draft}, così da non accumulare arretrati nelle revisioni.
+\end{itemize}
+
+\section{Decisioni}
+\begin{itemize}
+    \item \textbf{VI-2026-11-23.1} Ribilanciare i ruoli per lo sprint 2 spostando un membro dal ruolo di Verificatore a quello di Amministratore.
+    \item \textbf{VI-2026-11-23.2} Sperimentare \texttt{draw.io}, \texttt{Mermaid} e \texttt{PlantUML} prima di scegliere lo strumento definitivo per i diagrammi UML.
+    \item \textbf{VI-2026-11-23.3} Utilizzare le milestone su GitHub per tracciare le parti dei documenti che proseguono oltre il singolo sprint, introducendo \textit{Casi d'uso - RTB}.
+    \item \textbf{VI-2026-11-23.4} Uniformare tutte le date dei documenti nel formato con trattini (\texttt{YYYY-MM-DD}).
+    \item \textbf{VI-2026-11-23.5} Sospendere temporaneamente l'automazione del registro delle modifiche e tornare alla compilazione manuale finché non verranno risolti i problemi riscontrati.
+\end{itemize}
+
+\section{To-do}
+\begin{center}
+    \arrayrulecolor{gray!50}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabularx}{\textwidth}{|c|X|c|c|}
+        \hline
+        \rowcolor{gray!10} 
+        \multicolumn{1}{|c|}{\textbf{ID issue}} & 
+        \multicolumn{1}{c|}{\textbf{Task}} & 
+        \multicolumn{1}{c|}{\textbf{Assegnatario}} & 
+        \multicolumn{1}{c|}{\textbf{Scadenza}} \\
+        \hline
+         \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/119}{\#119} & Stesura verbale interno 2026-11-23 & Sara Ballardin & 2026-11-26 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/105}{\#105} & Contributo casi d'uso 1 - sprint 2 & Federico Temporin & 2026-12-09 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/117}{\#117} & Contributo casi d'uso 2 - sprint 2 & Alvise Greggio & 2026-12-09 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/118}{\#118} & Contributo casi d'uso 3 - sprint 2 & Tommaso Zorzetto & 2026-12-09 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/110}{\#110} & Modifica automazione tabelle tracciabilità documenti (aggiunta \texttt{\textbackslash hline}, valorizzazione descrizione e versione) & Daniele Nuzzaci & 2026-11-30 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/114}{\#114} & Modifica \textit{Norme di Progetto} (documentazione) per coerenza con l'automazione delle tabelle di tracciabilità & Daniele Nuzzaci & 2026-11-30 \\
+        \hline
+        \href{https://github.com/On-By-One-Team/On-By-One.github.io/issues/122}{\#122} & Aggiornamento formato date con trattini (\texttt{YYYY-MM-DD}) nei documenti & Simone Giuliano & 2026-11-30 \\
+        \hline
+    \end{tabularx}
+    \arrayrulecolor{black}
+\end{center}
+
+\end{document}
