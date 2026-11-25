@@ -89,25 +89,20 @@ class DocsVersioningTests(unittest.TestCase):
                 content,
             )
 
-    def test_approved_version_increments_left_counter(self):
+    def test_next_version_increments_by_label(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "document.tex"
             path.write_text(TEX, encoding="utf-8")
             row = docs_versioning.ChangeRow("-", "2026-11-17", "Federico Temporin", "PR", "-")
             docs_versioning.update_pr_row(path, row, 86)
             docs_versioning.update_information(path, "-", "-", "Bozza", "client")
-            self.assertEqual(docs_versioning.approved_version(path, 86), "2.0.0")
+            self.assertEqual(
+                docs_versioning.next_version(path, 86, "completed-milestone"), "2.0.0"
+            )
+            self.assertEqual(docs_versioning.next_version(path, 86, "major"), "1.3.0")
+            self.assertEqual(docs_versioning.next_version(path, 86, "minor"), "1.2.4")
 
-    def test_failed_major_and_minor_versions(self):
-        with tempfile.TemporaryDirectory() as directory:
-            path = Path(directory) / "document.tex"
-            path.write_text(TEX, encoding="utf-8")
-            row = docs_versioning.ChangeRow("-", "2026-11-17", "Federico Temporin", "PR", "-")
-            docs_versioning.update_pr_row(path, row, 86)
-            self.assertEqual(docs_versioning.failed_review_version(path, 86, "major"), "1.3.0")
-            self.assertEqual(docs_versioning.failed_review_version(path, 86, "minor"), "1.2.4")
-
-    def test_first_failed_review_uses_initial_major_or_minor_version(self):
+    def test_first_version_defaults_to_1_0_0_for_any_valid_label(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "document.tex"
             first_document = TEX.replace(
@@ -120,8 +115,94 @@ class DocsVersioningTests(unittest.TestCase):
             path.write_text(first_document, encoding="utf-8")
             row = docs_versioning.ChangeRow("-", "2026-11-17", "Federico Temporin", "PR", "-")
             docs_versioning.update_pr_row(path, row, 86)
-            self.assertEqual(docs_versioning.failed_review_version(path, 86, "major"), "0.1.0")
-            self.assertEqual(docs_versioning.failed_review_version(path, 86, "minor"), "0.0.1")
+            for kind in ("completed-milestone", "major", "minor"):
+                self.assertEqual(docs_versioning.next_version(path, 86, kind), "1.0.0")
+
+    def test_next_version_requires_valid_label(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "document.tex"
+            path.write_text(TEX, encoding="utf-8")
+            for invalid_kind in (None, "", "other"):
+                with self.assertRaises(ValueError):
+                    docs_versioning.next_version(path, 86, invalid_kind)
+
+    def test_update_review_uses_label_on_approved_and_changes_requested(self):
+        import argparse
+        from unittest.mock import patch
+
+        tex_client = TEX.replace(
+            "Team",
+            r"On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin",
+        )
+        for state, kind, expected_ver, expected_status in (
+            ("approved", "minor", "1.2.4", "Approvato"),
+            ("approved", "major", "1.3.0", "Approvato"),
+            ("approved", "completed-milestone", "2.0.0", "Approvato"),
+            ("changes_requested", "completed-milestone", "2.0.0", "Bozza"),
+        ):
+            with tempfile.TemporaryDirectory() as directory:
+                path = Path(directory) / "document.tex"
+                path.write_text(tex_client, encoding="utf-8")
+                row = docs_versioning.ChangeRow("-", "2026-11-17", "Federico Temporin", "PR", "-")
+                docs_versioning.update_pr_row(path, row, 86)
+                args = argparse.Namespace(
+                    base_sha="base",
+                    head_sha="head",
+                    pr_number=86,
+                    reviewer_id="37457532",
+                    state=state,
+                    kind=kind,
+                    date="2026-11-25T12:00:00Z",
+                    recipient_type="",
+                )
+                with patch.object(docs_versioning, "changed_documents", return_value=[path]):
+                    self.assertEqual(docs_versioning.update_review(args), 1)
+                content = path.read_text(encoding="utf-8")
+                self.assertIn(f"{expected_ver} & 2026-11-17 & Federico Temporin & PR & Daniele Nuzzaci", content)
+                if expected_status == "Approvato":
+                    self.assertIn(f"{expected_ver} & 2026-11-25 & Approvato &", content)
+                else:
+                    self.assertIn("- & - & Bozza &", content)
+
+    def test_update_review_raises_without_kind_when_doc_changed(self):
+        import argparse
+        from unittest.mock import patch
+
+        tex_client = TEX.replace(
+            "Team",
+            r"On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin",
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "document.tex"
+            path.write_text(tex_client, encoding="utf-8")
+            row = docs_versioning.ChangeRow("-", "2026-11-17", "Federico Temporin", "PR", "-")
+            docs_versioning.update_pr_row(path, row, 86)
+            args = argparse.Namespace(
+                base_sha="base",
+                head_sha="head",
+                pr_number=86,
+                reviewer_id="37457532",
+                state="approved",
+                kind=None,
+                date="2026-11-25T12:00:00Z",
+                recipient_type="",
+            )
+            with patch.object(docs_versioning, "changed_documents", return_value=[path]):
+                with self.assertRaises(ValueError):
+                    docs_versioning.update_review(args)
+
+        args_no_docs = argparse.Namespace(
+            base_sha="base",
+            head_sha="head",
+            pr_number=86,
+            reviewer_id="37457532",
+            state="approved",
+            kind=None,
+            date="2026-11-25T12:00:00Z",
+            recipient_type="",
+        )
+        with patch.object(docs_versioning, "changed_documents", return_value=[]):
+            self.assertEqual(docs_versioning.update_review(args_no_docs), 0)
 
     def test_review_fills_version_and_verifier(self):
         with tempfile.TemporaryDirectory() as directory:

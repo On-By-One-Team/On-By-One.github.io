@@ -29,6 +29,7 @@ ACCOUNT_NAMES = {
     "237098663": "Tommaso Zorzetto",
 }
 VERSION = re.compile(r"^\d+\.\d+\.\d+$")
+VERSION_KINDS = ("completed-milestone", "major", "minor")
 
 
 @dataclass(frozen=True)
@@ -353,28 +354,21 @@ def numeric_versions(path: Path, pr_number: int) -> list[tuple[int, int, int]]:
     return versions
 
 
-def approved_version(path: Path, pr_number: int) -> str:
+def next_version(path: Path, pr_number: int, kind: str | None) -> str:
+    if kind not in VERSION_KINDS:
+        raise ValueError(
+            "La Pull Request deve avere esattamente una label tra "
+            "completed-milestone, major e minor"
+        )
     versions = numeric_versions(path, pr_number)
     if not versions:
         return "1.0.0"
-    major, _, _ = versions[0]
-    return f"{major + 1}.0.0"
-
-
-def failed_review_version(path: Path, pr_number: int, kind: str) -> str:
-    versions = numeric_versions(path, pr_number)
-    if not versions:
-        if kind == "major":
-            return "0.1.0"
-        if kind == "minor":
-            return "0.0.1"
-        raise ValueError("La Pull Request deve avere esattamente la label major o minor")
     major, minor, patch = versions[0]
+    if kind == "completed-milestone":
+        return f"{major + 1}.0.0"
     if kind == "major":
         return f"{major}.{minor + 1}.0"
-    if kind == "minor":
-        return f"{major}.{minor}.{patch + 1}"
-    raise ValueError("La Pull Request deve avere esattamente la label major o minor")
+    return f"{major}.{minor}.{patch + 1}"
 
 
 def update_review_row(path: Path, pr_number: int, version: str, verifier: str) -> bool:
@@ -430,11 +424,7 @@ def update_review(args: argparse.Namespace) -> int:
         except ValueError:
             continue
         recipient_type = resolve_recipient_type(path, args.recipient_type)
-        version = (
-            approved_version(path, args.pr_number)
-            if args.state == "approved"
-            else failed_review_version(path, args.pr_number, args.kind)
-        )
+        version = next_version(path, args.pr_number, args.kind)
         changed |= update_review_row(path, args.pr_number, version, verifier)
         if args.state == "approved":
             changed |= update_information(
@@ -464,7 +454,7 @@ def parser() -> argparse.ArgumentParser:
     review.add_argument("--pr-number", type=int, required=True)
     review.add_argument("--reviewer-id", required=True)
     review.add_argument("--state", choices=("approved", "changes_requested"), required=True)
-    review.add_argument("--kind", choices=("major", "minor"))
+    review.add_argument("--kind", choices=VERSION_KINDS)
     review.add_argument("--date", required=True)
     review.add_argument("--recipient-type", default="")
     review.set_defaults(function=update_review)
