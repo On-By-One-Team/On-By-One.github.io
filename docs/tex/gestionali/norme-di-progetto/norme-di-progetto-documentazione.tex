@@ -641,9 +641,9 @@ La tabella contiene i seguenti campi:
 \begin{itemize}
     \item \textbf{Versione}: identifica la versione assegnata alle modifiche introdotte dalla PR. Il formato adottato è \texttt{X.Y.Z}, in cui:
     \begin{itemize}
-        \item \textbf{Contatore sinistro (X)}: indica il completamento di una \textit{milestone} documentale. Viene incrementato di uno quando la PR porta al completamento di una milestone;
-        \item \textbf{Contatore centrale (Y)}: indica il numero di modifiche sostanziali apportate al documento dall'ultimo completamento di milestone. Viene incrementato di uno quando viene introdotta una modifica sostanziale;
-        \item \textbf{Contatore destro (Z)}: indica il numero di modifiche minori apportate al documento dall'ultima modifica sostanziale o dal completamento di una milestone. Viene incrementato di uno quando viene introdotta una modifica non sostanziale.
+        \item \textbf{Contatore sinistro (X)}: indica modifiche importanti e sostanziali oppure il completamento di una \textit{milestone} (ad esempio modifiche rilevanti al contenuto o cambio di struttura del documento). Viene incrementato di uno quando la PR introduce una modifica maggiore o porta al completamento di una milestone;
+        \item \textbf{Contatore centrale (Y)}: indica le modifiche di media entità apportate al documento dall'ultima modifica maggiore (ad esempio l'aggiunta di nuove sezioni o un insieme consistente di modifiche). Viene incrementato di uno quando viene introdotta una modifica media;
+        \item \textbf{Contatore destro (Z)}: indica le piccole modifiche apportate al documento dall'ultima modifica media o maggiore (ad esempio correzioni puntuali). Viene incrementato di uno quando viene introdotta una piccola modifica.
     \end{itemize}
 
     I contatori possono assumere qualsiasi valore intero non negativo e non sono soggetti a un limite massimo. Quando viene incrementato un contatore, tutti i contatori alla sua destra vengono azzerati. Pertanto:
@@ -655,9 +655,9 @@ La tabella contiene i seguenti campi:
 
     Fino a quando non è disponibile un esito conclusivo della revisione, il campo rimane valorizzato a \texttt{-}. All'atto di una revisione conclusiva (\textit{Approved} o \textit{Changes requested}), la PR deve avere esattamente una tra le seguenti label:
     \begin{itemize}
-        \item label \texttt{minor}: per piccole modifiche; incrementa di uno il contatore destro (\texttt{Z});
-        \item label \texttt{major}: per modifiche sostanziali; incrementa di uno il contatore centrale (\texttt{Y}) e azzera il contatore destro (\texttt{Z});
-        \item label \texttt{completed-milestone}: per modifiche che portano al completamento di una milestone; incrementa di uno il contatore sinistro (\texttt{X}) e azzera sia il contatore centrale (\texttt{Y}) sia quello destro (\texttt{Z}).
+        \item label \texttt{patch}: per piccole modifiche (ad esempio correzioni); incrementa di uno il contatore destro (\texttt{Z});
+        \item label \texttt{minor}: per modifiche di media entità (ad esempio nuove sezioni o molte modifiche); incrementa di uno il contatore centrale (\texttt{Y}) e azzera il contatore destro (\texttt{Z});
+        \item label \texttt{major}: per modifiche importanti e sostanziali (ad esempio modifiche importanti al contenuto o cambio di struttura) oppure quando la modifica porta al completamento di una \textit{milestone}; incrementa di uno il contatore sinistro (\texttt{X}) e azzera sia il contatore centrale (\texttt{Y}) sia quello destro (\texttt{Z}).
     \end{itemize}
     L'assenza di tutte e tre le label o la presenza contemporanea di più di una comporta un errore bloccante dell'automazione.
 
