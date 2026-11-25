@@ -249,7 +249,7 @@ Non devono essere integrate modifiche che introducano conflitti irrisolti o comp
 Ogni Pull Request deve:
 \begin{itemize}
     \item Avere un titolo chiaro e descrittivo.
-    \item Descrivere le modifiche introdotte e la loro motivazione.
+    \item Descrivere le modifiche introdotte e la loro motivazione; per le PR che creano o modificano documenti soggetti a tracciabilità, riportare la descrizione destinata al registro all'interno del tag \mbox{\texttt{\textless!-{}- description -{}-\textgreater}} ... \mbox{\texttt{\textless!-{}- /description -{}-\textgreater}}.
     \item Applicare le label richieste per la tracciabilità dei documenti, secondo le regole definite nella \hyperref[subsec:approvazione-e-merge]{policy di revisione}.
     \item Fare riferimento all'issue associata, se presente.
     \item Essere sottoposta a revisione secondo la \hyperref[subsec:regole-generali]{policy del repository}.
@@ -603,9 +603,9 @@ L'approvazione della Pull Request non sostituisce la responsabilità dell'autore
 
 Per i documenti che richiedono un'approvazione formale e una cronologia delle versioni consultabile dai lettori, sono previste due tabelle: \textbf{Informazioni documento} e \textbf{Registro delle modifiche}. La prima riporta le informazioni relative allo stato corrente del documento, mentre la seconda tiene traccia delle modifiche apportate nel tempo.
 
-La compilazione e l'aggiornamento di entrambe le tabelle sono gestiti automaticamente attraverso un'apposita automazione, attivata dagli eventi relativi alle Pull Request (PR) che modificano i documenti (esclusi i file in \texttt{docs/tex/templates}). L'automazione utilizza le label e il titolo della PR, le informazioni relative al suo autore e alle \textit{review}, nonché le associazioni tra gli account GitHub dei membri del team e i rispettivi nomi e cognomi.
+La compilazione e l'aggiornamento di entrambe le tabelle sono gestiti automaticamente attraverso un'apposita automazione, attivata dagli eventi relativi alle Pull Request (PR) che creano o modificano i documenti (esclusi i file in \texttt{docs/tex/templates}). L'automazione utilizza le label e il contenuto del tag \mbox{\texttt{\textless!-{}- description -{}-\textgreater}} ... \mbox{\texttt{\textless!-{}- /description -{}-\textgreater}} nella descrizione (body) della PR, le informazioni relative al suo autore e alle \textit{review}, nonché le associazioni tra gli account GitHub dei membri del team e i rispettivi nomi e cognomi.
 
-Non è pertanto richiesto agli autori o ai revisori di compilare manualmente le tabelle. È responsabilità dell'autore della PR applicare le label richieste e assegnare alla PR un titolo che descriva adeguatamente le modifiche introdotte. Le eventuali condizioni di errore segnalate dall'automazione devono essere risolte affinché le informazioni riportate nelle tabelle siano coerenti.
+Non è pertanto richiesto agli autori o ai revisori di compilare manualmente le tabelle. Quando una PR crea o modifica almeno un documento dotato di \textit{Registro delle modifiche} e il tag \mbox{\texttt{\textless!-{}- description -{}-\textgreater}} non è ancora presente nella descrizione della PR, l'automazione inserisce automaticamente il tag vuoto nel body della PR (in occasione degli eventi \texttt{opened}, \texttt{reopened} e \texttt{synchronize}). È responsabilità dell'autore applicare le label richieste e compilare la descrizione destinata al registro all'interno del tag; tutto ciò che viene scritto al di fuori del tag resta parte della normale descrizione della PR su GitHub e viene ignorato ai fini del registro. Le eventuali condizioni di errore segnalate dall'automazione (inclusi eventuali errori di sintassi LaTeX nella descrizione) devono essere risolte affinché le informazioni riportate nelle tabelle siano coerenti e i documenti risultino compilabili.
 
 \paragraph{Informazioni documento}
 
@@ -634,16 +634,16 @@ Per i documenti già presenti nel repository, le regole descritte si applicano a
 
 \paragraph{Registro delle modifiche}
 
-La tabella \textit{Registro delle modifiche} contiene una riga per ogni PR che introduce modifiche al documento. La riga viene generata e inserita automaticamente dall'automazione all'apertura della PR, con valori provvisori (\texttt{-}) per la versione e il verificatore. Gli aggiornamenti successivi della stessa PR modificano la riga già associata ad essa, senza generarne ulteriori. Le righe sono ordinate per versione in senso decrescente.
+La tabella \textit{Registro delle modifiche} contiene una riga per ogni PR che crea o modifica il documento. La riga viene generata e inserita automaticamente dall'automazione all'apertura della PR, con valori provvisori (\texttt{-}) per la versione e il verificatore. Gli aggiornamenti successivi della stessa PR (inclusa la modifica della descrizione della PR) modificano la riga già associata ad essa, senza generarne ulteriori. Le righe sono ordinate per versione in senso decrescente.
 
 La tabella contiene i seguenti campi:
 
 \begin{itemize}
     \item \textbf{Versione}: identifica la versione assegnata alle modifiche introdotte dalla PR. Il formato adottato è \texttt{X.Y.Z}, in cui:
     \begin{itemize}
-        \item \textbf{Contatore sinistro (X)}: indica il numero di approvazioni del documento. Viene incrementato di uno a ogni nuova approvazione;
-        \item \textbf{Contatore centrale (Y)}: indica il numero di modifiche maggiori apportate al documento dall'ultima approvazione. Viene incrementato di uno quando viene introdotta una modifica sostanziale;
-        \item \textbf{Contatore destro (Z)}: indica il numero di modifiche minori apportate al documento dall'ultima modifica maggiore o approvazione. Viene incrementato di uno quando viene introdotta una modifica non sostanziale.
+        \item \textbf{Contatore sinistro (X)}: indica il completamento di una \textit{milestone} documentale. Viene incrementato di uno quando la PR porta al completamento di una milestone;
+        \item \textbf{Contatore centrale (Y)}: indica il numero di modifiche sostanziali apportate al documento dall'ultimo completamento di milestone. Viene incrementato di uno quando viene introdotta una modifica sostanziale;
+        \item \textbf{Contatore destro (Z)}: indica il numero di modifiche minori apportate al documento dall'ultima modifica sostanziale o dal completamento di una milestone. Viene incrementato di uno quando viene introdotta una modifica non sostanziale.
     \end{itemize}
 
     I contatori possono assumere qualsiasi valore intero non negativo e non sono soggetti a un limite massimo. Quando viene incrementato un contatore, tutti i contatori alla sua destra vengono azzerati. Pertanto:
@@ -653,26 +653,23 @@ La tabella contiene i seguenti campi:
         \item l'incremento del contatore sinistro azzera sia il contatore centrale sia quello destro.
     \end{itemize}
 
-    Fino a quando non è disponibile un esito conclusivo della revisione, il campo rimane valorizzato a \texttt{-}. L'assegnazione finale della versione avviene all'atto della review:
+    Fino a quando non è disponibile un esito conclusivo della revisione, il campo rimane valorizzato a \texttt{-}. All'atto di una revisione conclusiva (\textit{Approved} o \textit{Changes requested}), la PR deve avere esattamente una tra le seguenti label:
     \begin{itemize}
-        \item \textbf{Revisione non superata} (\textit{Changes requested}): l'automazione determina la tipologia della modifica sulla base delle label associate alla PR:
-        \begin{itemize}
-            \item label \texttt{minor}: incrementa di uno il contatore destro;
-            \item label \texttt{major}: incrementa di uno il contatore centrale e azzera il contatore destro.
-        \end{itemize}
-        Nel caso in cui il documento non abbia ancora alcuna versione registrata nel documento, la label \texttt{major} assegna la versione iniziale \texttt{0.1.0}, mentre la label \texttt{minor} assegna la versione iniziale \texttt{0.0.1}.
-        In caso di revisione non superata, la PR deve contenere esattamente una tra le label \texttt{minor} e \texttt{major}; l'assenza o la presenza contemporanea di entrambe comporta un errore bloccante dell'automazione.
-
-        \item \textbf{Revisione superata} (\textit{Approved}): l'automazione incrementa di uno il contatore sinistro dell'ultima versione registrata e azzera gli altri due contatori, indipendentemente dalla presenza delle label \texttt{minor} e \texttt{major}. Se si tratta della prima approvazione del documento, la versione assegnata è \texttt{1.0.0}.
+        \item label \texttt{minor}: per piccole modifiche; incrementa di uno il contatore destro (\texttt{Z});
+        \item label \texttt{major}: per modifiche sostanziali; incrementa di uno il contatore centrale (\texttt{Y}) e azzera il contatore destro (\texttt{Z});
+        \item label \texttt{completed-milestone}: per modifiche che portano al completamento di una milestone; incrementa di uno il contatore sinistro (\texttt{X}) e azzera sia il contatore centrale (\texttt{Y}) sia quello destro (\texttt{Z}).
     \end{itemize}
+    L'assenza di tutte e tre le label o la presenza contemporanea di più di una comporta un errore bloccante dell'automazione.
 
-    Le label \texttt{minor} e \texttt{major} determinano quindi la tipologia della modifica soltanto in caso di revisione non superata, mentre in caso di revisione superata prevale sempre l'incremento del contatore sinistro.
+    Nel caso in cui il documento non abbia ancora alcuna versione numerica registrata nel \textit{Registro delle modifiche}, l'automazione assegna la versione iniziale \texttt{1.0.0} indipendentemente da quale delle tre label valide sia stata applicata. In caso contrario, il calcolo parte dall'ultima versione numerica presente nel registro (escludendo la riga associata alla PR corrente).
 
-    \item \textbf{Data}: indica la data dell'ultimo aggiornamento della PR. Viene aggiornata automaticamente in occasione degli eventi \texttt{opened}, \texttt{reopened} e \texttt{synchronize} della PR, e rimane invariata durante la fase di review.
+    L'assegnazione della versione nel \textit{Registro delle modifiche} segue la stessa regola sia in caso di \textit{Approved} sia in caso di \textit{Changes requested}; l'esito della revisione determina invece l'aggiornamento della tabella \textit{Informazioni documento}, che passa a \texttt{Approvato} (con versione e data della review) soltanto in caso di \textit{Approved} e rimane in stato \texttt{Bozza} in caso di \textit{Changes requested}.
+
+    \item \textbf{Data}: indica la data dell'ultimo aggiornamento della PR. Viene aggiornata automaticamente in occasione degli eventi \texttt{opened}, \texttt{reopened}, \texttt{synchronize} ed \texttt{edited} (quando viene modificata la descrizione della PR), e rimane invariata durante la fase di review.
 
     \item \textbf{Autore}: indica l'autore della PR, identificato tramite l'ID dell'account GitHub mappato al rispettivo nome e cognome. Il valore rimane invariato anche nel caso in cui vengano effettuati commit nella PR da parte di altri collaboratori.
 
-    \item \textbf{Descrizione}: riporta il titolo della PR associata alle modifiche, compilato automaticamente dall'automazione.
+    \item \textbf{Descrizione}: riporta il testo inserito all'interno del tag \mbox{\texttt{\textless!-{}- description -{}-\textgreater}} ... \mbox{\texttt{\textless!-{}- /description -{}-\textgreater}} nella descrizione (body) della PR associata alle modifiche, oppure \texttt{-} se il tag è assente o vuoto. Il contenuto del tag viene trattato come testo LaTeX (con escape automatico dei soli caratteri \texttt{\&} non già preceduti da backslash), mentre tutto ciò che si trova al di fuori del tag viene ignorato. Ad ogni modifica della descrizione della PR, la riga e il documento PDF vengono aggiornati e ricompilati automaticamente.
 
     \item \textbf{Verificatore}: indica l'autore dell'ultima revisione conclusiva elaborata dall'automazione (\textit{Approved} o \textit{Changes requested}). Il nominativo viene determinato associando l'ID dell'account GitHub del revisore al rispettivo nome e cognome. Il campo rimane valorizzato a \texttt{-} fino alla sottomissione di una revisione conclusiva.
 \end{itemize}
