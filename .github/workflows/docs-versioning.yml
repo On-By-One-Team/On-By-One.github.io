@@ -19,6 +19,9 @@ jobs:
     if: >-
       github.event_name == 'pull_request_target'
       && (github.event.action != 'edited' || github.event.changes.body != null)
+    permissions:
+      contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: Verifica repository del branch
@@ -40,6 +43,31 @@ jobs:
           git checkout --detach "${{ github.event.pull_request.head.sha }}"
           mkdir -p .github/actions/compile-latex
           cp -r "$RUNNER_TEMP/compile-latex/"* .github/actions/compile-latex/
+      - name: Inserisci il tag description nella descrizione della PR
+        if: github.event.action != 'edited'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          HAS_DOCS=$(CHANGELOG_ROOT="$GITHUB_WORKSPACE" python "$RUNNER_TEMP/docs-versioning.py" has-docs \
+            --base-sha "${{ github.event.pull_request.base.sha }}" \
+            --head-sha "${{ github.event.pull_request.head.sha }}")
+          if [ "$HAS_DOCS" != "true" ]; then
+            echo "Nessun documento con registro delle modifiche interessato dalla PR"
+            exit 0
+          fi
+          if printf '%s' "$PR_BODY" | grep -qE '<!--\s*description\s*-->'; then
+            echo "Il tag description è già presente nella descrizione"
+            exit 0
+          fi
+          {
+            if [ -n "$PR_BODY" ]; then
+              printf '%s\n\n' "$PR_BODY"
+            fi
+            printf '<!-- description -->\n\n<!-- /description -->\n'
+          } > "$RUNNER_TEMP/pr-body.txt"
+          gh pr edit "$PR_NUMBER" --repo "${{ github.repository }}" --body-file "$RUNNER_TEMP/pr-body.txt"
       - name: Aggiorna le righe della Pull Request
         env:
           PR_BODY: ${{ github.event.pull_request.body }}

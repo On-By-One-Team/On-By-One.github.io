@@ -288,6 +288,17 @@ def changed_documents(base_sha: str, head_sha: str) -> list[Path]:
     return documents
 
 
+def versioned_documents(base_sha: str, head_sha: str) -> list[Path]:
+    documents = []
+    for path in changed_documents(base_sha, head_sha):
+        try:
+            registry_bounds(path.read_text(encoding="utf-8").splitlines(keepends=True))
+        except ValueError:
+            continue
+        documents.append(path)
+    return documents
+
+
 def author_name(account_id: str) -> str:
     try:
         return ACCOUNT_NAMES[account_id]
@@ -397,11 +408,7 @@ def update_pr(args: argparse.Namespace) -> int:
     body = os.environ.get("PR_BODY", "")
     description = description_escape(extract_description(body))
     changed = False
-    for path in changed_documents(args.base_sha, args.head_sha):
-        try:
-            registry_bounds(path.read_text(encoding="utf-8").splitlines(keepends=True))
-        except ValueError:
-            continue
+    for path in versioned_documents(args.base_sha, args.head_sha):
         recipient_type = resolve_recipient_type(path, args.recipient_type)
         changed |= update_pr_row(
             path,
@@ -416,13 +423,8 @@ def update_pr(args: argparse.Namespace) -> int:
 
 def update_review(args: argparse.Namespace) -> int:
     verifier = author_name(args.reviewer_id)
-    paths = changed_documents(args.base_sha, args.head_sha)
     changed = False
-    for path in paths:
-        try:
-            registry_bounds(path.read_text(encoding="utf-8").splitlines(keepends=True))
-        except ValueError:
-            continue
+    for path in versioned_documents(args.base_sha, args.head_sha):
         recipient_type = resolve_recipient_type(path, args.recipient_type)
         version = next_version(path, args.pr_number, args.kind)
         changed |= update_review_row(path, args.pr_number, version, verifier)
@@ -435,6 +437,11 @@ def update_review(args: argparse.Namespace) -> int:
                 path, "-", "-", "Bozza", recipient_type
             )
     return int(changed)
+
+
+def has_docs(args: argparse.Namespace) -> int:
+    print("true" if versioned_documents(args.base_sha, args.head_sha) else "false")
+    return 0
 
 
 def parser() -> argparse.ArgumentParser:
@@ -458,6 +465,10 @@ def parser() -> argparse.ArgumentParser:
     review.add_argument("--date", required=True)
     review.add_argument("--recipient-type", default="")
     review.set_defaults(function=update_review)
+    docs = subparsers.add_parser("has-docs")
+    docs.add_argument("--base-sha", required=True)
+    docs.add_argument("--head-sha", required=True)
+    docs.set_defaults(function=has_docs)
     return parser
 
 

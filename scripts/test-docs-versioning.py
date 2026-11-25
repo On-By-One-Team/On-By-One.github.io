@@ -204,6 +204,50 @@ class DocsVersioningTests(unittest.TestCase):
         with patch.object(docs_versioning, "changed_documents", return_value=[]):
             self.assertEqual(docs_versioning.update_review(args_no_docs), 0)
 
+    def test_versioned_documents_and_has_docs(self):
+        import argparse
+        import io
+        from contextlib import redirect_stdout
+        from unittest.mock import patch
+
+        with tempfile.TemporaryDirectory() as directory:
+            with_registry = Path(directory) / "doc.tex"
+            with_registry.write_text(TEX, encoding="utf-8")
+            without_registry = Path(directory) / "plain.tex"
+            without_registry.write_text("\\section{Solo testo}\n", encoding="utf-8")
+
+            with patch.object(
+                docs_versioning, "changed_documents", return_value=[without_registry]
+            ):
+                self.assertEqual(docs_versioning.versioned_documents("b", "h"), [])
+                buf = io.StringIO()
+                with redirect_stdout(buf):
+                    self.assertEqual(
+                        docs_versioning.has_docs(
+                            argparse.Namespace(base_sha="b", head_sha="h")
+                        ),
+                        0,
+                    )
+                self.assertEqual(buf.getvalue().strip(), "false")
+
+            with patch.object(
+                docs_versioning,
+                "changed_documents",
+                return_value=[without_registry, with_registry],
+            ):
+                self.assertEqual(
+                    docs_versioning.versioned_documents("b", "h"), [with_registry]
+                )
+                buf = io.StringIO()
+                with redirect_stdout(buf):
+                    self.assertEqual(
+                        docs_versioning.has_docs(
+                            argparse.Namespace(base_sha="b", head_sha="h")
+                        ),
+                        0,
+                    )
+                self.assertEqual(buf.getvalue().strip(), "true")
+
     def test_review_fills_version_and_verifier(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "document.tex"
