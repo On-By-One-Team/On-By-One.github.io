@@ -53,6 +53,24 @@ def latex_escape(value: str) -> str:
     return "".join(replacements.get(character, character) for character in value)
 
 
+def extract_description(body: str) -> str:
+    """Extract LaTeX description from <!-- description -->...<!-- /description --> in a PR body."""
+    match = re.search(
+        r"<!--\s*description\s*-->(.*?)<!--\s*/description\s*-->",
+        body,
+        re.DOTALL,
+    )
+    if match is None:
+        return "-"
+    text = " ".join(match.group(1).split())
+    return text if text else "-"
+
+
+def description_escape(value: str) -> str:
+    """Escape only & for a LaTeX description that is otherwise raw LaTeX."""
+    return value.replace("&", r"\&")
+
+
 def iso_date(value: str) -> str:
     if value == "-":
         return value
@@ -158,7 +176,7 @@ def row_line(row: ChangeRow, indentation: str, pr_number: int) -> str:
     return (
         f"{indentation}{latex_escape(row.version)} & "
         f"{latex_escape(row.date)} & {latex_escape(row.author)} & "
-        f"{latex_escape(row.description)} & {latex_escape(row.verifier)} "
+        f"{row.description} & {latex_escape(row.verifier)} "
         f"\\\\ {PR_MARKER} {pr_number}\n"
     )
 
@@ -382,9 +400,8 @@ def update_review_row(path: Path, pr_number: int, version: str, verifier: str) -
 
 def update_pr(args: argparse.Namespace) -> int:
     author = author_name(args.author_id)
-    description = args.title.strip() or args.fallback_description.strip()
-    if not description:
-        raise ValueError("Titolo PR e fallback del commit non possono essere vuoti")
+    body = os.environ.get("PR_BODY", "")
+    description = description_escape(extract_description(body))
     changed = False
     for path in changed_documents(args.base_sha, args.head_sha):
         try:
@@ -437,8 +454,6 @@ def parser() -> argparse.ArgumentParser:
     pr.add_argument("--base-sha", required=True)
     pr.add_argument("--head-sha", required=True)
     pr.add_argument("--pr-number", type=int, required=True)
-    pr.add_argument("--title", required=True)
-    pr.add_argument("--fallback-description", default="")
     pr.add_argument("--author-id", required=True)
     pr.add_argument("--date", required=True)
     pr.add_argument("--recipient-type", default="")

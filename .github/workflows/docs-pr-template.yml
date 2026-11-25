@@ -1,0 +1,29 @@
+name: Template descrizione documentazione
+
+on:
+  pull_request_target:
+    types: [labeled, opened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  add-description-tags:
+    if: contains(github.event.pull_request.labels.*.name, 'documentation')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inserisci i tag nella descrizione della PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          if echo "$PR_BODY" | grep -q '<!-- description -->'; then
+            echo "I tag sono già presenti nella descrizione"
+            exit 0
+          fi
+          {
+            printf '%s' "$PR_BODY"
+            printf '\n\n<!-- description -->\n\n<!-- /description -->\n\n<!-- other -->\n\n<!-- /other -->\n'
+          } > "$RUNNER_TEMP/pr-body.txt"
+          gh pr edit "$PR_NUMBER" --repo "${{ github.repository }}" --body-file "$RUNNER_TEMP/pr-body.txt"

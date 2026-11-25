@@ -2,7 +2,7 @@ name: Aggiorna registro delle modifiche
 
 on:
   pull_request_target:
-    types: [opened, reopened, synchronize]
+    types: [opened, reopened, synchronize, edited]
   pull_request_review:
     types: [submitted]
 
@@ -16,7 +16,9 @@ concurrency:
 
 jobs:
   update-from-pull-request:
-    if: github.event_name == 'pull_request_target'
+    if: >-
+      github.event_name == 'pull_request_target'
+      && (github.event.action != 'edited' || github.event.changes.body != null)
     runs-on: ubuntu-latest
     steps:
       - name: Verifica repository del branch
@@ -39,6 +41,8 @@ jobs:
           mkdir -p .github/actions/compile-latex
           cp -r "$RUNNER_TEMP/compile-latex/"* .github/actions/compile-latex/
       - name: Aggiorna le righe della Pull Request
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
           RECIPIENT_TYPE=""
           for label in client proposer; do
@@ -58,7 +62,6 @@ jobs:
             --base-sha "${{ github.event.pull_request.base.sha }}" \
             --head-sha "${{ github.event.pull_request.head.sha }}" \
             --pr-number "${{ github.event.pull_request.number }}" \
-            --title "${{ github.event.pull_request.title }}" \
             --author-id "${{ github.event.pull_request.user.id }}" \
             --date "${{ github.event.pull_request.updated_at }}" \
             "${RECIPIENT_ARGS[@]}"

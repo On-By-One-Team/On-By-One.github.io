@@ -243,5 +243,73 @@ class DocsVersioningTests(unittest.TestCase):
 
 
 
+    def test_extract_description_with_tag(self):
+        body = "Some PR text\n<!-- description -->\nAggiunti \\ucrefplain{struttura}\n<!-- /description -->\n"
+        self.assertEqual(
+            docs_versioning.extract_description(body),
+            "Aggiunti \\ucrefplain{struttura}",
+        )
+
+    def test_extract_description_multiline_collapses_whitespace(self):
+        body = "<!-- description -->\n  Riga uno\n  Riga due  \n<!-- /description -->"
+        self.assertEqual(docs_versioning.extract_description(body), "Riga uno Riga due")
+
+    def test_extract_description_missing_tag(self):
+        self.assertEqual(docs_versioning.extract_description("Just a PR body"), "-")
+
+    def test_extract_description_empty_tag(self):
+        self.assertEqual(
+            docs_versioning.extract_description("<!-- description -->   <!-- /description -->"),
+            "-",
+        )
+
+    def test_extract_description_ignores_other_tag(self):
+        body = (
+            "<!-- description -->Contenuto LaTeX<!-- /description -->\n"
+            "<!-- other -->Note interne<!-- /other -->"
+        )
+        self.assertEqual(docs_versioning.extract_description(body), "Contenuto LaTeX")
+
+    def test_description_escape_only_ampersand(self):
+        self.assertEqual(
+            docs_versioning.description_escape("A & B"),
+            r"A \& B",
+        )
+        self.assertEqual(
+            docs_versioning.description_escape("\\ucrefplain{struttura}"),
+            "\\ucrefplain{struttura}",
+        )
+
+    def test_latex_description_survives_row_line(self):
+        """LaTeX commands in description must not be escaped by row_line."""
+        row = docs_versioning.ChangeRow(
+            "-", "2026-11-22", "Shuhui Chen",
+            "Aggiunti \\ucrefplain{struttura} e \\ucrefplain{elenco-ambienti}",
+            "-",
+        )
+        line = docs_versioning.row_line(row, "        ", 109)
+        self.assertIn(
+            "Aggiunti \\ucrefplain{struttura} e \\ucrefplain{elenco-ambienti}",
+            line,
+        )
+        self.assertNotIn("textbackslash", line)
+
+    def test_full_pipeline_latex_in_pr_body(self):
+        """End-to-end: LaTeX in PR body → extract → escape → write → read back."""
+        body = "<!-- description -->Aggiunti \\ucrefplain{struttura} & stuff<!-- /description -->"
+        description = docs_versioning.description_escape(
+            docs_versioning.extract_description(body)
+        )
+        self.assertEqual(description, "Aggiunti \\ucrefplain{struttura} \\& stuff")
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "document.tex"
+            path.write_text(TEX, encoding="utf-8")
+            row = docs_versioning.ChangeRow("-", "2026-11-22", "Shuhui Chen", description, "-")
+            docs_versioning.update_pr_row(path, row, 109)
+            content = path.read_text(encoding="utf-8")
+            self.assertIn("Aggiunti \\ucrefplain{struttura} \\& stuff", content)
+            self.assertNotIn("textbackslash", content.split("change-log-pr: 109")[0].split("&")[3])
+
+
 if __name__ == "__main__":
     unittest.main()
