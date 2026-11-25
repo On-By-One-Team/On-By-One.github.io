@@ -263,16 +263,21 @@ class DocsVersioningTests(unittest.TestCase):
             "-",
         )
 
-    def test_extract_description_ignores_other_tag(self):
+    def test_extract_description_ignores_text_outside_tag(self):
         body = (
+            "Testo normale della descrizione PR\n"
             "<!-- description -->Contenuto LaTeX<!-- /description -->\n"
-            "<!-- other -->Note interne<!-- /other -->"
+            "Altro testo fuori dal tag"
         )
         self.assertEqual(docs_versioning.extract_description(body), "Contenuto LaTeX")
 
     def test_description_escape_only_ampersand(self):
         self.assertEqual(
             docs_versioning.description_escape("A & B"),
+            r"A \& B",
+        )
+        self.assertEqual(
+            docs_versioning.description_escape(r"A \& B"),
             r"A \& B",
         )
         self.assertEqual(

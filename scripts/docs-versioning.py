@@ -67,8 +67,8 @@ def extract_description(body: str) -> str:
 
 
 def description_escape(value: str) -> str:
-    """Escape only & for a LaTeX description that is otherwise raw LaTeX."""
-    return value.replace("&", r"\&")
+    """Escape only unescaped & for a LaTeX description that is otherwise raw LaTeX."""
+    return re.sub(r"(?<!\\)&", r"\\&", value)
 
 
 def iso_date(value: str) -> str:
