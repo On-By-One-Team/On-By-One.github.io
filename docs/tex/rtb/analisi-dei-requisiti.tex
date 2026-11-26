@@ -156,7 +156,7 @@
         \multicolumn{1}{c|}{\textbf{Descrizione}} & 
         \multicolumn{1}{c|}{\textbf{Verificatore}} \\
         \hline
-        2.0.1 & 2026-11-26 & Simone Giuliano & Stesura casi d'uso \ucrefplain{elenco-impianti}, \ucrefplain{singolo-impianto}, \ucrefplain{nessun-impianto}, \ucrefplain{selezione-impianto}, \ucrefplain{selezione-impianto-inesistente}, \ucrefplain{cambio-impianto}, \ucrefplain{cambio-impianto-inesistente}, \ucrefplain{dettagli-impianto-attivo}, \ucrefplain{nessun-impianto-attivo} & - \\ 
+        2.0.1 & 2026-11-26 & Simone Giuliano & Stesura casi d'uso \ucref{elenco-impianti}, \ucref{singolo-impianto}, \ucref{nessun-impianto}, \ucref{selezione-impianto}, \ucref{selezione-impianto-inesistente}, \ucref{cambio-impianto}, \ucref{cambio-impianto-inesistente}, \ucref{dettagli-impianto-attivo}, \ucref{nessun-impianto-attivo} & - \\ 
         \hline
         2.0.0 & 2026-11-25 & Shuhui Chen & Stesura casi d'uso relativi alla struttura e agli ambienti dell'impianto \ucref{struttura}, \ucref{elenco-ambienti}, \ucref{dettaglio-ambiente}, \ucref{funzione-in-elenco}, \ucref{ambiente-inesistente}, \ucref{funzioni-comandabili} e \ucref{comando-ambiente} &  Sara Ballardin \\ 
         \hline
@@ -658,7 +658,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema.
+    \item L'Utente autenticato dispone di una sessione attiva
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
@@ -718,7 +718,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item Non risulta alcun impianto associato all'account.
   \end{itemize}
   \item \textbf{Post-condizioni:}
@@ -748,7 +748,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item Almeno un impianto è associato all'account dell'Utente autenticato;
     \item Nessun impianto è attualmente impostato come attivo nella sessione corrente.
   \end{itemize}
@@ -783,7 +783,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item Nessun impianto è attualmente impostato come attivo nella sessione corrente;
     \item L'Utente autenticato ha indicato un impianto non presente tra quelli associati al proprio account.
   \end{itemize}
@@ -798,14 +798,15 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
     \item L'Utente autenticato visualizza il messaggio di impianto non trovato;
     \item L'Utente autenticato visualizza gli impianti disponibili (\ucref{singolo-impianto}).
   \end{enumerate}
-  \item \textbf{Estende:}
-  \begin{itemize}[label=‣]
-    \item \ucref{selezione-impianto}
-  \end{itemize}
   \item \textbf{Inclusioni:}
   \begin{itemize}[label=‣]
     \item \ucref{singolo-impianto}
   \end{itemize}
+  \item \textbf{Estende:}
+  \begin{itemize}[label=‣]
+    \item \ucref{selezione-impianto}
+  \end{itemize}
+  
 \end{itemize}
 
 %------------------------------------------------------------
@@ -820,7 +821,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item Almeno un impianto è associato all'account dell'Utente autenticato;
     \item Un impianto è già impostato come attivo nella sessione corrente.
   \end{itemize}
@@ -858,7 +859,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item Un impianto è già impostato come attivo nella sessione corrente;
     \item L'Utente autenticato ha indicato un impianto non presente tra quelli associati al proprio account.
   \end{itemize}
@@ -873,13 +874,13 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
     \item L'Utente autenticato visualizza il messaggio di impianto non trovato;
     \item L'Utente autenticato visualizza gli impianti disponibili (\ucref{singolo-impianto}).
   \end{enumerate}
+   \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{singolo-impianto}
+  \end{itemize}
   \item \textbf{Estende:}
   \begin{itemize}[label=‣]
     \item \ucref{cambio-impianto}
-  \end{itemize}
-  \item \textbf{Inclusioni:}
-  \begin{itemize}[label=‣]
-    \item \ucref{singolo-impianto}
   \end{itemize}
 \end{itemize}
 
@@ -895,7 +896,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema.
+    \item L'Utente autenticato dispone di una sessione attiva.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
@@ -932,7 +933,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item Nessun impianto è attualmente impostato come attivo nella sessione corrente.
   \end{itemize}
   \item \textbf{Post-condizioni:}
@@ -945,13 +946,13 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
     \item L'Utente autenticato visualizza il messaggio relativo all'assenza di un impianto attivo;
     \item L'Utente autenticato visualizza gli impianti disponibili (\ucref{singolo-impianto}).
   \end{enumerate}
+    \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{singolo-impianto}
+  \end{itemize}
   \item \textbf{Estende:}
   \begin{itemize}[label=‣]
     \item \ucref{dettagli-impianto-attivo}
-  \end{itemize}
-  \item \textbf{Inclusioni:}
-  \begin{itemize}[label=‣]
-    \item \ucref{singolo-impianto}
   \end{itemize}
 \end{itemize}
 
@@ -971,7 +972,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item L'Utente autenticato ha selezionato un impianto.
   \end{itemize}
   \item \textbf{Post-condizioni:}
@@ -1002,7 +1003,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item L'Utente autenticato ha selezionato un impianto.
   \end{itemize}
   \item \textbf{Post-condizioni:}
@@ -1050,7 +1051,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item L'Utente autenticato ha selezionato un impianto;
     \item L'ambiente richiesto esiste nell'impianto selezionato.
   \end{itemize}
@@ -1157,7 +1158,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item L'Utente autenticato ha selezionato un impianto;
     \item L'ambiente indicato non esiste nell'impianto selezionato.
   \end{itemize}
@@ -1191,7 +1192,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item L'Utente autenticato ha selezionato un impianto;
     \item L'ambiente richiesto esiste nell'impianto selezionato.
   \end{itemize}
@@ -1245,7 +1246,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item L'Utente autenticato ha selezionato un impianto;
     \item L'ambiente indicato esiste nell'impianto selezionato;
     \item L'ambiente contiene almeno una funzione del tipo indicato.
