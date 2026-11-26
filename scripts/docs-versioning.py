@@ -30,6 +30,7 @@ ACCOUNT_NAMES = {
 }
 VERSION = re.compile(r"^\d+\.\d+\.\d+$")
 VERSION_KINDS = ("major", "minor", "patch")
+PLACEHOLDER_DESCRIPTION = "Descrizione mancante"
 
 
 @dataclass(frozen=True)
@@ -52,24 +53,6 @@ def latex_escape(value: str) -> str:
         "}": r"\}",
     }
     return "".join(replacements.get(character, character) for character in value)
-
-
-def extract_description(body: str) -> str:
-    """Extract LaTeX description from <!-- description -->...<!-- /description --> in a PR body."""
-    match = re.search(
-        r"<!--\s*description\s*-->(.*?)<!--\s*/description\s*-->",
-        body,
-        re.DOTALL,
-    )
-    if match is None:
-        return "-"
-    text = " ".join(match.group(1).split())
-    return text if text else "-"
-
-
-def description_escape(value: str) -> str:
-    """Escape only unescaped & for a LaTeX description that is otherwise raw LaTeX."""
-    return re.sub(r"(?<!\\)&", r"\\&", value)
 
 
 def iso_date(value: str) -> str:
@@ -226,7 +209,7 @@ def update_information(
     return True
 
 
-def insert_row(lines: list[str], start: int, end: int, row: ChangeRow, pr_number: int) -> None:
+def header_separator_index(lines: list[str], start: int, end: int) -> int:
     header = next(
         (
             index
@@ -243,22 +226,88 @@ def insert_row(lines: list[str], start: int, end: int, row: ChangeRow, pr_number
     )
     if separator is None:
         raise ValueError("Separatore dell'intestazione non trovato")
+    return separator
+
+
+def is_placeholder_row(row: ChangeRow) -> bool:
+    return (
+        row.version == "-"
+        and row.date == "-"
+        and row.author == "-"
+        and row.description == PLACEHOLDER_DESCRIPTION
+        and row.verifier == "-"
+    )
+
+
+def is_unclaimed_row(line: str, row: ChangeRow) -> bool:
+    return (
+        PR_MARKER not in line
+        and row.version == "-"
+        and row.date == "-"
+        and row.author == "-"
+        and row.verifier == "-"
+    )
+
+
+def find_draft_row(lines: list[str], start: int, end: int) -> tuple[int, ChangeRow] | None:
+    for index in range(start, end):
+        if PR_MARKER in lines[index]:
+            continue
+        row = row_from_line(lines[index])
+        if row and is_unclaimed_row(lines[index], row):
+            if row.description not in ("", "-", PLACEHOLDER_DESCRIPTION):
+                return index, row
+    return None
+
+
+def ensure_placeholder_row(lines: list[str], start: int, end: int) -> None:
+    for index in range(start, end):
+        if PR_MARKER in lines[index]:
+            continue
+        row = row_from_line(lines[index])
+        if row and is_placeholder_row(row):
+            indentation = re.match(r"\s*", lines[index]).group(0)
+            ensure_hline_after(lines, index, indentation)
+            return
+    separator = header_separator_index(lines, start, end)
     indentation = re.match(r"\s*", lines[separator]).group(0)
-    lines.insert(separator + 1, row_line(row, indentation, pr_number))
+    placeholder = (
+        f"{indentation}- & - & - & {PLACEHOLDER_DESCRIPTION} & - \\\\\n"
+    )
+    lines.insert(separator + 1, placeholder)
     ensure_hline_after(lines, separator + 1, indentation)
 
 
-def update_pr_row(path: Path, row: ChangeRow, pr_number: int) -> bool:
+def update_pr_row(path: Path, date: str, author: str, pr_number: int) -> bool:
     original = path.read_text(encoding="utf-8")
     lines = original.splitlines(keepends=True)
     start, end = registry_bounds(lines)
     existing = marker_line(lines, start, end, pr_number)
     if existing is None:
-        insert_row(lines, start, end, row, pr_number)
+        found = find_draft_row(lines, start, end)
+        if found is None:
+            raise ValueError(
+                f"Descrizione mancante nel registro delle modifiche di {path.name}"
+            )
+        target_index, row = found
     else:
-        indentation = re.match(r"\s*", lines[existing]).group(0)
-        lines[existing] = row_line(row, indentation, pr_number)
-        ensure_hline_after(lines, existing, indentation)
+        target_index = existing
+        row = row_from_line(lines[target_index])
+        if row is None:
+            raise ValueError(f"Riga della PR #{pr_number} non interpretabile in {path}")
+        if row.description in ("", "-", PLACEHOLDER_DESCRIPTION):
+            raise ValueError(
+                f"Descrizione mancante nel registro delle modifiche di {path.name}"
+            )
+    indentation = re.match(r"\s*", lines[target_index]).group(0)
+    lines[target_index] = row_line(
+        ChangeRow("-", date, author, row.description, "-"),
+        indentation,
+        pr_number,
+    )
+    ensure_hline_after(lines, target_index, indentation)
+    start, end = registry_bounds(lines)
+    ensure_placeholder_row(lines, start, end)
     updated = "".join(lines)
     if updated == original:
         return False
@@ -415,16 +464,11 @@ def update_review_row(path: Path, pr_number: int, version: str, verifier: str) -
 
 def update_pr(args: argparse.Namespace) -> int:
     author = author_name(args.author_id)
-    body = os.environ.get("PR_BODY", "")
-    description = description_escape(extract_description(body))
+    date = iso_date(args.date)
     changed = False
     for path in versioned_documents(args.base_sha, args.head_sha):
         recipient_type = resolve_recipient_type(path, args.recipient_type)
-        changed |= update_pr_row(
-            path,
-            ChangeRow("-", iso_date(args.date), author, description, "-"),
-            args.pr_number,
-        )
+        changed |= update_pr_row(path, date, author, args.pr_number)
         changed |= update_information(
             path, "-", "-", "Bozza", recipient_type
         )
@@ -449,11 +493,6 @@ def update_review(args: argparse.Namespace) -> int:
     return int(changed)
 
 
-def has_docs(args: argparse.Namespace) -> int:
-    print("true" if versioned_documents(args.base_sha, args.head_sha) else "false")
-    return 0
-
-
 def parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -475,10 +514,6 @@ def parser() -> argparse.ArgumentParser:
     review.add_argument("--date", required=True)
     review.add_argument("--recipient-type", default="")
     review.set_defaults(function=update_review)
-    docs = subparsers.add_parser("has-docs")
-    docs.add_argument("--base-sha", required=True)
-    docs.add_argument("--head-sha", required=True)
-    docs.set_defaults(function=has_docs)
     return parser
 
 
