@@ -365,14 +365,24 @@ def numeric_versions(path: Path, pr_number: int) -> list[tuple[int, int, int]]:
     return versions
 
 
-def next_version(path: Path, pr_number: int, kind: str | None) -> str:
+def next_version(
+    path: Path, pr_number: int, kind: str | None, state: str = "approved"
+) -> str:
+    """Compute the next X.Y.Z version from the latest registry version, *kind*, and *state*."""
     if kind not in VERSION_KINDS:
         raise ValueError(
             "La Pull Request deve avere esattamente una label tra "
             "major, minor e patch"
         )
     versions = numeric_versions(path, pr_number)
-    if not versions:
+    if state == "changes_requested":
+        if not versions:
+            return "0.1.0"
+        major, minor, patch = versions[0]
+        if kind == "major":
+            return f"{major}.{minor + 1}.0"
+        return f"{major}.{minor}.{patch + 1}"
+    if not versions or versions[0][0] == 0:
         return "1.0.0"
     major, minor, patch = versions[0]
     if kind == "major":
@@ -426,7 +436,7 @@ def update_review(args: argparse.Namespace) -> int:
     changed = False
     for path in versioned_documents(args.base_sha, args.head_sha):
         recipient_type = resolve_recipient_type(path, args.recipient_type)
-        version = next_version(path, args.pr_number, args.kind)
+        version = next_version(path, args.pr_number, args.kind, args.state)
         changed |= update_review_row(path, args.pr_number, version, verifier)
         if args.state == "approved":
             changed |= update_information(
