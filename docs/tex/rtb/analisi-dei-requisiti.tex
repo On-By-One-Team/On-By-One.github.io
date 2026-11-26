@@ -6,6 +6,9 @@
 \usepackage{lmodern}                % Rende i font scalabili all'infinito
 \usepackage{anyfontsize}            % Permette di usare dimensioni personalizzate
 \usepackage[italian]{babel}
+\addto\captionsitalian{%
+  \renewcommand{\listfigurename}{Indice delle figure}%
+}
 \usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
 \usepackage{graphicx}               % Per inserire il logo
 \usepackage{tabularx}               % Per tabelle larghe quanto la pagina
@@ -16,8 +19,8 @@
 \usepackage{titlesec}               % Per personalizzare la formattazione dei titoli
 \usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
 \usepackage{xurl}                   % Permette ai link lunghi di non uscire dai margini
+\usepackage{float}                  % Per immagini
 \urlstyle{same}                     % Usa lo stesso font del documento
-\usepackage{float}                  % Per posizionare le figure con [H]
 
 
 % --- SPAZIATURA DEGLI ELENCHI ---
@@ -61,7 +64,11 @@
 % Riferimenti incrociati: \ucref{chiave} -> "UC2.1"
 \newcommand{\ucref}[1]{UC\ref{uc:#1}}
 \newcommand{\ucp}[1]{(UC\ref{uc:#1})}
+\newcommand{\ucrefplain}[1]{UC\ref*{uc:#1}}
 
+\usepackage[titles]{tocloft}
+\renewcommand{\cftfigpresnum}{Figura~}
+\addtolength{\cftfignumwidth}{3.5em}
 
 \begin{document}
 
@@ -115,7 +122,7 @@
             \hline
             \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
             \hline
-            2.0.0 & 2026-11-26 & Approvato & On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin \newline Vimar S.p.A. \\
+            3.0.0 & 2026-11-26 & Approvato & On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin \newline Vimar S.p.A. \\
             \hline
         \end{tabularx}
         \arrayrulecolor{black}
@@ -149,6 +156,8 @@
         \multicolumn{1}{c|}{\textbf{Descrizione}} & 
         \multicolumn{1}{c|}{\textbf{Verificatore}} \\
         \hline
+        3.0.0 & 2026-11-26 & Simone Giuliano & Stesura casi d'uso \ucref{elenco-impianti}, \ucref{singolo-impianto}, \ucref{nessun-impianto}, \ucref{selezione-impianto}, \ucref{selezione-impianto-inesistente}, \ucref{cambio-impianto}, \ucref{cambio-impianto-inesistente}, \ucref{dettagli-impianto-attivo}, \ucref{nessun-impianto-attivo} & Sara Ballardin \\ 
+        \hline
         2.0.0 & 2026-11-25 & Shuhui Chen & Stesura casi d'uso relativi alla struttura e agli ambienti dell'impianto \ucref{struttura}, \ucref{elenco-ambienti}, \ucref{dettaglio-ambiente}, \ucref{funzione-in-elenco}, \ucref{ambiente-inesistente}, \ucref{funzioni-comandabili} e \ucref{comando-ambiente} &  Sara Ballardin \\ 
         \hline
         1.0.0 & 2026-11-23 & Sara Ballardin & Stesura casi d'uso per autenticazione e gestione della sessione (\ucref{autenticazione}, \ucref{autenticazione-credenziali}, \ucref{autenticazione-permessi}, \ucref{autenticazione-non-riuscita}, \ucref{autenticazione-rinnovo}, \ucref{autenticazione-scaduta}, \ucref{autenticazione-senza-sessione})  & Federico Temporin \\
@@ -176,6 +185,13 @@
 \tableofcontents
 \newpage
 
+% ==============================================================================
+% INDICE DELLE FIGURE (PAGINA 4)
+% ==============================================================================
+\phantomsection
+\addcontentsline{toc}{section}{\listfigurename}
+\listoffigures
+\newpage
 
 % ==============================================================================
 % 1. INTRODUZIONE
@@ -621,7 +637,6 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
 \end{itemize}
 
-
 \endgroup
 
 % ------------------------------------------------------------------------------
@@ -631,7 +646,315 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 \setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
 \setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
 
-% Scrivere qui i casi d'uso
+%------------------------------------------------------------
+\UC{elenco-impianti}{Visualizzazione elenco impianti associati all'account}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra l'elenco degli impianti associati all'account.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione dell'elenco degli impianti associati al proprio account;
+    \item L'Utente autenticato visualizza l'elenco degli impianti, ciascuno con il proprio nome (\ucref{singolo-impianto}).
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item Nessun impianto è associato all'account (\ucref{nessun-impianto}).
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{singolo-impianto}
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{nessun-impianto}
+  \end{itemize}
+\end{itemize}
+
+
+\UCsub{singolo-impianto}{Visualizzazione singolo impianto in elenco}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha recuperato l'elenco degli impianti associati all'account.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra esclusivamente il nome dell'impianto.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza il nome dell'impianto.
+  \end{enumerate}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{nessun-impianto}{Nessun impianto associato all'account}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item Non risulta alcun impianto associato all'account.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema informa l'Utente autenticato dell'assenza di impianti associati all'account.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione dell'elenco degli impianti associati al proprio account;
+    \item L'Utente autenticato visualizza l'informazione relativa all'assenza di impianti associati all'account.
+  \end{enumerate}
+  \item \textbf{Estende:}
+  \begin{itemize}[label=‣]
+    \item \ucref{elenco-impianti}
+  \end{itemize}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{selezione-impianto}{Selezione impianto attivo nella sessione}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item Almeno un impianto è associato all'account dell'Utente autenticato;
+    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'impianto indicato è impostato come impianto attivo per la sessione corrente.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato indica l'impianto che intende utilizzare;
+    \item Il sistema imposta l'impianto indicato come attivo per la sessione corrente.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'impianto indicato non esiste o non è associato all'account (\ucref{selezione-impianto-inesistente}).
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{selezione-impianto-inesistente}
+  \end{itemize}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{selezione-impianto-inesistente}{Impianto richiesto inesistente in fase di selezione}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente;
+    \item L'Utente autenticato ha indicato un impianto non presente tra quelli associati al proprio account.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema informa l'Utente autenticato che l'impianto non esiste e mostra gli impianti disponibili;
+    \item Nessun impianto risulta impostato come attivo nella sessione corrente.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato indica un impianto non associato al proprio account;
+    \item L'Utente autenticato visualizza il messaggio di impianto non trovato;
+    \item L'Utente autenticato visualizza gli impianti disponibili (\ucref{singolo-impianto}).
+  \end{enumerate}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{singolo-impianto}
+  \end{itemize}
+  \item \textbf{Estende:}
+  \begin{itemize}[label=‣]
+    \item \ucref{selezione-impianto}
+  \end{itemize}
+  
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{cambio-impianto}{Cambio impianto attivo nella sessione}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item Almeno un impianto è associato all'account dell'Utente autenticato;
+    \item Un impianto è già impostato come attivo nella sessione corrente.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il nuovo impianto indicato sostituisce il precedente come impianto attivo per la sessione corrente;
+    \item Il sistema informa l'Utente autenticato dell'avvenuto cambio di impianto.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato indica il nuovo impianto su cui intende operare;
+    \item Il sistema sostituisce l'impianto attivo nella sessione corrente con quello indicato;
+    \item L'Utente autenticato visualizza la conferma dell'avvenuto cambio di impianto.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'impianto indicato non esiste o non è associato all'account (\ucref{cambio-impianto-inesistente});
+    \item L'impianto indicato coincide con quello già attivo nella sessione corrente.
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{cambio-impianto-inesistente}
+  \end{itemize}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{cambio-impianto-inesistente}{Impianto richiesto inesistente in fase di cambio}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item Un impianto è già impostato come attivo nella sessione corrente;
+    \item L'Utente autenticato ha indicato un impianto non presente tra quelli associati al proprio account.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema informa l'Utente autenticato che l'impianto non esiste e mostra gli impianti disponibili;
+    \item L'impianto precedentemente attivo rimane selezionato nella sessione corrente.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato indica un impianto non associato al proprio account;
+    \item L'Utente autenticato visualizza il messaggio di impianto non trovato;
+    \item L'Utente autenticato visualizza gli impianti disponibili (\ucref{singolo-impianto}).
+  \end{enumerate}
+   \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{singolo-impianto}
+  \end{itemize}
+  \item \textbf{Estende:}
+  \begin{itemize}[label=‣]
+    \item \ucref{cambio-impianto}
+  \end{itemize}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{dettagli-impianto-attivo}{Visualizzazione dettagli impianto attivo}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra i dettagli dell'impianto attivo nella sessione corrente.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione dei dettagli dell'impianto attivo;
+    \item L'Utente autenticato visualizza i dettagli dell'impianto attivo nella sessione corrente (\ucref{singolo-impianto}).
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente (\ucref{nessun-impianto-attivo}).
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{singolo-impianto}
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{nessun-impianto-attivo}
+  \end{itemize}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{nessun-impianto-attivo}{Nessun impianto attivo nella sessione}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema informa l'Utente autenticato che nessun impianto è attualmente attivo e mostra gli impianti disponibili.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione dei dettagli dell'impianto attivo;
+    \item L'Utente autenticato visualizza il messaggio relativo all'assenza di un impianto attivo;
+    \item L'Utente autenticato visualizza gli impianti disponibili (\ucref{singolo-impianto}).
+  \end{enumerate}
+    \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{singolo-impianto}
+  \end{itemize}
+  \item \textbf{Estende:}
+  \begin{itemize}[label=‣]
+    \item \ucref{dettagli-impianto-attivo}
+  \end{itemize}
+\end{itemize}
 
 \endgroup
 
@@ -649,7 +972,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item L'Utente autenticato ha selezionato un impianto.
   \end{itemize}
   \item \textbf{Post-condizioni:}
@@ -680,7 +1003,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item L'Utente autenticato ha selezionato un impianto.
   \end{itemize}
   \item \textbf{Post-condizioni:}
@@ -728,7 +1051,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item L'Utente autenticato ha selezionato un impianto;
     \item L'ambiente richiesto esiste nell'impianto selezionato.
   \end{itemize}
@@ -835,7 +1158,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item L'Utente autenticato ha selezionato un impianto;
     \item L'ambiente indicato non esiste nell'impianto selezionato.
   \end{itemize}
@@ -869,7 +1192,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item L'Utente autenticato ha selezionato un impianto;
     \item L'ambiente richiesto esiste nell'impianto selezionato.
   \end{itemize}
@@ -923,7 +1246,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato dispone di una sessione attiva;
     \item L'Utente autenticato ha selezionato un impianto;
     \item L'ambiente indicato esiste nell'impianto selezionato;
     \item L'ambiente contiene almeno una funzione del tipo indicato.
