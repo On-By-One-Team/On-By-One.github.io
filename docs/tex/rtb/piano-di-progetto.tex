@@ -1,3 +1,77 @@
+	% MACRO %
+\newcommand{\ds}{\textcolor{red}{da scrivere/aggiungere}} %segnaposto per testo mancante, appunto da scrivere
+
+%tabella ore
+\newcommand{\rigaore}[8]{#1 & #2 & #3 & #4 & #5 & #6 & #7 & #8 \\ \hline}
+\newcommand{\tabellaore}[3]{%
+	\begin{table}[H]
+		\centering
+		\renewcommand{\arraystretch}{1.3}\small
+		\setlength{\tabcolsep}{3pt}
+		\setlength{\arrayrulewidth}{0.8pt}
+		{\arrayrulecolor{gray!50}
+			\begin{tabular}{|l|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|c|}
+				\hline
+				\rowcolor{gray!10}
+				\textbf{Nome} &
+				\hspace{0pt}\textbf{Responsabile} &
+				\hspace{0pt}\textbf{Amministratore} &
+				\hspace{0pt}\textbf{Analista} &
+				\hspace{0pt}\textbf{Progettista} &
+				\hspace{0pt}\textbf{Programmatore} &
+				\hspace{0pt}\textbf{Verificatore} &
+				\textbf{Totale} \\ \hline
+				#3
+		\end{tabular}}
+		\caption{#1}\label{#2}
+	\end{table}
+}
+
+%schema comune di un rischio: codice, nome, descrizione, mitigazione, probabilita', impatto
+\newcommand{\rischio}[6]{%
+	\subsubsection{#2}\label{risk:#1}
+	\begin{center}
+		\arrayrulecolor{gray!50}\renewcommand{\arraystretch}{1.4}
+		\setlength{\arrayrulewidth}{0.8pt}
+		\begin{tabularx}{\textwidth}{|l|X|}
+			\hline
+			\rowcolor{gray!10} \textbf{Codice}   & #1 \\ \hline
+			\textbf{Nome}                        & #2 \\ \hline
+			\textbf{Descrizione}                 & #3 \\ \hline
+			\textbf{Mitigazione}                 & #4 \\ \hline
+			\textbf{Probabilità}                 & #5 \\ \hline
+			\textbf{Impatto}                     & #6 \\ \hline
+		\end{tabularx}
+		\arrayrulecolor{black}
+	\end{center}
+}
+
+%macro per il preventivo a finire (paf)
+\newcommand{\rigapaf}[7]{#1 & #2 & #3 & #4 & #5 & #6 & #7 \\ \hline}
+\newcommand{\tabellapaf}[3]{%
+	\begin{table}[H]
+		\centering
+		\renewcommand{\arraystretch}{1.4}\small
+		\setlength{\arrayrulewidth}{0.8pt}
+		\newcolumntype{C}{>{\centering\arraybackslash}X}
+		{\arrayrulecolor{gray!50}
+			\begin{tabularx}{\textwidth}{|l|C|C|C|C|C|C|}
+				\hline
+				\rowcolor{gray!10}
+				\textbf{Ruolo} &
+				\textbf{Ore preventivate} &
+				\textbf{Ore usate} &
+				\textbf{Ore residue} &
+				\textbf{Budget iniziale} &
+				\textbf{Speso nello sprint} &
+				\textbf{Budget residuo} \\ \hline
+				#3
+		\end{tabularx}}
+		\caption{#1}\label{#2}
+	\end{table}
+}
+
+
 \documentclass[11pt, a4paper, draft]{article}
 
 % --- PACCHETTI ---
@@ -104,9 +178,9 @@
 			\multicolumn{1}{c|}{\textbf{Descrizione}} &
 			\multicolumn{1}{c|}{\textbf{Verificatore}}                                                                        \\
 			\hline
-			-                                         & 2026/11/23          & Alvise Greggio              & Compilate sezioni su rischi e pianificazione, aggiunto attività sprint 1                                   & - \\
+			-                                         & 2026-11-23          & Alvise Greggio              & Compilate sezioni su rischi e pianificazione, aggiunto attività sprint 1                                   & - \\
 			\hline
-			0.1.0                                     & 2026/11/09 & Sara Ballardin & Definizione struttura del documento & - \\
+			0.1.0                                     & 2026-11-09 & Sara Ballardin & Definizione struttura del documento & - \\
 			\hline
 		\end{tabularx}
 		\arrayrulecolor{black}
@@ -143,80 +217,6 @@
 	
 	\newpage
 	
-	% MACRO %
-	\newcommand{\ds}{\textcolor{red}{da scrivere/aggiungere}} %segnaposto per testo mancante, appunto da scrivere
-	
-	%tabella ore
-	\newcommand{\rigaore}[8]{#1 & #2 & #3 & #4 & #5 & #6 & #7 & #8 \\ \hline}
-	\newcommand{\tabellaore}[3]{%
-		\begin{table}[H]
-			\centering
-			\renewcommand{\arraystretch}{1.3}\small
-			\setlength{\tabcolsep}{3pt}
-			\setlength{\arrayrulewidth}{0.8pt}
-			{\arrayrulecolor{gray!50}
-				\begin{tabular}{|l|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|c|}
-					\hline
-					\rowcolor{gray!10}
-					\textbf{Nome} &
-					\hspace{0pt}\textbf{Responsabile} &
-					\hspace{0pt}\textbf{Amministratore} &
-					\hspace{0pt}\textbf{Analista} &
-					\hspace{0pt}\textbf{Progettista} &
-					\hspace{0pt}\textbf{Programmatore} &
-					\hspace{0pt}\textbf{Verificatore} &
-					\textbf{Totale} \\ \hline
-					#3
-			\end{tabular}}
-			\caption{#1}\label{#2}
-		\end{table}
-	}
-	
-	%schema comune di un rischio: codice, nome, descrizione, mitigazione, probabilita', impatto
-	\newcommand{\rischio}[6]{%
-		\subsubsection{#2}\label{risk:#1}
-		\begin{center}
-			\arrayrulecolor{gray!50}\renewcommand{\arraystretch}{1.4}
-			\setlength{\arrayrulewidth}{0.8pt}
-			\begin{tabularx}{\textwidth}{|l|X|}
-				\hline
-				\rowcolor{gray!10} \textbf{Codice}   & #1 \\ \hline
-				\textbf{Nome}                        & #2 \\ \hline
-				\textbf{Descrizione}                 & #3 \\ \hline
-				\textbf{Mitigazione}                 & #4 \\ \hline
-				\textbf{Probabilità}                 & #5 \\ \hline
-				\textbf{Impatto}                     & #6 \\ \hline
-			\end{tabularx}
-			\arrayrulecolor{black}
-		\end{center}
-	}
-	
-	%macro per il preventivo a finire (paf)
-	\newcommand{\rigapaf}[7]{#1 & #2 & #3 & #4 & #5 & #6 & #7 \\ \hline}
-	\newcommand{\tabellapaf}[3]{%
-		\begin{table}[H]
-			\centering
-			\renewcommand{\arraystretch}{1.4}\small
-			\setlength{\arrayrulewidth}{0.8pt}
-			\newcolumntype{C}{>{\centering\arraybackslash}X}
-			{\arrayrulecolor{gray!50}
-				\begin{tabularx}{\textwidth}{|l|C|C|C|C|C|C|}
-					\hline
-					\rowcolor{gray!10}
-					\textbf{Ruolo} &
-					\textbf{Ore preventivate} &
-					\textbf{Ore usate} &
-					\textbf{Ore residue} &
-					\textbf{Budget iniziale} &
-					\textbf{Speso nello sprint} &
-					\textbf{Budget residuo} \\ \hline
-					#3
-			\end{tabularx}}
-			\caption{#1}\label{#2}
-		\end{table}
-	}
-	
-	
 	% ==============================================================================
 	% 2. ANALISI DEI RISCHI
 	% ==============================================================================
@@ -228,69 +228,69 @@
 		\item \textbf{Pianificazione}: fase di determinazione in anticipo delle misure di mitigazione;
 		\item \textbf{Controllo}: indicazione a inizio sprint dei rischi attesi, a fine sprint dei rischi effettivamente occorsi e aggiornamento dell'elenco in retrospettiva.
 	\end{enumerate}
-	Ogni rischio è caratterizzato da un codice del tipo \texttt{R-<categoria>-<n>}, dove la categoria può essere: \texttt{T} (tecnologico), \texttt{I} (interpersonale), \texttt{O} (organizzativo), \texttt{C} (requisiti e comunicazione) o \texttt{P} (personale). Le stime di probabilità e impatto sono solo una valutazione iniziale e vengono riviste con l'esperienza degli sprint.
+	Ogni rischio è caratterizzato da un codice del tipo \texttt{R<categoria>-<n>}, dove la categoria può essere: \texttt{T} (tecnologico), \texttt{I} (interpersonale), \texttt{O} (organizzativo), \texttt{C} (requisiti e comunicazione) o \texttt{P} (personale). Le stime di probabilità e impatto sono solo una valutazione iniziale e vengono riviste con l'esperienza degli sprint.
 	
 	\subsection{Rischi tecnologici}
-	\rischio{R-T-1}{Nuove tecnologie}
+	\rischio{RT-1}{Nuove tecnologie}
 	{Nessun membro ha esperienza con il \textit{Model Context Protocol} (\textit{MCP}) e con le \textit{API KNX IoT 3rd Party}; di conseguenza lo studio può richiedere più tempo del previsto e causare ritardi.}
 	{Lo studio comincia da subito ed è condiviso da tutto il gruppo, con maggior coinvolgimento degli analisti. Chi è più avanti aiuta gli altri e si organizzano formazioni interne per lo studio individuale seguite da una sessione di discussione collettiva dove ciascuno espone ciò che di rilevante ha assorbito dallo studio. Questo serve per suddividere e condividere informazioni che qualche componente potrebbe essersi lasciato sfuggire; se così non fosse sarà comunque un buon motivo di ripasso. Se un blocco dovesse riguardare la maggior parte del gruppo, si chiederanno chiarimenti alla proponente.}
 	{Alta}{Medio}
 	
-	\rischio{R-T-2}{Complessità dell'infrastruttura}
+	\rischio{RT-2}{Complessità dell'infrastruttura}
 	{Adottare troppo presto servizi \textit{cloud} complicherebbe lo sviluppo iniziale.}
 	{Si parte da \textit{Docker} in locale mentre \textit{AWS} viene preso in considerazione solo nella fase dell'\textit{MVP}.}
 	{Media}{Medio}
 	
-	\rischio{R-T-3}{Dipendenza dal kit hardware}
+	\rischio{RT-3}{Dipendenza dal kit hardware}
 	{Il kit fisico si trova in una sola sede. Le prove su impianto reale dipendono dalla disponibilità di chi lo custodisce, mentre gli altri usano le \textit{API} con l'account di amministrazione. Non è ammesso fare affidamento sulla dichiarazione d'onore del custode di "disponibilità continua e immediata" in quanto non umanamente possibile.}
 	{Lo sviluppo procede su un server \textit{mock} (\textit{Prism}) generato dalla specifica \textit{OpenAPI}. Quando strettamente necessario le prove sul kit vengono calendarizzate con il custode.}
 	{Media}{Medio}
 	
 	\subsection{Rischi interpersonali}
-	\rischio{R-I-1}{Opinioni contrastanti}
+	\rischio{RI-1}{Opinioni contrastanti}
 	{Su scelte organizzative (come la struttura dei \textit{repository}) possono emergere posizioni e opinioni diverse che rischiano di mettere in stallo l'avanzamento.}
 	{Confronto aperto e, qualora non si dovesse raggiungere un accordo, la situazione verrà gestita tramite votazione e con la mediazione del responsabile.}
 	{Alta}{Basso}
 	
 	\subsection{Rischi organizzativi}
-	\rischio{R-O-1}{Stima ore imprecisa}
+	\rischio{RO-1}{Stima ore imprecisa}
 	{Le ore necessarie per ruolo e attività possono essere sovrastimate o sottostimate, perché il gruppo non ha esperienza di pianificazione. Avendo stilato il preventivo prima dell'effettivo inizio del lavoro, ci si rende conto già verso la fine del primo sprint di qualche ora assegnata male nel preventivo.}
 	{A ogni sprint si confrontano preventivo e consuntivo e, se serve, si ripianifica in retrospettiva.}
 	{Alta}{Medio}
 	
-	\rischio{R-O-2}{Squilibri nel carico di lavoro}
+	\rischio{RO-2}{Squilibri nel carico di lavoro}
 	{Il lavoro può essere distribuito in modo disomogeneo tra ruoli e persone, con il rischio di superare il limite individuale di 85--90 ore. Banalmente può avvenire anche solo ruotando con leggerezza i ruoli, ad esempio assegnando alla stessa persona consecutivamente il ruolo (o uno dei ruoli) con il carico di lavoro maggiore in un determinato sprint.}
 	{Il responsabile controlla ogni settimana le ore registrate; i ruoli ruotano ragionevolmente.}
 	{Media}{Medio}
 	
-	\rischio{R-O-3}{Ore non registrate in tempo}
+	\rischio{RO-3}{Ore non registrate in tempo}
 	{Registrazioni tardive o mancanti falserebbero il consuntivo di periodo.}
 	{Le ore si registrano entro il giorno dell'incontro fisso (il lunedì); il responsabile si assicura ogni settimana che tutti abbiano rendicontato correttamente le proprie ore.}
 	{Media}{Medio}
 	
 	\subsection{Rischi legati a requisiti e comunicazione}
-	\rischio{R-C-1}{Malcomprensione dei requisiti}
+	\rischio{RC-1}{Malcomprensione dei requisiti}
 	{Il capitolato può essere interpretato in modo errato o incompleto, ad esempio sul livello di dettaglio atteso dei casi d'uso, ma anche non accorgendosi di possibili requisiti "impliciti" derivanti da determinate situazioni.}
 	{Validazione periodica con Vimar S.p.A. nei \textit{SAL}, raccolta dei dubbi da porre all'incontro successivo e discussione con i docenti (professori Vardanega e Cardin) sulle nostre proposte.}
 	{Media}{Alto}
 	
-	\rischio{R-C-2}{Diffusione di materiale riservato}
+	\rischio{RC-2}{Diffusione di materiale riservato}
 	{Documentazione riservata, credenziali o \textit{token} possono finire per errore nel \textit{repository} o in strumenti di intelligenza artificiale, contro quanto richiesto dal contratto di integrazione.}
 	{Nessun segreto nel \textit{repository}; i contenuti di \textit{account} e piattaforme Vimar non vengono mai forniti a strumenti di \textit{IA}. Il controllo è parte della revisione.}
 	{Bassa}{Alto}
 	
-	\rischio{R-C-3}{Richieste troppo frequenti alle API}
+	\rischio{RC-3}{Richieste troppo frequenti alle API}
 	{Il contratto di integrazione segnala che un uso intensivo (\textit{polling}) può essere dannoso per la piattaforma.}
 	{Ci si attiene alla frequenza massima di \textit{polling} indicata nella documentazione fornita da Vimar e si limitano le richieste nel codice.}
 	{Media}{Medio}
 	
 	\subsection{Rischi personali}
-	\rischio{R-P-1}{Festività ed esami}
+	\rischio{RP-1}{Festività ed esami}
 	{La sessione d'esami e le festività tra dicembre e gennaio coincidono con la preparazione di \textit{RTB} e \textit{PoC}.}
 	{Anticipare le ore e congelare i documenti una settimana prima della consegna, così da non rischiare problemi all'ultimo minuto e riservare tempo adeguato alla sola revisione e verifica del tutto.}
 	{Alta}{Alto}
 	
-	\rischio{R-P-2}{Indisponibilità di un membro}
+	\rischio{RP-2}{Indisponibilità di un membro}
 	{Un componente può avere impedimenti imprevisti, di qualsiasi natura.}
 	{Ruoli sostituibili grazie alla rotazione e documentazione condivisa.}
 	{Media}{Medio}
@@ -358,7 +358,12 @@
 	\end{itemize}
 	Le attività dipendono l'una dall'altra in questa sequenza: accesso alle \textit{API} di Vimar S.p.A., \textit{PoC}, \textit{demo}, \textit{RTB}. Il diagramma di \textit{Gantt} mostra \textit{sprint}, attività principali, pausa festiva e \textit{SAL}.
 	
+	
 	\begin{center}
+		\renewcommand{\pgfcalendarmonthname}[1]{%
+			\ifcase#1\or Gennaio\or Febbraio\or Marzo\or Aprile\or Maggio\or Giugno\or
+			Luglio\or Agosto\or Settembre\or Ottobre\or Novembre\or Dicembre\fi}
+
 		\begin{ganttchart}[
 			time slot format=isodate,
 			x unit=0.16cm, y unit chart=0.55cm,
@@ -367,12 +372,12 @@
 			]{2026-11-09}{2027-01-17}
 			\gantttitlecalendar{year, month=name} \\
 			\ganttbar{\textit{Sprint} 1}{2026-11-09}{2026-11-22} \\
-			\ganttbar{\textit{Sprint} 2}{2026-11-23}{2026-12-07} \\
-			\ganttbar{\textit{Sprint} 3}{2026-12-07}{2026-12-14} \\
-			\ganttbar{\textit{Sprint} 4}{2026-12-14}{2026-12-21} \\
-			\ganttbar{\textit{Sprint} 5}{2026-12-21}{2026-12-28} \\
-			\ganttbar{\textit{Sprint} 6}{2026-12-28}{2027-01-04} \\
-			\ganttbar{\textit{Sprint} 7}{2027-01-04}{2027-01-11} \\
+			\ganttbar{\textit{Sprint} 2}{2026-11-23}{2026-12-06} \\
+			\ganttbar{\textit{Sprint} 3}{2026-12-07}{2026-12-13} \\
+			\ganttbar{\textit{Sprint} 4}{2026-12-14}{2026-12-20} \\
+			\ganttbar{\textit{Sprint} 5}{2026-12-21}{2026-12-27} \\
+			\ganttbar{\textit{Sprint} 6}{2026-12-28}{2027-01-03} \\
+			\ganttbar{\textit{Sprint} 7}{2027-01-04}{2027-01-10} \\
 			%possibili valori da modificare per coerenza
 			\ganttbar{Analisi dei requisiti}{2026-11-09}{2026-12-18} \\
 			\ganttbar{Studio tecnologie e \textit{PoC}}{2026-11-16}{2027-01-03} \\
@@ -468,15 +473,15 @@
 	\subsubsection{Rischi attesi e manifestati}
 	Dal confronto con quanto occorso emergono per ora questi punti:
 	\begin{itemize}
-		\item la granularità dei casi d'uso, inizialmente non chiara per gli analisti (collegato a \hyperref[risk:R-C-1]{R-C-1});
+		\item la granularità dei casi d'uso, inizialmente non chiara per gli analisti (collegato a \hyperref[risk:RC-1]{RC-1});
 		\item l'automazione del registro modifiche ha rallentato alcune \textit{pull request}.
-		\item discussioni durante l'incontro settimanale del gruppo riguardo a scelte implementative contrastanti hanno portato al rallentamento dell'avanzamento più di una volta (collegato a \hyperref[risk:R-I-1]{R-I-1});
-		\item la prima settimana, dunque la prima metà del primo \textit{sprint}, il sistema di rendicontazione delle ore ancora non era stato avviato, pertanto per la compilazione di quella sezione di ore produttive si è andati a memoria riguardando le \textit{issue} completate (collegato a \hyperref[risk:R-O-3]{R-O-3}).
+		\item discussioni durante l'incontro settimanale del gruppo riguardo a scelte implementative contrastanti hanno portato al rallentamento dell'avanzamento più di una volta (collegato a \hyperref[risk:RI-1]{RI-1});
+		\item la prima settimana, dunque la prima metà del primo \textit{sprint}, il sistema di rendicontazione delle ore ancora non era stato avviato, pertanto per la compilazione di quella sezione di ore produttive si è andati a memoria riguardando le \textit{issue} completate (collegato a \hyperref[risk:RO-3]{RO-3}).
 	\end{itemize}
 	Le misure di mitigazione applicate sono state:
 	\begin{itemize}
 		\item confronto diretto e chiarimenti con il professore durante il diario di bordo e in seguito anche in chiamata con Vimar durante il \textit{SAL} per il livello specificità dei requisiti;
-		\item lavoro prioritario da parte dell'ammministratore sull'automazione in corso per una risoluzione quanto più rapida possibile del problema; in attesa delle \textit{PR} bloccate, per quanto possibile i ruoli bloccati hanno continuato a lavorare in locale e su compiti che non dipendevano dal \textit{merge} della \textit{PR};
+		\item lavoro prioritario da parte dell'amministratore sull'automazione in corso per una risoluzione quanto più rapida possibile del problema; in attesa delle \textit{PR} bloccate, per quanto possibile i ruoli bloccati hanno continuato a lavorare in locale e su compiti che non dipendevano dal \textit{merge} della \textit{PR};
 		\item soluzione per votazione del gruppo con eventuale mediazione del responsabile per la chiusura della discussione in corso;
 		\item nessuna soluzione di mitigazione in particolare, si è andati a ritroso sulle \textit{issue} su cui si è lavorato per ricordare al meglio il tempo speso su ciascuna di esse.
 	\end{itemize}
@@ -490,7 +495,8 @@
 		\rigaore{Daniele Nuzzaci}{-}{-}{-}{-}{-}{5}{5}
 		\rigaore{Federico Temporin}{-}{10}{-}{-}{-}{-}{10}
 		\rigaore{Tommaso Zorzetto}{-}{-}{-}{-}{-}{5}{5}
-		\rowcolor{gray!10} \rigaore{\textbf{Totale}}{12}{10}{20}{-}{-}{10}{52}
+		\rigaore{Non assegnati}{-}{-}{-}{6}{4}{-}{10}
+		\rowcolor{gray!10} \rigaore{\textbf{Totale}}{12}{10}{20}{6}{4}{10}{62}
 	}
 	
 	\tabellaore{\textit{Sprint} 1 - ore effettive per persona e ruolo}{tab:s1-eff}{
@@ -515,14 +521,14 @@
 		\rigapaf{Programmatore}{128}{0}{128}{1.920 \texteuro}{0 \texteuro}{1.920 \texteuro}
 		\rigapaf{Verificatore}{148}{9}{139}{2.220 \texteuro}{135 \texteuro}{2.085 \texteuro}
 		\rowcolor{gray!10}
-		\rigapaf{\textbf{Totale}}{\textbf{620}}{\textbf{48}}{\textbf{572}}{\textbf{12.840 \texteuro}}{\textbf{1.005 \texteuro}}{\textbf{11.835 \texteuro}}
+		\rigapaf{\textbf{Totale}}{\textbf{620}}{\textbf{44}}{\textbf{576}}{\textbf{12.840 \texteuro}}{\textbf{1.005 \texteuro}}{\textbf{11.835 \texteuro}}
 	}
 	
 	Il totale complessivo previsto a finire rimane pari a 620 ore e 12.840 \texteuro, rispettando il vincolo economico prefissato.
 	
 	
 	\subsubsection{Retrospettiva}
-	Rispetto al preventivo dello \textit{sprint} 1, i ruoli di progettista (6 ore previste) e programmatore (4 ore previste) non hanno avuto ore effettive per una stima iniziale non allineata alle reali necessità del periodo (collegato a \hyperref[risk:R-O-1]{R-O-1}). Queste ore andranno recuperate lavorando con maggiore intensità negli \textit{sprint} futuri, tenendo comunque sotto controllo il limite individuale di 85-90 ore.
+	Rispetto al preventivo dello \textit{sprint} 1, i ruoli di progettista (6 ore previste) e programmatore (4 ore previste) non hanno avuto ore effettive per una stima iniziale non allineata alle reali necessità del periodo (collegato a \hyperref[risk:RO-1]{RO-1}). Queste ore andranno recuperate lavorando con maggiore intensità negli \textit{sprint} futuri, tenendo comunque sotto controllo il limite individuale di 85-90 ore.
 	
 	Dal confronto di fine \textit{sprint} sono emerse inoltre alcune indicazioni operative per i ruoli (consigli utili da chi ha svolto il ruolo a chi lo sta per svolgere):
 	\begin{itemize}
