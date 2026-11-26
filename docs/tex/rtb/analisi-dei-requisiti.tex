@@ -149,8 +149,6 @@
         \multicolumn{1}{c|}{\textbf{Descrizione}} & 
         \multicolumn{1}{c|}{\textbf{Verificatore}} \\
         \hline
-        0.2.0 & 2026-11-22 & Shuhui Chen & Stesura casi d'uso relativi alla struttura e agli ambienti dell'impianto \ucref{struttura}, \ucref{elenco-ambienti}, \ucref{dettaglio-ambiente}, \ucref{funzione-in-elenco}, \ucref{ambiente-inesistente}, \ucref{funzioni-comandabili} e \ucref{comando-ambiente} &  Sara Ballardin \\ 
-        \hline
         1.0.0 & 2026-11-23 & Sara Ballardin & Stesura casi d'uso per autenticazione e gestione della sessione (\ucref{autenticazione}, \ucref{autenticazione-credenziali}, \ucref{autenticazione-permessi}, \ucref{autenticazione-non-riuscita}, \ucref{autenticazione-rinnovo}, \ucref{autenticazione-scaduta}, \ucref{autenticazione-senza-sessione})  & Federico Temporin \\
         \hline
         0.1.4 & 2026-11-18 & Sara Ballardin & Revisione stilistica e aggiunta classificazione degli attori & Daniele Nuzzaci \\ % change-log-pr: 97
@@ -642,62 +640,19 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 \setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
 \setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
 
-% Scrivere qui i casi d'uso
-
-\endgroup
-
-% ------------------------------------------------------------------------------
-% LETTURA DELLO STATO DI DISPOSITIVI E SENSORI
-\begingroup
-\setlist{nosep}
-\setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
-\setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
-
-% Scrivere qui i casi d'uso
-
-\endgroup
-
-% ------------------------------------------------------------------------------
-% COMANDO E CONTROLLO DEI DISPOSITIVI
-\begingroup
-\setlist{nosep}
-\setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
-\setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
-
-% Scrivere qui i casi d'uso
-
-\endgroup
-
-% ------------------------------------------------------------------------------
-% AUTENTICAZIONE E GESTIONE DELLA SESSIONE
-\begingroup
-\setlist{nosep}
-\setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
-\setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
-
-% Scrivere qui i casi d'uso
-
-\endgroup
-
-% ------------------------------------------------------------------------------
-% GESTIONE DEGLI IMPIANTI
-\begingroup
-\setlist{nosep}
-\setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
-\setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
-
 \UC{struttura}{Visualizzazione struttura generale dell'impianto}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item L'Utente autenticato ha selezionato un impianto
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato ha selezionato un impianto.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra gli ambienti dell'impianto con le relative funzioni
+    \item Il sistema mostra gli ambienti dell'impianto con le relative funzioni.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -716,19 +671,19 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
 \end{itemize}
 
-%------------------------------------------------------------
 \UC{elenco-ambienti}{Visualizzazione elenco ambienti (Locations)}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item L'Utente autenticato ha selezionato un impianto
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato ha selezionato un impianto.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra l'elenco degli ambienti dell'impianto
+    \item Il sistema mostra l'elenco degli ambienti dell'impianto.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -748,14 +703,15 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 \UCsub{ambiente-in-elenco}{Visualizzazione singolo ambiente in elenco}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema ha recuperato l'elenco degli ambienti dell'impianto
+    \item Il sistema ha recuperato l'elenco degli ambienti dell'impianto.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra il nome dell'ambiente
+    \item Il sistema mostra il nome dell'ambiente.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -763,20 +719,20 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{enumerate}
 \end{itemize}
 
-%------------------------------------------------------------
 \UC{dettaglio-ambiente}{Visualizzazione dettaglio singolo ambiente}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item L'Utente autenticato ha selezionato un impianto
-    \item L'ambiente richiesto esiste nell'impianto selezionato
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato ha selezionato un impianto;
+    \item L'ambiente richiesto esiste nell'impianto selezionato.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra il nome dell'ambiente e le relative funzioni
+    \item Il sistema mostra il nome dell'ambiente e le relative funzioni.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -788,28 +744,29 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \begin{itemize}[label=‣]
     \item L'ambiente richiesto non esiste
   \end{itemize}
-  \item \textbf{Estensioni:}
-  \begin{itemize}[label=‣]
-    \item \ucref{ambiente-inesistente}
-  \end{itemize}
   \item \textbf{Inclusioni:}
   \begin{itemize}[label=‣]
     \item \ucref{nome-ambiente}
     \item \ucref{funzioni-ambiente}
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-inesistente}
   \end{itemize}
 \end{itemize}
 
 \UCsub{nome-ambiente}{Visualizzazione nome ambiente}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema ha identificato l'ambiente richiesto nell'impianto selezionato
+    \item Il sistema ha identificato l'ambiente richiesto nell'impianto selezionato.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra il nome dell'ambiente
+    \item Il sistema mostra il nome dell'ambiente.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -820,14 +777,15 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 \UCsub{funzioni-ambiente}{Visualizzazione funzioni presenti nell'ambiente}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema ha identificato l'ambiente richiesto nell'impianto selezionato
+    \item Il sistema ha identificato l'ambiente richiesto nell'impianto selezionato.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra le funzioni associate all'ambiente
+    \item Il sistema mostra le funzioni associate all'ambiente.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -843,18 +801,18 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
 \end{itemize}
 
-%------------------------------------------------------------
 \UC{funzione-in-elenco}{Visualizzazione singola funzione in elenco}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema ha recuperato le funzioni dell'ambiente
+    \item Il sistema ha recuperato le funzioni dell'ambiente.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra nome, tipologia e stato della funzione
+    \item Il sistema mostra nome, tipologia e stato della funzione.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -868,21 +826,21 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{itemize}
 \end{itemize}
 
-%------------------------------------------------------------
 \UC{ambiente-inesistente}{Ambiente richiesto inesistente}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item L'Utente autenticato ha selezionato un impianto
-    \item L'ambiente indicato non esiste nell'impianto selezionato
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato ha selezionato un impianto;
+    \item L'ambiente indicato non esiste nell'impianto selezionato.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema informa l'Utente autenticato che l'ambiente non esiste e mostra gli ambienti disponibili
-    \item Il sistema non esegue alcuna operazione di lettura o scrittura sull'impianto
+    \item Il sistema informa l'Utente autenticato che l'ambiente non esiste e mostra gli ambienti disponibili;
+    \item Il sistema non esegue alcuna operazione di lettura o scrittura sull'impianto.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -890,32 +848,32 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
     \item L'Utente autenticato visualizza il messaggio di ambiente non trovato;
     \item L'Utente autenticato visualizza gli ambienti disponibili.
   \end{enumerate}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-in-elenco}
+  \end{itemize}
   \item \textbf{Estende:}
   \begin{itemize}[label=‣]
     \item \ucref{dettaglio-ambiente}
     \item \ucref{funzioni-comandabili}
     \item \ucref{comando-ambiente}
   \end{itemize}
-  \item \textbf{Inclusioni:}
-  \begin{itemize}[label=‣]
-    \item \ucref{ambiente-in-elenco}
-  \end{itemize}
 \end{itemize}
 
-%------------------------------------------------------------
 \UC{funzioni-comandabili}{Visualizzazione funzioni comandabili in un ambiente \textit{(Nice-to-Have)}}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item L'Utente autenticato ha selezionato un impianto
-    \item L'ambiente richiesto esiste nell'impianto selezionato
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato ha selezionato un impianto;
+    \item L'ambiente richiesto esiste nell'impianto selezionato.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra le funzioni comandabili dell'ambiente e le relative operazioni disponibili
+    \item Il sistema mostra le funzioni comandabili dell'ambiente e le relative operazioni disponibili.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -924,30 +882,31 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{enumerate}
   \item \textbf{Scenari alternativi:}
   \begin{itemize}[label=‣]
-    \item L'ambiente richiesto non esiste
+    \item L'ambiente richiesto non esiste;
     \item L'ambiente non contiene funzioni comandabili
-  \end{itemize}
-  \item \textbf{Estensioni:}
-  \begin{itemize}[label=‣]
-    \item \ucref{ambiente-inesistente}
   \end{itemize}
   \item \textbf{Inclusioni:}
   \begin{itemize}[label=‣]
     \item \ucref{operazioni-funzione}
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-inesistente}
   \end{itemize}
 \end{itemize}
 
 \UCsub{operazioni-funzione}{Visualizzazione operazioni disponibili per funzione}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema ha individuato una funzione comandabile nell'ambiente
+    \item Il sistema ha individuato una funzione comandabile nell'ambiente.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra le operazioni supportate dalla funzione, senza eseguirle
+    \item Il sistema mostra le operazioni supportate dalla funzione, senza eseguirle.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -955,22 +914,22 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{enumerate}
 \end{itemize}
 
-%------------------------------------------------------------
 \UC{comando-ambiente}{Comando su più dispositivi dello stesso ambiente}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item L'Utente autenticato ha selezionato un impianto
-    \item L'ambiente indicato esiste nell'impianto selezionato
-    \item L'ambiente contiene almeno una funzione del tipo indicato
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato ha selezionato un impianto;
+    \item L'ambiente indicato esiste nell'impianto selezionato;
+    \item L'ambiente contiene almeno una funzione del tipo indicato.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema esegue il comando su tutte le funzioni del tipo indicato presenti nell'ambiente
-    \item Il sistema informa l'Utente autenticato dell'esito dell'operazione
+    \item Il sistema esegue il comando su tutte le funzioni del tipo indicato presenti nell'ambiente;
+    \item Il sistema informa l'Utente autenticato dell'esito dell'operazione.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
@@ -981,8 +940,8 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
   \end{enumerate}
   \item \textbf{Scenari alternativi:}
   \begin{itemize}[label=‣]
-    \item L'ambiente indicato non esiste
-    \item L'ambiente non contiene funzioni del tipo indicato
+    \item L'ambiente indicato non esiste;
+    \item L'ambiente non contiene funzioni del tipo indicato;
     \item Il comando non riesce su una o più funzioni
   \end{itemize}
   \item \textbf{Estensioni:}
@@ -990,17 +949,6 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
     \item \ucref{ambiente-inesistente}
   \end{itemize}
 \end{itemize}
-
-\endgroup
-
-% ------------------------------------------------------------------------------
-% ESPLORAZIONE DELLA TOPOLOGIA E STRUTTURA DELL'IMPIANTO
-\begingroup
-\setlist{nosep}
-\setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
-\setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
-
-% Scrivere qui i casi d'uso
 
 \endgroup
 
