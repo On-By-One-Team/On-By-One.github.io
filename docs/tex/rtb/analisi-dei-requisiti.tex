@@ -122,7 +122,7 @@
             \hline
             \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
             \hline
-- & - & Bozza & On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin \newline Vimar S.p.A. \\
+            2.0.0 & 2026-11-26 & Approvato & On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin \newline Vimar S.p.A. \\
             \hline
         \end{tabularx}
         \arrayrulecolor{black}
@@ -156,9 +156,9 @@
         \multicolumn{1}{c|}{\textbf{Descrizione}} & 
         \multicolumn{1}{c|}{\textbf{Verificatore}} \\
         \hline
-        1.0.1 & 2026-11-26 & Simone Giuliano & Stesura casi d'uso \ucrefplain{elenco-impianti}, \ucrefplain{singolo-impianto}, \ucrefplain{nessun-impianto}, \ucrefplain{selezione-impianto}, \ucrefplain{selezione-impianto-inesistente}, \ucrefplain{cambio-impianto}, \ucrefplain{cambio-impianto-inesistente}, \ucrefplain{dettagli-impianto-attivo}, \ucrefplain{nessun-impianto-attivo} & - \\ 
+        2.0.0 & 2026-11-25 & Shuhui Chen & Stesura casi d'uso relativi alla struttura e agli ambienti dell'impianto \ucref{struttura}, \ucref{elenco-ambienti}, \ucref{dettaglio-ambiente}, \ucref{funzione-in-elenco}, \ucref{ambiente-inesistente}, \ucref{funzioni-comandabili} e \ucref{comando-ambiente} &  Sara Ballardin \\ 
         \hline
-        1.0.0 & 2026-11-23 & Sara Ballardin & Stesura casi d'uso per autenticazione e gestione della sessione (\ucref{autenticazione}, \ucref{autenticazione-credenziali}, \ucref{autenticazione-permessi}, \ucref{autenticazione-non-riuscita}, \ucref{autenticazione-rinnovo}, \ucref{autenticazione-scaduta}, \ucref{autenticazione-senza-sessione}) & Federico Temporin \\
+        1.0.0 & 2026-11-23 & Sara Ballardin & Stesura casi d'uso per autenticazione e gestione della sessione (\ucref{autenticazione}, \ucref{autenticazione-credenziali}, \ucref{autenticazione-permessi}, \ucref{autenticazione-non-riuscita}, \ucref{autenticazione-rinnovo}, \ucref{autenticazione-scaduta}, \ucref{autenticazione-senza-sessione})  & Federico Temporin \\
         \hline
         0.1.4 & 2026-11-18 & Sara Ballardin & Revisione stilistica e aggiunta classificazione degli attori & Daniele Nuzzaci \\ % change-log-pr: 97
         \hline
@@ -962,7 +962,315 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 \setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
 \setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
 
-% Scrivere qui i casi d'uso
+\UC{struttura}{Visualizzazione struttura generale dell'impianto}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato ha selezionato un impianto.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra gli ambienti dell'impianto con le relative funzioni.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione della struttura generale dell'impianto;
+    \item L'Utente autenticato visualizza gli ambienti dell'impianto;
+    \item L'Utente autenticato visualizza le funzioni presenti in ciascun ambiente.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'impianto non contiene alcun ambiente.
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-in-elenco}
+    \item \ucref{funzioni-ambiente}
+  \end{itemize}
+\end{itemize}
+
+\UC{elenco-ambienti}{Visualizzazione elenco ambienti (Locations)}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato ha selezionato un impianto.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra l'elenco degli ambienti dell'impianto.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione dell'elenco degli ambienti dell'impianto;
+    \item L'Utente autenticato visualizza l'elenco degli ambienti, ciascuno con il proprio nome.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'impianto non contiene alcun ambiente.
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-in-elenco}
+  \end{itemize}
+\end{itemize}
+
+\UCsub{ambiente-in-elenco}{Visualizzazione singolo ambiente in elenco}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha recuperato l'elenco degli ambienti dell'impianto.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra il nome dell'ambiente.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza il nome dell'ambiente.
+  \end{enumerate}
+\end{itemize}
+
+\UC{dettaglio-ambiente}{Visualizzazione dettaglio singolo ambiente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato ha selezionato un impianto;
+    \item L'ambiente richiesto esiste nell'impianto selezionato.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra il nome dell'ambiente e le relative funzioni.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione del dettaglio di un ambiente;
+    \item L'Utente autenticato visualizza il nome dell'ambiente;
+    \item L'Utente autenticato visualizza le funzioni presenti nell'ambiente.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'ambiente richiesto non esiste.
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{nome-ambiente}
+    \item \ucref{funzioni-ambiente}
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-inesistente}
+  \end{itemize}
+\end{itemize}
+
+\UCsub{nome-ambiente}{Visualizzazione nome ambiente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha identificato l'ambiente richiesto nell'impianto selezionato.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra il nome dell'ambiente.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza il nome dell'ambiente.
+  \end{enumerate}
+\end{itemize}
+
+\UCsub{funzioni-ambiente}{Visualizzazione funzioni presenti nell'ambiente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha identificato l'ambiente richiesto nell'impianto selezionato.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra le funzioni associate all'ambiente.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza l'elenco delle funzioni presenti nell'ambiente, ciascuna con nome, tipologia e stato.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'ambiente non contiene alcuna funzione.
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{funzione-in-elenco}
+  \end{itemize}
+\end{itemize}
+
+\UC{funzione-in-elenco}{Visualizzazione singola funzione in elenco}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha recuperato le funzioni dell'ambiente.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra nome, tipologia e stato della funzione.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza il nome della funzione;
+    \item L'Utente autenticato visualizza la tipologia della funzione;
+    \item L'Utente autenticato visualizza lo stato della funzione.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item Lo stato della funzione non è disponibile.
+  \end{itemize}
+\end{itemize}
+
+\UC{ambiente-inesistente}{Ambiente richiesto inesistente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato ha selezionato un impianto;
+    \item L'ambiente indicato non esiste nell'impianto selezionato.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema informa l'Utente autenticato che l'ambiente non esiste e mostra gli ambienti disponibili;
+    \item Il sistema non esegue alcuna operazione di lettura o scrittura sull'impianto.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato indica un ambiente non presente nell'impianto;
+    \item L'Utente autenticato visualizza il messaggio di ambiente non trovato;
+    \item L'Utente autenticato visualizza gli ambienti disponibili.
+  \end{enumerate}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-in-elenco}
+  \end{itemize}
+  \item \textbf{Estende:}
+  \begin{itemize}[label=‣]
+    \item \ucref{dettaglio-ambiente}
+    \item \ucref{funzioni-comandabili}
+    \item \ucref{comando-ambiente}
+  \end{itemize}
+\end{itemize}
+
+\UC{funzioni-comandabili}{Visualizzazione funzioni comandabili in un ambiente \textit{(Nice-to-Have)}}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato ha selezionato un impianto;
+    \item L'ambiente richiesto esiste nell'impianto selezionato.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra le funzioni comandabili dell'ambiente e le relative operazioni disponibili.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione delle funzioni comandabili di un ambiente;
+    \item L'Utente autenticato visualizza l'elenco delle funzioni comandabili dell'ambiente, ciascuna con le operazioni disponibili.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'ambiente richiesto non esiste;
+    \item L'ambiente non contiene funzioni comandabili.
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{operazioni-funzione}
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-inesistente}
+  \end{itemize}
+\end{itemize}
+
+\UCsub{operazioni-funzione}{Visualizzazione operazioni disponibili per funzione}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha individuato una funzione comandabile nell'ambiente.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra le operazioni supportate dalla funzione, senza eseguirle.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza le operazioni disponibili per la funzione.
+  \end{enumerate}
+\end{itemize}
+
+\UC{comando-ambiente}{Comando su più dispositivi dello stesso ambiente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato è autenticato nel sistema;
+    \item L'Utente autenticato ha selezionato un impianto;
+    \item L'ambiente indicato esiste nell'impianto selezionato;
+    \item L'ambiente contiene almeno una funzione del tipo indicato.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema esegue il comando su tutte le funzioni del tipo indicato presenti nell'ambiente;
+    \item Il sistema informa l'Utente autenticato dell'esito dell'operazione.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato indica l'ambiente su cui operare;
+    \item L'Utente autenticato indica il tipo di funzione e l'operazione da eseguire;
+    \item L'Utente autenticato invia il comando;
+    \item L'Utente autenticato visualizza l'esito dell'operazione.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'ambiente indicato non esiste;
+    \item L'ambiente non contiene funzioni del tipo indicato;
+    \item Il comando non riesce su una o più funzioni.
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-inesistente}
+  \end{itemize}
+\end{itemize}
 
 \endgroup
 
