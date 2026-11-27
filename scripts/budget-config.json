@@ -1,0 +1,66 @@
+{
+  "org": "On-By-One-Team",
+  "project_number": 1,
+  "project_weeks": 20,
+  "target_hours_per_member": 88,
+  "total_budget_eur": 12840,
+  "fields": {
+    "status": "Status",
+    "done_value": "Done",
+    "week": "Settimana",
+    "hours": "Ore produttive"
+  },
+  "members": {
+    "simonegiuliano": "Simone Giuliano",
+    "ballasa": "Sara Ballardin",
+    "Pescatore68": "Shuhui Chen",
+    "alvisegreggio": "Alvise Greggio",
+    "dan3Nuz": "Daniele Nuzzaci",
+    "FedeEdu": "Federico Temporin",
+    "fantasiapic": "Tommaso Zorzetto"
+  },
+  "roles": {
+    "representative": {
+      "label": "Responsabile",
+      "color": "#5d3a9b",
+      "hourly_rate": 30,
+      "total_hours": 84,
+      "weekly_plan_by_block": [6, 4, 4, 3, 4]
+    },
+    "administration": {
+      "label": "Amministratore",
+      "color": "#7c3aed",
+      "hourly_rate": 20,
+      "total_hours": 64,
+      "weekly_plan_by_block": [5, 4, 3, 2, 2]
+    },
+    "analysis": {
+      "label": "Analista",
+      "color": "#2563eb",
+      "hourly_rate": 25,
+      "total_hours": 96,
+      "weekly_plan_by_block": [10, 7, 4, 2, 1]
+    },
+    "design": {
+      "label": "Progettista",
+      "color": "#0d9488",
+      "hourly_rate": 25,
+      "total_hours": 100,
+      "weekly_plan_by_block": [3, 4, 7, 7, 4]
+    },
+    "development": {
+      "label": "Programmatore",
+      "color": "#d97706",
+      "hourly_rate": 15,
+      "total_hours": 128,
+      "weekly_plan_by_block": [2, 5, 8, 9, 8]
+    },
+    "verification": {
+      "label": "Verificatore",
+      "color": "#dc2626",
+      "hourly_rate": 15,
+      "total_hours": 148,
+      "weekly_plan_by_block": [5, 6, 7, 9, 10]
+    }
+  }
+}
