@@ -60,9 +60,12 @@ def iso_date(value: str) -> str:
         return value
     try:
         parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    except ValueError as error:
-        raise ValueError(f"Data non interpretabile: {value}") from error
-    return parsed.date().isoformat()
+    except ValueError:
+        try:
+            parsed = datetime.strptime(value, "%Y/%m/%d")
+        except ValueError as error:
+            raise ValueError(f"Data non interpretabile: {value}") from error
+    return parsed.date().strftime("%Y/%m/%d")
 
 
 def split_cells(row: str) -> list[str]:
@@ -484,7 +487,7 @@ def update_review(args: argparse.Namespace) -> int:
         changed |= update_review_row(path, args.pr_number, version, verifier)
         if args.state == "approved":
             changed |= update_information(
-                path, version, iso_date(args.date), "Approvato", recipient_type
+                path, version, args.date, "Approvato", recipient_type
             )
         else:
             changed |= update_information(

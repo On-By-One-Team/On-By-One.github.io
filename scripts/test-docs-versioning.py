@@ -267,7 +267,7 @@ class DocsVersioningTests(unittest.TestCase):
                 content = path.read_text(encoding="utf-8")
                 self.assertIn(f"{expected_ver} & 2026-11-17 & Federico Temporin & Aggiornata la norma & Daniele Nuzzaci", content)
                 if expected_status == "Approvato":
-                    self.assertIn(f"{expected_ver} & 2026-11-25 & Approvato &", content)
+                    self.assertIn(f"{expected_ver} & 2026/11/25 & Approvato &", content)
                 else:
                     self.assertIn("- & - & Bozza &", content)
 
@@ -364,7 +364,7 @@ class DocsVersioningTests(unittest.TestCase):
                 content,
             )
 
-    def test_approval_updates_information_date_in_iso_format(self):
+    def test_approval_updates_information_date_with_slashes(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "document.tex"
             path.write_text(TEX, encoding="utf-8")
@@ -374,7 +374,11 @@ class DocsVersioningTests(unittest.TestCase):
                 )
             )
             content = path.read_text(encoding="utf-8")
-            self.assertIn("2.0.0 & 2026-11-17 & Approvato &", content)
+            self.assertIn("2.0.0 & 2026/11/17 & Approvato &", content)
+
+    def test_iso_date_formats_with_slashes_and_preserves_dash(self):
+        self.assertEqual(docs_versioning.iso_date("2026-11-17T16:13:45+01:00"), "2026/11/17")
+        self.assertEqual(docs_versioning.iso_date("-"), "-")
 
     def test_current_recipient_type_detects_client(self):
         tex_client = TEX.replace(
