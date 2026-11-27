@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cruscotto Ore e Preventivo — On-By-One</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+    <script src="./dashboard.js" defer></script>
+</head>
+<body class="dashboard-page">
+    <header class="dashboard-header">
+        <div>
+            <h1>Cruscotto On-By-One — Progetto AURA</h1>
+            <p id="meta-info">Caricamento dati...</p>
+        </div>
+        <a class="dashboard-back-link" href="../index.html">← Torna ai documenti</a>
+    </header>
+
+    <main class="dashboard-main">
+        <div id="mock-banner" class="dashboard-banner" hidden>
+            Stai visualizzando <strong>dati di esempio</strong> (<code>--mock</code>). Quando imposterai il token GitHub, vedrai i dati reali di GitHub Projects.
+        </div>
+
+        <section class="dashboard-filters" aria-label="Filtri periodo">
+            <div class="filter-group">
+                <label for="sprint-filter">Sprint</label>
+                <select id="sprint-filter"></select>
+            </div>
+            <div class="filter-group">
+                <label for="week-filter">Settimana</label>
+                <select id="week-filter"></select>
+            </div>
+        </section>
+
+        <section class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label">Ore rendicontate</div>
+                <div class="kpi-value" id="kpi-hours">—</div>
+                <div class="kpi-sub" id="kpi-hours-sub">—</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Costo consuntivo</div>
+                <div class="kpi-value" id="kpi-cost">—</div>
+                <div class="kpi-sub" id="kpi-cost-sub">—</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Media ore / membro</div>
+                <div class="kpi-value" id="kpi-avg">—</div>
+                <div class="kpi-sub" id="kpi-avg-sub">—</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Voci senza ruolo</div>
+                <div class="kpi-value" id="kpi-unassigned">—</div>
+                <div class="kpi-sub">Issue prive di label ruolo</div>
+            </div>
+        </section>
+
+        <section class="charts-grid">
+            <div class="dash-card">
+                <h2>Preventivo vs Consuntivo per Ruolo</h2>
+                <p class="card-desc" id="role-chart-desc">Confronto ore complessive per ruolo</p>
+                <div class="chart-box"><canvas id="roleChart"></canvas></div>
+            </div>
+
+            <div class="dash-card">
+                <h2>Carico per Singolo Membro (per Ruolo)</h2>
+                <p class="card-desc">Ore produttive svolte da ciascun componente del gruppo</p>
+                <div class="chart-box"><canvas id="memberChart"></canvas></div>
+            </div>
+
+            <div class="dash-card full-width">
+                <h2>Andamento Settimanale (Consuntivo vs Preventivo)</h2>
+                <p class="card-desc">Indipendente dalla durata dello sprint (1 o 2 settimane)</p>
+                <div class="chart-box"><canvas id="weekChart"></canvas></div>
+            </div>
+        </section>
+
+        <section class="dash-card">
+            <h2>Dettaglio Gruppi per Ruolo</h2>
+            <p class="card-desc">Somma ore dei membri che condividono lo stesso ruolo nel periodo selezionato</p>
+            <div class="table-wrapper">
+                <table class="dash-table">
+                    <thead>
+                        <tr>
+                            <th>Ruolo</th>
+                            <th>Membri attivi nel ruolo</th>
+                            <th class="num">Preventivo (h)</th>
+                            <th class="num">Consuntivo (h)</th>
+                            <th class="num">Residuo (h)</th>
+                            <th class="num">Costo (€)</th>
+                            <th>Stato</th>
+                        </tr>
+                    </thead>
+                    <tbody id="role-table-body"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
