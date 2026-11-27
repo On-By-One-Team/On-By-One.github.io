@@ -6,6 +6,9 @@
 \usepackage{lmodern}                % Rende i font scalabili all'infinito
 \usepackage{anyfontsize}            % Permette di usare dimensioni personalizzate
 \usepackage[italian]{babel}
+\addto\captionsitalian{%
+  \renewcommand{\listfigurename}{Indice delle figure}%
+}
 \usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
 \usepackage{graphicx}               % Per inserire il logo
 \usepackage{tabularx}               % Per tabelle larghe quanto la pagina
@@ -16,6 +19,7 @@
 \usepackage{titlesec}               % Per personalizzare la formattazione dei titoli
 \usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
 \usepackage{xurl}                   % Permette ai link lunghi di non uscire dai margini
+\usepackage{float}                  % Per immagini
 \urlstyle{same}                     % Usa lo stesso font del documento
 
 
@@ -61,6 +65,10 @@
 \newcommand{\ucref}[1]{UC\ref{uc:#1}}
 \newcommand{\ucp}[1]{(UC\ref{uc:#1})}
 \newcommand{\ucrefplain}[1]{UC\ref*{uc:#1}}
+
+\usepackage[titles]{tocloft}
+\renewcommand{\cftfigpresnum}{Figura~}
+\addtolength{\cftfignumwidth}{3.5em}
 
 \begin{document}
 
@@ -114,7 +122,7 @@
             \hline
             \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
             \hline
-            - & - & Bozza & On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin \newline Vimar S.p.A. \\
+            3.0.0 & 2026-11-26 & Approvato & On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin \newline Vimar S.p.A. \\
             \hline
         \end{tabularx}
         \arrayrulecolor{black}
@@ -148,17 +156,23 @@
         \multicolumn{1}{c|}{\textbf{Descrizione}} & 
         \multicolumn{1}{c|}{\textbf{Verificatore}} \\
         \hline
-        - & - & - & - & - \\ % change-log-pr: 109
+        - & - & - & Descrizione mancante & - \\
         \hline
-        0.1.4 & 2026-11-22 & Sara Ballardin & Revisione stilistica e aggiunta classificazione degli attori & Daniele Nuzzaci \\ % change-log-pr: 97
+        3.0.0 & 2026-11-26 & Simone Giuliano & Stesura casi d'uso \ucref{elenco-impianti}, \ucref{singolo-impianto}, \ucref{nessun-impianto}, \ucref{selezione-impianto}, \ucref{selezione-impianto-inesistente}, \ucref{cambio-impianto}, \ucref{cambio-impianto-inesistente}, \ucref{dettagli-impianto-attivo}, \ucref{nessun-impianto-attivo} & Sara Ballardin \\ 
         \hline
-        0.1.3 & 2026/11/14 & Shuhui Chen & Stesura sezione Descrizione del prodotto & Daniele Nuzzaci \\
+        2.0.0 & 2026-11-25 & Shuhui Chen & Stesura casi d'uso relativi alla struttura e agli ambienti dell'impianto \ucref{struttura}, \ucref{elenco-ambienti}, \ucref{dettaglio-ambiente}, \ucref{funzione-in-elenco}, \ucref{ambiente-inesistente}, \ucref{funzioni-comandabili} e \ucref{comando-ambiente} &  Sara Ballardin \\ 
         \hline
-        0.1.2 & 2026/11/14 & Simone Giuliano & Stesura paragrafi 3.1 e 3.2 & Daniele Nuzzaci \\
+        1.0.0 & 2026-11-23 & Sara Ballardin & Stesura casi d'uso per autenticazione e gestione della sessione (\ucref{autenticazione}, \ucref{autenticazione-credenziali}, \ucref{autenticazione-permessi}, \ucref{autenticazione-non-riuscita}, \ucref{autenticazione-rinnovo}, \ucref{autenticazione-scaduta}, \ucref{autenticazione-senza-sessione})  & Federico Temporin \\
         \hline
-        0.1.1 & 2026/11/13 & Sara Ballardin & Stesura dell'introduzione & Daniele Nuzzaci \\
+        0.1.4 & 2026-11-18 & Sara Ballardin & Revisione stilistica e aggiunta classificazione degli attori & Daniele Nuzzaci \\ % change-log-pr: 97
         \hline
-        0.1.0 & 2026/11/09 & Sara Ballardin & Definizione struttura del documento & Daniele Nuzzaci \\
+        0.1.3 & 2026-11-14 & Shuhui Chen & Stesura sezione Descrizione del prodotto & Daniele Nuzzaci \\
+        \hline
+        0.1.2 & 2026-11-14 & Simone Giuliano & Stesura paragrafi 3.1 e 3.2 & Daniele Nuzzaci \\
+        \hline
+        0.1.1 & 2026-11-13 & Sara Ballardin & Stesura dell'introduzione & Daniele Nuzzaci \\
+        \hline
+        0.1.0 & 2026-11-09 & Sara Ballardin & Definizione struttura del documento & Daniele Nuzzaci \\
         \hline
     \end{tabularx}
     \arrayrulecolor{black}
@@ -173,6 +187,13 @@
 \tableofcontents
 \newpage
 
+% ==============================================================================
+% INDICE DELLE FIGURE (PAGINA 4)
+% ==============================================================================
+\phantomsection
+\addcontentsline{toc}{section}{\listfigurename}
+\listoffigures
+\newpage
 
 % ==============================================================================
 % 1. INTRODUZIONE
@@ -304,6 +325,7 @@ Ogni caso d'uso è descritto attraverso le seguenti caratteristiche:
     \item \textbf{Scenari alternativi:} Eventuali sequenze di eventi che modellano eccezioni, errori o deviazioni dal flusso standard.
     \item \textbf{Inclusioni:} Riferimenti ad altri casi d'uso che devono obbligatoriamente essere eseguiti per concludere il caso d'uso includente.
     \item \textbf{Estensioni:} Riferimenti a casi d'uso estendenti che vengono eseguiti solo al verificarsi di specifiche condizioni, ampliando o alterando le funzionalità in uno scenario alternativo.
+    \item \textbf{Estende:} Riferimenti a casi d'uso base di cui il caso d'uso corrente rappresenta un'estensione.
     \item \textbf{Generalizzazioni:} Relazioni in cui un caso d'uso derivato eredita le caratteristiche di un caso d'uso base, specializzandone il comportamento.
 \end{itemize}
 
@@ -328,7 +350,7 @@ Gli attori primari avviano attivamente le interazioni con il sistema per raggiun
         \hline
         \textbf{Utente tecnico} & Figura che si occupa dell'installazione, della configurazione iniziale e dell'eventuale manutenzione o risoluzione dei problemi del sistema. \\
         \hline
-        \textbf{Cloud} (KNX IoT API) & Agisce da attore primario solo quando invia notifiche automatiche al sistema (esempio:\ un sensore che cambia stato), senza aspettare una richiesta dell'utente. \\
+        \textbf{Cloud Vimar} (KNX IoT API) & Agisce da attore primario solo quando invia notifiche automatiche al sistema (esempio:\ un sensore che cambia stato), senza aspettare una richiesta dell'utente. \\
         \hline
     \end{tabularx}
     \arrayrulecolor{black}
@@ -347,7 +369,7 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
         \multicolumn{1}{|c|}{\textbf{Attore}} & 
         \multicolumn{1}{c|}{\textbf{Descrizione}} \\
         \hline
-        \textbf{Cloud} (KNX IoT API \& \texttt{OAuth2}) & Servizio esterno interrogato dal sistema per validare le credenziali, leggere lo stato dei dispositivi e inoltrare i comandi fisici. \\
+        \textbf{Cloud Vimar} (KNX IoT API \& \texttt{OAuth2}) & Servizio esterno interrogato dal sistema per validare le credenziali, leggere lo stato dei dispositivi e inoltrare i comandi fisici. \\
         \hline
         \textbf{Servizio AI esterno} & Servizio (esempio:\ Claude, ChatGPT, Gemini) che funge da interfaccia conversazionale. \\
         \hline
@@ -365,7 +387,257 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 \setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
 \setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
 
-% Scrivere qui i casi d'uso
+%------------------------------------------------------------
+\UC{autenticazione}{Autenticazione account MyVimar}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{assets/uc-autenticazione.png}
+    \caption{Diagramma dei casi d'uso: \ucref{autenticazione}, \ucref{autenticazione-credenziali}, \ucref{autenticazione-permessi}, \ucref{autenticazione-non-riuscita}}
+    \label{fig:uc-autenticazione}
+\end{figure}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente non autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente non autenticato possiede un account MyVimar attivo e sta interagendo con il Servizio AI esterno.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'utente è riconosciuto dal sistema e assume il ruolo di Utente autenticato;
+    \item Il sistema dispone dell'autorizzazione necessaria per comunicare con gli impianti associati all'account MyVimar.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente non autenticato chiede al Servizio AI esterno di collegarsi al proprio impianto Vimar;
+    \item Il sistema avvia la procedura di autorizzazione e indirizza l'utente alla pagina di accesso MyVimar;
+    \item L'Utente non autenticato inserisce le proprie credenziali per verificare la propria identità (\ucref{autenticazione-credenziali});
+    \item L'Utente non autenticato autorizza il sistema a operare sugli impianti collegati al proprio account (\ucref{autenticazione-permessi});
+    \item Il sistema completa l'autorizzazione con il Cloud Vimar e conferma all'utente che l'autenticazione è andata a buon fine.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'Utente non autenticato nega i permessi richiesti o interrompe la procedura (\ucref{autenticazione-non-riuscita});
+    \item Il Cloud Vimar restituisce un errore oppure risulta momentaneamente irraggiungibile (\ucref{autenticazione-non-riuscita}).
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{autenticazione-credenziali}
+    \item \ucref{autenticazione-permessi}
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{autenticazione-non-riuscita}
+  \end{itemize}
+\end{itemize}
+
+
+\UCsub{autenticazione-credenziali}{Inserimento credenziali MyVimar}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente non autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente non autenticato ha avviato la procedura di accesso e visualizza la pagina di login MyVimar.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'identità dell'utente è stata verificata con successo dal Cloud Vimar.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente non autenticato inserisce email e password del proprio account MyVimar nella pagina di login dedicata;
+    \item L'Utente non autenticato conferma e invia le credenziali per procedere con la verifica;
+    \item Il Cloud Vimar controlla la validità delle credenziali e verifica l'identità dell'utente.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item Le credenziali inserite sono errate: la procedura di accesso MyVimar segnala l'errore all'utente.
+  \end{itemize}
+\end{itemize}
+
+
+\UCsub{autenticazione-permessi}{Concessione permessi di accesso agli impianti}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente non autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'identità dell'Utente non autenticato è stata verificata con successo e il Cloud Vimar mostra la schermata di autorizzazione.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema riceve dal Cloud Vimar la conferma dei permessi concessi dall'utente.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente non autenticato visualizza il riepilogo dei permessi richiesti dal sistema per accedere e interagire con i propri impianti;
+    \item L'Utente non autenticato conferma e autorizza la concessione dei permessi;
+    \item Il Cloud Vimar registra il consenso e lo comunica al sistema.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'Utente non autenticato nega o annulla la concessione dei permessi: il Cloud Vimar comunica il rifiuto al sistema e la procedura viene interrotta.
+  \end{itemize}
+\end{itemize}
+
+
+%------------------------------------------------------------
+\UC{autenticazione-non-riuscita}{Autenticazione non riuscita}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente non autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente non autenticato ha avviato la procedura di autenticazione (\ucref{autenticazione});
+    \item L'autenticazione non è stata completata perché l'utente ha negato i permessi o interrotto la procedura oppure perché il Cloud Vimar ha restituito un errore o risulta irraggiungibile.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'utente viene informato del fallimento e mantiene il ruolo di Utente non autenticato;
+    \item Il sistema non ottiene l'autorizzazione e non può accedere agli impianti associati all'account.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item Il sistema rileva che la procedura di autenticazione non è stata completata con successo;
+    \item Il sistema notifica l'esito negativo al Servizio AI esterno;
+    \item L'Utente non autenticato visualizza un messaggio di errore che segnala il fallimento dell'autenticazione.
+  \end{enumerate}
+  \item \textbf{Estende:}
+  \begin{itemize}[label=‣]
+    \item \ucref{autenticazione}
+  \end{itemize}
+\end{itemize}
+
+
+%------------------------------------------------------------
+\UC{autenticazione-rinnovo}{Rinnovo automatico della sessione}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{assets/uc-rinnovo-sessione.png}
+    \caption{Diagramma dei casi d'uso: \ucref{autenticazione-rinnovo}, \ucref{autenticazione-scaduta}}
+    \label{fig:uc-rinnovo-sessione}
+\end{figure}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione precedentemente avviata (\ucref{autenticazione});
+    \item La sessione è scaduta ma può essere rinnovata.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item La sessione viene rinnovata con successo;
+    \item L'Utente autenticato prosegue senza dover ripetere l'autenticazione.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato richiede un'operazione sull'impianto tramite il Servizio AI esterno;
+    \item Il sistema rileva che la sessione corrente è scaduta;
+    \item Il sistema richiede al Cloud Vimar il rinnovo della sessione;
+    \item Il Cloud Vimar conferma il rinnovo;
+    \item Il sistema prosegue con l'operazione richiesta senza interrompere l'interazione dell'utente.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item Il rinnovo non è possibile o viene rifiutato dal Cloud Vimar (\ucref{autenticazione-scaduta});
+    \item Il Cloud Vimar restituisce un errore temporaneo o risulta irraggiungibile: la sessione non viene invalidata, la richiesta sull'impianto non viene eseguita e il sistema notifica al Servizio AI esterno il disservizio momentaneo.
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{autenticazione-scaduta}
+  \end{itemize}
+\end{itemize}
+
+
+%------------------------------------------------------------
+\UC{autenticazione-scaduta}{Sessione scaduta non rinnovabile}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item La sessione corrente dell'Utente autenticato è scaduta e il rinnovo non è possibile o viene rifiutato dal Cloud Vimar.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item La sessione viene invalidata;
+    \item L'utente perde i permessi di accesso (tornando allo stato di Utente non autenticato) e deve ripetere l'autenticazione (\ucref{autenticazione}) per proseguire.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item Il sistema rileva che il rinnovo della sessione non è possibile;
+    \item Il sistema notifica l'invalidazione della sessione al Servizio AI esterno;
+    \item L'Utente autenticato visualizza un avviso che lo informa della scadenza della sessione e lo invita a effettuare nuovamente l'autenticazione.
+  \end{enumerate}
+  \item \textbf{Estende:}
+  \begin{itemize}[label=‣]
+    \item \ucref{autenticazione-rinnovo}
+  \end{itemize}
+\end{itemize}
+
+
+%------------------------------------------------------------
+\UC{autenticazione-senza-sessione}{Operazione richiesta senza autenticazione}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente non autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'utente sta interagendo con il Servizio AI esterno senza avere una sessione attiva.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'operazione richiesta non viene eseguita;
+    \item L'utente rimane Utente non autenticato e viene informato della necessità di autenticarsi.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente non autenticato richiede un'operazione sull'impianto;
+    \item Il sistema rileva l'assenza di una sessione attiva e blocca l'esecuzione della richiesta;
+    \item Il sistema segnala al Servizio AI esterno che è necessaria l'autenticazione;
+    \item L'Utente non autenticato visualizza un messaggio che lo invita ad accedere con il proprio account MyVimar (\ucref{autenticazione}) per procedere.
+  \end{enumerate}
+  \item \textbf{Estende:}
+  \begin{itemize}[label=‣]
+    \item Ogni caso d'uso che richiede una sessione attiva.
+  \end{itemize}
+\end{itemize}
 
 \endgroup
 
@@ -376,308 +648,313 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 \setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
 \setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
 
-\UC{struttura}{Visualizzazione struttura generale dell'impianto}
+%------------------------------------------------------------
+\UC{elenco-impianti}{Visualizzazione elenco impianti associati all'account}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item L'Utente autenticato ha selezionato un impianto
+    \item L'Utente autenticato dispone di una sessione attiva.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra gli ambienti dell'impianto con le relative funzioni
+    \item Il sistema mostra l'elenco degli impianti associati all'account.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
-    \item L'Utente autenticato invia la richiesta di visualizzazione della struttura generale dell'impianto;
-    \item L'Utente autenticato visualizza gli ambienti dell'impianto;
-    \item L'Utente autenticato visualizza le funzioni presenti in ciascun ambiente.
+    \item L'Utente autenticato invia la richiesta di visualizzazione dell'elenco degli impianti associati al proprio account;
+    \item L'Utente autenticato visualizza l'elenco degli impianti, ciascuno con il proprio nome (\ucref{singolo-impianto}).
   \end{enumerate}
   \item \textbf{Scenari alternativi:}
   \begin{itemize}[label=‣]
-    \item L'impianto non contiene alcun ambiente
+    \item Nessun impianto è associato all'account (\ucref{nessun-impianto}).
   \end{itemize}
   \item \textbf{Inclusioni:}
   \begin{itemize}[label=‣]
-    \item \ucref{ambiente-in-elenco}
-    \item \ucref{funzioni-ambiente}
-  \end{itemize}
-\end{itemize}
-
-%------------------------------------------------------------
-\UC{elenco-ambienti}{Visualizzazione elenco ambienti (Locations)}
-
-\begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
-  \item \textbf{Pre-condizioni:}
-  \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item L'Utente autenticato ha selezionato un impianto
-  \end{itemize}
-  \item \textbf{Post-condizioni:}
-  \begin{itemize}[label=‣]
-    \item Il sistema mostra l'elenco degli ambienti dell'impianto
-  \end{itemize}
-  \item \textbf{Scenario principale:}
-  \begin{enumerate}
-    \item L'Utente autenticato invia la richiesta di visualizzazione dell'elenco degli ambienti dell'impianto;
-    \item L'Utente autenticato visualizza l'elenco degli ambienti, ciascuno con il proprio nome.
-  \end{enumerate}
-  \item \textbf{Scenari alternativi:}
-  \begin{itemize}[label=‣]
-    \item L'impianto non contiene alcun ambiente
-  \end{itemize}
-  \item \textbf{Inclusioni:}
-  \begin{itemize}[label=‣]
-    \item \ucref{ambiente-in-elenco}
-  \end{itemize}
-\end{itemize}
-
-\UCsub{ambiente-in-elenco}{Visualizzazione singolo ambiente in elenco}
-
-\begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
-  \item \textbf{Pre-condizioni:}
-  \begin{itemize}[label=‣]
-    \item Il sistema ha recuperato l'elenco degli ambienti dell'impianto
-  \end{itemize}
-  \item \textbf{Post-condizioni:}
-  \begin{itemize}[label=‣]
-    \item Il sistema mostra il nome dell'ambiente
-  \end{itemize}
-  \item \textbf{Scenario principale:}
-  \begin{enumerate}
-    \item L'Utente autenticato visualizza il nome dell'ambiente.
-  \end{enumerate}
-\end{itemize}
-
-%------------------------------------------------------------
-\UC{dettaglio-ambiente}{Visualizzazione dettaglio singolo ambiente}
-
-\begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
-  \item \textbf{Pre-condizioni:}
-  \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item L'Utente autenticato ha selezionato un impianto
-    \item L'ambiente richiesto esiste nell'impianto selezionato
-  \end{itemize}
-  \item \textbf{Post-condizioni:}
-  \begin{itemize}[label=‣]
-    \item Il sistema mostra il nome dell'ambiente e le relative funzioni
-  \end{itemize}
-  \item \textbf{Scenario principale:}
-  \begin{enumerate}
-    \item L'Utente autenticato invia la richiesta di visualizzazione del dettaglio di un ambiente;
-    \item L'Utente autenticato visualizza il nome dell'ambiente;
-    \item L'Utente autenticato visualizza le funzioni presenti nell'ambiente.
-  \end{enumerate}
-  \item \textbf{Scenari alternativi:}
-  \begin{itemize}[label=‣]
-    \item L'ambiente richiesto non esiste
+    \item \ucref{singolo-impianto}
   \end{itemize}
   \item \textbf{Estensioni:}
   \begin{itemize}[label=‣]
-    \item \ucref{ambiente-inesistente}
-  \end{itemize}
-  \item \textbf{Inclusioni:}
-  \begin{itemize}[label=‣]
-    \item \ucref{nome-ambiente}
-    \item \ucref{funzioni-ambiente}
+    \item \ucref{nessun-impianto}
   \end{itemize}
 \end{itemize}
 
-\UCsub{nome-ambiente}{Visualizzazione nome ambiente}
+
+\UCsub{singolo-impianto}{Visualizzazione singolo impianto in elenco}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Servizio AI esterno
+  \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema ha identificato l'ambiente richiesto nell'impianto selezionato
+    \item Il sistema ha recuperato l'elenco degli impianti associati all'account.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra il nome dell'ambiente
+    \item Il sistema mostra esclusivamente il nome dell'impianto.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
-    \item L'Utente autenticato visualizza il nome dell'ambiente.
+    \item L'Utente autenticato visualizza il nome dell'impianto.
   \end{enumerate}
-\end{itemize}
-
-\UCsub{funzioni-ambiente}{Visualizzazione funzioni presenti nell'ambiente}
-
-\begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
-  \item \textbf{Pre-condizioni:}
-  \begin{itemize}[label=‣]
-    \item Il sistema ha identificato l'ambiente richiesto nell'impianto selezionato
-  \end{itemize}
-  \item \textbf{Post-condizioni:}
-  \begin{itemize}[label=‣]
-    \item Il sistema mostra le funzioni associate all'ambiente
-  \end{itemize}
-  \item \textbf{Scenario principale:}
-  \begin{enumerate}
-    \item L'Utente autenticato visualizza l'elenco delle funzioni presenti nell'ambiente, ciascuna con nome, tipologia e stato.
-  \end{enumerate}
-  \item \textbf{Scenari alternativi:}
-  \begin{itemize}[label=‣]
-    \item L'ambiente non contiene alcuna funzione
-  \end{itemize}
-  \item \textbf{Inclusioni:}
-  \begin{itemize}[label=‣]
-    \item \ucref{funzione-in-elenco}
-  \end{itemize}
 \end{itemize}
 
 %------------------------------------------------------------
-\UC{funzione-in-elenco}{Visualizzazione singola funzione in elenco}
+\UC{nessun-impianto}{Nessun impianto associato all'account}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema ha recuperato le funzioni dell'ambiente
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item Non risulta alcun impianto associato all'account.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra nome, tipologia e stato della funzione
+    \item Il sistema informa l'Utente autenticato dell'assenza di impianti associati all'account.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
-    \item L'Utente autenticato visualizza il nome della funzione;
-    \item L'Utente autenticato visualizza la tipologia della funzione;
-    \item L'Utente autenticato visualizza lo stato della funzione.
-  \end{enumerate}
-  \item \textbf{Scenari alternativi:}
-  \begin{itemize}[label=‣]
-    \item Lo stato della funzione non è disponibile
-  \end{itemize}
-\end{itemize}
-
-%------------------------------------------------------------
-\UC{ambiente-inesistente}{Ambiente richiesto inesistente}
-
-\begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
-  \item \textbf{Pre-condizioni:}
-  \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item L'Utente autenticato ha selezionato un impianto
-    \item L'ambiente indicato non esiste nell'impianto selezionato
-  \end{itemize}
-  \item \textbf{Post-condizioni:}
-  \begin{itemize}[label=‣]
-    \item Il sistema informa l'Utente autenticato che l'ambiente non esiste e mostra gli ambienti disponibili
-    \item Il sistema non esegue alcuna operazione di lettura o scrittura sull'impianto
-  \end{itemize}
-  \item \textbf{Scenario principale:}
-  \begin{enumerate}
-    \item L'Utente autenticato indica un ambiente non presente nell'impianto;
-    \item L'Utente autenticato visualizza il messaggio di ambiente non trovato;
-    \item L'Utente autenticato visualizza gli ambienti disponibili.
+    \item L'Utente autenticato invia la richiesta di visualizzazione dell'elenco degli impianti associati al proprio account;
+    \item L'Utente autenticato visualizza l'informazione relativa all'assenza di impianti associati all'account.
   \end{enumerate}
   \item \textbf{Estende:}
   \begin{itemize}[label=‣]
-    \item \ucref{dettaglio-ambiente}
-    \item \ucref{funzioni-comandabili}
-    \item \ucref{comando-ambiente}
-  \end{itemize}
-  \item \textbf{Inclusioni:}
-  \begin{itemize}[label=‣]
-    \item \ucref{ambiente-in-elenco}
+    \item \ucref{elenco-impianti}
   \end{itemize}
 \end{itemize}
 
 %------------------------------------------------------------
-\UC{funzioni-comandabili}{Visualizzazione funzioni comandabili in un ambiente \textit{(Nice-to-Have)}}
+\UC{selezione-impianto}{Selezione impianto attivo nella sessione}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item L'Utente autenticato ha selezionato un impianto
-    \item L'ambiente richiesto esiste nell'impianto selezionato
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item Almeno un impianto è associato all'account dell'Utente autenticato;
+    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema mostra le funzioni comandabili dell'ambiente e le relative operazioni disponibili
+    \item L'impianto indicato è impostato come impianto attivo per la sessione corrente.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
-    \item L'Utente autenticato invia la richiesta di visualizzazione delle funzioni comandabili di un ambiente;
-    \item L'Utente autenticato visualizza l'elenco delle funzioni comandabili dell'ambiente, ciascuna con le operazioni disponibili.
+    \item L'Utente autenticato indica l'impianto che intende utilizzare;
+    \item Il sistema imposta l'impianto indicato come attivo per la sessione corrente.
   \end{enumerate}
   \item \textbf{Scenari alternativi:}
   \begin{itemize}[label=‣]
-    \item L'ambiente richiesto non esiste
-    \item L'ambiente non contiene funzioni comandabili
+    \item L'impianto indicato non esiste o non è associato all'account (\ucref{selezione-impianto-inesistente}).
   \end{itemize}
   \item \textbf{Estensioni:}
   \begin{itemize}[label=‣]
-    \item \ucref{ambiente-inesistente}
+    \item \ucref{selezione-impianto-inesistente}
   \end{itemize}
-  \item \textbf{Inclusioni:}
-  \begin{itemize}[label=‣]
-    \item \ucref{operazioni-funzione}
-  \end{itemize}
-\end{itemize}
-
-\UCsub{operazioni-funzione}{Visualizzazione operazioni disponibili per funzione}
-
-\begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
-  \item \textbf{Pre-condizioni:}
-  \begin{itemize}[label=‣]
-    \item Il sistema ha individuato una funzione comandabile nell'ambiente
-  \end{itemize}
-  \item \textbf{Post-condizioni:}
-  \begin{itemize}[label=‣]
-    \item Il sistema mostra le operazioni supportate dalla funzione, senza eseguirle
-  \end{itemize}
-  \item \textbf{Scenario principale:}
-  \begin{enumerate}
-    \item L'Utente autenticato visualizza le operazioni disponibili per la funzione.
-  \end{enumerate}
 \end{itemize}
 
 %------------------------------------------------------------
-\UC{comando-ambiente}{Comando su più dispositivi dello stesso ambiente}
+\UC{selezione-impianto-inesistente}{Impianto richiesto inesistente in fase di selezione}
 
 \begin{itemize}[label=\textbullet]
-  \item \textbf{Attore principale:} Utente autenticato
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
   \item \textbf{Pre-condizioni:}
   \begin{itemize}[label=‣]
-    \item L'Utente autenticato è autenticato nel sistema
-    \item L'Utente autenticato ha selezionato un impianto
-    \item L'ambiente indicato esiste nell'impianto selezionato
-    \item L'ambiente contiene almeno una funzione del tipo indicato
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente;
+    \item L'Utente autenticato ha indicato un impianto non presente tra quelli associati al proprio account.
   \end{itemize}
   \item \textbf{Post-condizioni:}
   \begin{itemize}[label=‣]
-    \item Il sistema esegue il comando su tutte le funzioni del tipo indicato presenti nell'ambiente
-    \item Il sistema informa l'Utente autenticato dell'esito dell'operazione
+    \item Il sistema informa l'Utente autenticato che l'impianto non esiste e mostra gli impianti disponibili;
+    \item Nessun impianto risulta impostato come attivo nella sessione corrente.
   \end{itemize}
   \item \textbf{Scenario principale:}
   \begin{enumerate}
-    \item L'Utente autenticato indica l'ambiente su cui operare;
-    \item L'Utente autenticato indica il tipo di funzione e l'operazione da eseguire;
-    \item L'Utente autenticato invia il comando;
-    \item L'Utente autenticato visualizza l'esito dell'operazione.
+    \item L'Utente autenticato indica un impianto non associato al proprio account;
+    \item L'Utente autenticato visualizza il messaggio di impianto non trovato;
+    \item L'Utente autenticato visualizza gli impianti disponibili (\ucref{singolo-impianto}).
+  \end{enumerate}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{singolo-impianto}
+  \end{itemize}
+  \item \textbf{Estende:}
+  \begin{itemize}[label=‣]
+    \item \ucref{selezione-impianto}
+  \end{itemize}
+  
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{cambio-impianto}{Cambio impianto attivo nella sessione}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item Almeno un impianto è associato all'account dell'Utente autenticato;
+    \item Un impianto è già impostato come attivo nella sessione corrente.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il nuovo impianto indicato sostituisce il precedente come impianto attivo per la sessione corrente;
+    \item Il sistema informa l'Utente autenticato dell'avvenuto cambio di impianto.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato indica il nuovo impianto su cui intende operare;
+    \item Il sistema sostituisce l'impianto attivo nella sessione corrente con quello indicato;
+    \item L'Utente autenticato visualizza la conferma dell'avvenuto cambio di impianto.
   \end{enumerate}
   \item \textbf{Scenari alternativi:}
   \begin{itemize}[label=‣]
-    \item L'ambiente indicato non esiste
-    \item L'ambiente non contiene funzioni del tipo indicato
-    \item Il comando non riesce su una o più funzioni
+    \item L'impianto indicato non esiste o non è associato all'account (\ucref{cambio-impianto-inesistente});
+    \item L'impianto indicato coincide con quello già attivo nella sessione corrente.
   \end{itemize}
   \item \textbf{Estensioni:}
   \begin{itemize}[label=‣]
-    \item \ucref{ambiente-inesistente}
+    \item \ucref{cambio-impianto-inesistente}
+  \end{itemize}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{cambio-impianto-inesistente}{Impianto richiesto inesistente in fase di cambio}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item Un impianto è già impostato come attivo nella sessione corrente;
+    \item L'Utente autenticato ha indicato un impianto non presente tra quelli associati al proprio account.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema informa l'Utente autenticato che l'impianto non esiste e mostra gli impianti disponibili;
+    \item L'impianto precedentemente attivo rimane selezionato nella sessione corrente.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato indica un impianto non associato al proprio account;
+    \item L'Utente autenticato visualizza il messaggio di impianto non trovato;
+    \item L'Utente autenticato visualizza gli impianti disponibili (\ucref{singolo-impianto}).
+  \end{enumerate}
+   \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{singolo-impianto}
+  \end{itemize}
+  \item \textbf{Estende:}
+  \begin{itemize}[label=‣]
+    \item \ucref{cambio-impianto}
+  \end{itemize}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{dettagli-impianto-attivo}{Visualizzazione dettagli impianto attivo}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra i dettagli dell'impianto attivo nella sessione corrente.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione dei dettagli dell'impianto attivo;
+    \item L'Utente autenticato visualizza i dettagli dell'impianto attivo nella sessione corrente (\ucref{singolo-impianto}).
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente (\ucref{nessun-impianto-attivo}).
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{singolo-impianto}
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{nessun-impianto-attivo}
+  \end{itemize}
+\end{itemize}
+
+%------------------------------------------------------------
+\UC{nessun-impianto-attivo}{Nessun impianto attivo nella sessione}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:}
+  \begin{itemize}[label=‣]
+    \item Cloud Vimar
+    \item Servizio AI esterno
+  \end{itemize}
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item Nessun impianto è attualmente impostato come attivo nella sessione corrente.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema informa l'Utente autenticato che nessun impianto è attualmente attivo e mostra gli impianti disponibili.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione dei dettagli dell'impianto attivo;
+    \item L'Utente autenticato visualizza il messaggio relativo all'assenza di un impianto attivo;
+    \item L'Utente autenticato visualizza gli impianti disponibili (\ucref{singolo-impianto}).
+  \end{enumerate}
+    \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{singolo-impianto}
+  \end{itemize}
+  \item \textbf{Estende:}
+  \begin{itemize}[label=‣]
+    \item \ucref{dettagli-impianto-attivo}
   \end{itemize}
 \end{itemize}
 
@@ -690,7 +967,315 @@ Gli attori secondari sono servizi e piattaforme esterne coinvolti passivamente d
 \setlist[itemize]{nosep, leftmargin=*, labelsep=0.5em}
 \setlist[enumerate]{nosep, leftmargin=*, label=\arabic*.}
 
-% Scrivere qui i casi d'uso
+\UC{struttura}{Visualizzazione struttura generale dell'impianto}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item L'Utente autenticato ha selezionato un impianto.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra gli ambienti dell'impianto con le relative funzioni.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione della struttura generale dell'impianto;
+    \item L'Utente autenticato visualizza gli ambienti dell'impianto;
+    \item L'Utente autenticato visualizza le funzioni presenti in ciascun ambiente.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'impianto non contiene alcun ambiente.
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-in-elenco}
+    \item \ucref{funzioni-ambiente}
+  \end{itemize}
+\end{itemize}
+
+\UC{elenco-ambienti}{Visualizzazione elenco ambienti (Locations)}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item L'Utente autenticato ha selezionato un impianto.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra l'elenco degli ambienti dell'impianto.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione dell'elenco degli ambienti dell'impianto;
+    \item L'Utente autenticato visualizza l'elenco degli ambienti, ciascuno con il proprio nome.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'impianto non contiene alcun ambiente.
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-in-elenco}
+  \end{itemize}
+\end{itemize}
+
+\UCsub{ambiente-in-elenco}{Visualizzazione singolo ambiente in elenco}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha recuperato l'elenco degli ambienti dell'impianto.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra il nome dell'ambiente.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza il nome dell'ambiente.
+  \end{enumerate}
+\end{itemize}
+
+\UC{dettaglio-ambiente}{Visualizzazione dettaglio singolo ambiente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item L'Utente autenticato ha selezionato un impianto;
+    \item L'ambiente richiesto esiste nell'impianto selezionato.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra il nome dell'ambiente e le relative funzioni.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione del dettaglio di un ambiente;
+    \item L'Utente autenticato visualizza il nome dell'ambiente;
+    \item L'Utente autenticato visualizza le funzioni presenti nell'ambiente.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'ambiente richiesto non esiste.
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{nome-ambiente}
+    \item \ucref{funzioni-ambiente}
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-inesistente}
+  \end{itemize}
+\end{itemize}
+
+\UCsub{nome-ambiente}{Visualizzazione nome ambiente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha identificato l'ambiente richiesto nell'impianto selezionato.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra il nome dell'ambiente.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza il nome dell'ambiente.
+  \end{enumerate}
+\end{itemize}
+
+\UCsub{funzioni-ambiente}{Visualizzazione funzioni presenti nell'ambiente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha identificato l'ambiente richiesto nell'impianto selezionato.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra le funzioni associate all'ambiente.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza l'elenco delle funzioni presenti nell'ambiente, ciascuna con nome, tipologia e stato.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'ambiente non contiene alcuna funzione.
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{funzione-in-elenco}
+  \end{itemize}
+\end{itemize}
+
+\UC{funzione-in-elenco}{Visualizzazione singola funzione in elenco}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha recuperato le funzioni dell'ambiente.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra nome, tipologia e stato della funzione.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza il nome della funzione;
+    \item L'Utente autenticato visualizza la tipologia della funzione;
+    \item L'Utente autenticato visualizza lo stato della funzione.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item Lo stato della funzione non è disponibile.
+  \end{itemize}
+\end{itemize}
+
+\UC{ambiente-inesistente}{Ambiente richiesto inesistente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item L'Utente autenticato ha selezionato un impianto;
+    \item L'ambiente indicato non esiste nell'impianto selezionato.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema informa l'Utente autenticato che l'ambiente non esiste e mostra gli ambienti disponibili;
+    \item Il sistema non esegue alcuna operazione di lettura o scrittura sull'impianto.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato indica un ambiente non presente nell'impianto;
+    \item L'Utente autenticato visualizza il messaggio di ambiente non trovato;
+    \item L'Utente autenticato visualizza gli ambienti disponibili.
+  \end{enumerate}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-in-elenco}
+  \end{itemize}
+  \item \textbf{Estende:}
+  \begin{itemize}[label=‣]
+    \item \ucref{dettaglio-ambiente}
+    \item \ucref{funzioni-comandabili}
+    \item \ucref{comando-ambiente}
+  \end{itemize}
+\end{itemize}
+
+\UC{funzioni-comandabili}{Visualizzazione funzioni comandabili in un ambiente \textit{(Nice-to-Have)}}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item L'Utente autenticato ha selezionato un impianto;
+    \item L'ambiente richiesto esiste nell'impianto selezionato.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra le funzioni comandabili dell'ambiente e le relative operazioni disponibili.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato invia la richiesta di visualizzazione delle funzioni comandabili di un ambiente;
+    \item L'Utente autenticato visualizza l'elenco delle funzioni comandabili dell'ambiente, ciascuna con le operazioni disponibili.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'ambiente richiesto non esiste;
+    \item L'ambiente non contiene funzioni comandabili.
+  \end{itemize}
+  \item \textbf{Inclusioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{operazioni-funzione}
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-inesistente}
+  \end{itemize}
+\end{itemize}
+
+\UCsub{operazioni-funzione}{Visualizzazione operazioni disponibili per funzione}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema ha individuato una funzione comandabile nell'ambiente.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema mostra le operazioni supportate dalla funzione, senza eseguirle.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato visualizza le operazioni disponibili per la funzione.
+  \end{enumerate}
+\end{itemize}
+
+\UC{comando-ambiente}{Comando su più dispositivi dello stesso ambiente}
+
+\begin{itemize}[label=\textbullet]
+  \item \textbf{Attore primario:} Utente autenticato
+  \item \textbf{Attori secondari:} Cloud Vimar
+  \item \textbf{Pre-condizioni:}
+  \begin{itemize}[label=‣]
+    \item L'Utente autenticato dispone di una sessione attiva;
+    \item L'Utente autenticato ha selezionato un impianto;
+    \item L'ambiente indicato esiste nell'impianto selezionato;
+    \item L'ambiente contiene almeno una funzione del tipo indicato.
+  \end{itemize}
+  \item \textbf{Post-condizioni:}
+  \begin{itemize}[label=‣]
+    \item Il sistema esegue il comando su tutte le funzioni del tipo indicato presenti nell'ambiente;
+    \item Il sistema informa l'Utente autenticato dell'esito dell'operazione.
+  \end{itemize}
+  \item \textbf{Scenario principale:}
+  \begin{enumerate}
+    \item L'Utente autenticato indica l'ambiente su cui operare;
+    \item L'Utente autenticato indica il tipo di funzione e l'operazione da eseguire;
+    \item L'Utente autenticato invia il comando;
+    \item L'Utente autenticato visualizza l'esito dell'operazione.
+  \end{enumerate}
+  \item \textbf{Scenari alternativi:}
+  \begin{itemize}[label=‣]
+    \item L'ambiente indicato non esiste;
+    \item L'ambiente non contiene funzioni del tipo indicato;
+    \item Il comando non riesce su una o più funzioni.
+  \end{itemize}
+  \item \textbf{Estensioni:}
+  \begin{itemize}[label=‣]
+    \item \ucref{ambiente-inesistente}
+  \end{itemize}
+\end{itemize}
 
 \endgroup
 

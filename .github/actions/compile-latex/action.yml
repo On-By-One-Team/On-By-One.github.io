@@ -19,6 +19,20 @@ runs:
       run: |
         file_list="${{ inputs.changed-files }}"
         if [ -f "$file_list" ] && [ -s "$file_list" ]; then
+          backup_dir=$(mktemp -d)
+          cleanup() {
+            if [ -f "$backup_dir/files.txt" ]; then
+              while IFS= read -r rel_path || [ -n "$rel_path" ]; do
+                [ -z "$rel_path" ] && continue
+                if [ -f "$backup_dir/$rel_path" ]; then
+                  cp "$backup_dir/$rel_path" "$rel_path"
+                fi
+              done < "$backup_dir/files.txt"
+            fi
+            rm -rf "$backup_dir"
+          }
+          trap cleanup EXIT
+          python3 "${{ github.action_path }}/strip_placeholder.py" "$file_list" "$backup_dir"
           cat "$file_list" | docker run --rm -i -v "${{ github.workspace }}:/workspace" -w /workspace ghcr.io/xu-cheng/texlive-alpine:latest sh -c '
             while IFS= read -r tex_file || [ -n "$tex_file" ]; do
               tex_file=$(echo "$tex_file" | tr -d "\r" | xargs)

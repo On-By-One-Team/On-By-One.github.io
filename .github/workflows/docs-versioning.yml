@@ -2,7 +2,7 @@ name: Aggiorna registro delle modifiche
 
 on:
   pull_request_target:
-    types: [opened, reopened, synchronize, edited]
+    types: [opened, reopened, synchronize]
   pull_request_review:
     types: [submitted]
 
@@ -16,12 +16,7 @@ concurrency:
 
 jobs:
   update-from-pull-request:
-    if: >-
-      github.event_name == 'pull_request_target'
-      && (github.event.action != 'edited' || github.event.changes.body != null)
-    permissions:
-      contents: write
-      pull-requests: write
+    if: github.event_name == 'pull_request_target'
     runs-on: ubuntu-latest
     steps:
       - name: Verifica repository del branch
@@ -43,34 +38,7 @@ jobs:
           git checkout --detach "${{ github.event.pull_request.head.sha }}"
           mkdir -p .github/actions/compile-latex
           cp -r "$RUNNER_TEMP/compile-latex/"* .github/actions/compile-latex/
-      - name: Inserisci il tag description nella descrizione della PR
-        if: github.event.action != 'edited'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_BODY: ${{ github.event.pull_request.body }}
-        run: |
-          HAS_DOCS=$(CHANGELOG_ROOT="$GITHUB_WORKSPACE" python "$RUNNER_TEMP/docs-versioning.py" has-docs \
-            --base-sha "${{ github.event.pull_request.base.sha }}" \
-            --head-sha "${{ github.event.pull_request.head.sha }}")
-          if [ "$HAS_DOCS" != "true" ]; then
-            echo "Nessun documento con registro delle modifiche interessato dalla PR"
-            exit 0
-          fi
-          if printf '%s' "$PR_BODY" | grep -qE '<!--\s*description\s*-->'; then
-            echo "Il tag description è già presente nella descrizione"
-            exit 0
-          fi
-          {
-            if [ -n "$PR_BODY" ]; then
-              printf '%s\n\n' "$PR_BODY"
-            fi
-            printf '<!-- description -->\n\n<!-- /description -->\n'
-          } > "$RUNNER_TEMP/pr-body.txt"
-          gh pr edit "$PR_NUMBER" --repo "${{ github.repository }}" --body-file "$RUNNER_TEMP/pr-body.txt"
       - name: Aggiorna le righe della Pull Request
-        env:
-          PR_BODY: ${{ github.event.pull_request.body }}
         run: |
           RECIPIENT_TYPE=""
           for label in client proposer; do
@@ -169,10 +137,10 @@ jobs:
             RECIPIENT_ARGS=(--recipient-type "$RECIPIENT_TYPE")
           fi
           KIND=""
-          for label in completed-milestone major minor; do
+          for label in major minor patch; do
             if [[ " $PR_LABELS " == *" $label "* ]]; then
               if [[ -n "$KIND" ]]; then
-                echo "::error::Usare una sola label tra completed-milestone, major e minor"
+                echo "::error::Usare una sola label tra major, minor e patch"
                 exit 1
               fi
               KIND="$label"

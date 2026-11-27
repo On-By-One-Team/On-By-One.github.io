@@ -11,6 +11,18 @@ docs_versioning = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = docs_versioning
 SPEC.loader.exec_module(docs_versioning)
 
+STRIP_SPEC = importlib.util.spec_from_file_location(
+    "strip_placeholder",
+    Path(__file__).resolve().parents[1]
+    / ".github"
+    / "actions"
+    / "compile-latex"
+    / "strip_placeholder.py",
+)
+strip_placeholder = importlib.util.module_from_spec(STRIP_SPEC)
+sys.modules[STRIP_SPEC.name] = strip_placeholder
+STRIP_SPEC.loader.exec_module(strip_placeholder)
+
 
 TEX = r"""\textbf{Informazioni documento}
 \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \textbf{Destinatari} \\
@@ -22,40 +34,86 @@ TEX = r"""\textbf{Informazioni documento}
 \begin{tabularx}{\textwidth}{|c|c|c|X|c|}
 \textbf{Verificatore} \\
 \hline
+- & - & - & Aggiornata la norma & - \\
+\hline
 1.2.3 & 2026-11-01 & Sara Ballardin & Vecchia modifica & Daniele Nuzzaci \\
 \hline
 \end{tabularx}
 """
 
 
+def tex_with_description(description: str) -> str:
+    return TEX.replace("Aggiornata la norma", description)
+
+
 class DocsVersioningTests(unittest.TestCase):
-    def test_insert_is_idempotent_and_uses_placeholders(self):
+    def test_pr_fills_author_date_and_inserts_placeholder_idempotently(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "document.tex"
             path.write_text(TEX, encoding="utf-8")
-            row = docs_versioning.ChangeRow(
-                "-", "2026-11-17", "Federico Temporin", "Aggiornata la norma", "-"
+            self.assertTrue(
+                docs_versioning.update_pr_row(path, "2026-11-17", "Federico Temporin", 86)
             )
-            self.assertTrue(docs_versioning.update_pr_row(path, row, 86))
-            self.assertFalse(docs_versioning.update_pr_row(path, row, 86))
+            self.assertFalse(
+                docs_versioning.update_pr_row(path, "2026-11-17", "Federico Temporin", 86)
+            )
             content = path.read_text(encoding="utf-8")
             self.assertEqual(content.count("% change-log-pr: 86"), 1)
+            self.assertEqual(content.count("Descrizione mancante"), 1)
             self.assertIn(
+                "- & - & - & Descrizione mancante & - \\\\\n\\hline\n"
                 "- & 2026-11-17 & Federico Temporin & Aggiornata la norma & - \\\\ % change-log-pr: 86\n\\hline\n",
                 content,
             )
+
+    def test_synchronize_preserves_edited_description_without_duplicating_placeholder(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "document.tex"
+            path.write_text(TEX, encoding="utf-8")
+            docs_versioning.update_pr_row(path, "2026-11-17", "Federico Temporin", 86)
+            content = path.read_text(encoding="utf-8").replace(
+                "Aggiornata la norma", "Descrizione aggiornata in secondo commit"
+            )
+            path.write_text(content, encoding="utf-8")
+            self.assertTrue(
+                docs_versioning.update_pr_row(path, "2026-11-18", "Federico Temporin", 86)
+            )
+            updated = path.read_text(encoding="utf-8")
+            self.assertEqual(updated.count("Descrizione mancante"), 1)
+            self.assertIn(
+                "- & 2026-11-18 & Federico Temporin & Descrizione aggiornata in secondo commit & - \\\\ % change-log-pr: 86\n\\hline\n",
+                updated,
+            )
+
+    def test_pr_raises_when_description_missing_or_placeholder(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "document.tex"
+            for bad_desc in ("Descrizione mancante", "-", ""):
+                path.write_text(tex_with_description(bad_desc), encoding="utf-8")
+                with self.assertRaises(ValueError):
+                    docs_versioning.update_pr_row(path, "2026-11-17", "Federico Temporin", 86)
+
+            no_draft = TEX.replace("- & - & - & Aggiornata la norma & - \\\\\n\\hline\n", "")
+            path.write_text(no_draft, encoding="utf-8")
+            with self.assertRaises(ValueError):
+                docs_versioning.update_pr_row(path, "2026-11-17", "Federico Temporin", 86)
 
     def test_update_pr_and_review_add_missing_hline(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "document.tex"
             missing_hline = TEX.replace(
+                "- & - & - & Aggiornata la norma & - \\\\\n\\hline\n"
                 "1.2.3 & 2026-11-01 & Sara Ballardin & Vecchia modifica & Daniele Nuzzaci \\\\",
-                "- & 2026-11-17 & Federico Temporin & PR & - \\\\ % change-log-pr: 86\n1.2.3 & 2026-11-01 & Sara Ballardin & Vecchia modifica & Daniele Nuzzaci \\\\",
+                "- & 2026-11-17 & Federico Temporin & PR & - \\\\ % change-log-pr: 86\n"
+                "1.2.3 & 2026-11-01 & Sara Ballardin & Vecchia modifica & Daniele Nuzzaci \\\\",
             )
             path.write_text(missing_hline, encoding="utf-8")
-            row = docs_versioning.ChangeRow("-", "2026-11-17", "Federico Temporin", "PR", "-")
-            self.assertTrue(docs_versioning.update_pr_row(path, row, 86))
-            self.assertFalse(docs_versioning.update_pr_row(path, row, 86))
+            self.assertTrue(
+                docs_versioning.update_pr_row(path, "2026-11-17", "Federico Temporin", 86)
+            )
+            self.assertFalse(
+                docs_versioning.update_pr_row(path, "2026-11-17", "Federico Temporin", 86)
+            )
             content = path.read_text(encoding="utf-8")
             self.assertIn(
                 "- & 2026-11-17 & Federico Temporin & PR & - \\\\ % change-log-pr: 86\n\\hline\n1.2.3 &",
@@ -89,34 +147,82 @@ class DocsVersioningTests(unittest.TestCase):
                 content,
             )
 
-    def test_next_version_increments_by_label(self):
+    def test_next_version_increments_by_label_and_state(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "document.tex"
             path.write_text(TEX, encoding="utf-8")
-            row = docs_versioning.ChangeRow("-", "2026-11-17", "Federico Temporin", "PR", "-")
-            docs_versioning.update_pr_row(path, row, 86)
+            docs_versioning.update_pr_row(path, "2026-11-17", "Federico Temporin", 86)
             docs_versioning.update_information(path, "-", "-", "Bozza", "client")
             self.assertEqual(
-                docs_versioning.next_version(path, 86, "completed-milestone"), "2.0.0"
+                docs_versioning.next_version(path, 86, "major", "approved"), "2.0.0"
             )
-            self.assertEqual(docs_versioning.next_version(path, 86, "major"), "1.3.0")
-            self.assertEqual(docs_versioning.next_version(path, 86, "minor"), "1.2.4")
+            self.assertEqual(
+                docs_versioning.next_version(path, 86, "minor", "approved"), "1.3.0"
+            )
+            self.assertEqual(
+                docs_versioning.next_version(path, 86, "patch", "approved"), "1.2.4"
+            )
+            self.assertEqual(
+                docs_versioning.next_version(path, 86, "major", "changes_requested"),
+                "1.3.0",
+            )
+            self.assertEqual(
+                docs_versioning.next_version(path, 86, "minor", "changes_requested"),
+                "1.2.4",
+            )
+            self.assertEqual(
+                docs_versioning.next_version(path, 86, "patch", "changes_requested"),
+                "1.2.4",
+            )
 
-    def test_first_version_defaults_to_1_0_0_for_any_valid_label(self):
+    def test_draft_versions_start_at_0_1_0_and_approve_to_1_0_0(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "document.tex"
             first_document = TEX.replace(
                 "1.2.3 & 2026-11-01 & Approvato & Team \\\\",
                 "- & - & Bozza & Team \\\\",
             ).replace(
-                "1.2.3 & 2026-11-01 & Sara Ballardin & Vecchia modifica & Daniele Nuzzaci \\\\",
+                "1.2.3 & 2026-11-01 & Sara Ballardin & Vecchia modifica & Daniele Nuzzaci \\\\\n\\hline\n",
                 "",
             )
             path.write_text(first_document, encoding="utf-8")
-            row = docs_versioning.ChangeRow("-", "2026-11-17", "Federico Temporin", "PR", "-")
-            docs_versioning.update_pr_row(path, row, 86)
-            for kind in ("completed-milestone", "major", "minor"):
-                self.assertEqual(docs_versioning.next_version(path, 86, kind), "1.0.0")
+            docs_versioning.update_pr_row(path, "2026-11-17", "Federico Temporin", 86)
+            for kind in ("major", "minor", "patch"):
+                self.assertEqual(
+                    docs_versioning.next_version(path, 86, kind, "changes_requested"),
+                    "0.1.0",
+                )
+                self.assertEqual(
+                    docs_versioning.next_version(path, 86, kind, "approved"),
+                    "1.0.0",
+                )
+
+            draft_document = TEX.replace(
+                "1.2.3 & 2026-11-01 & Approvato & Team \\\\",
+                "- & - & Bozza & Team \\\\",
+            ).replace(
+                "1.2.3 & 2026-11-01 & Sara Ballardin & Vecchia modifica & Daniele Nuzzaci \\\\",
+                "0.1.4 & 2026-11-22 & Sara Ballardin & Bozza precedente & Daniele Nuzzaci \\\\",
+            )
+            path.write_text(draft_document, encoding="utf-8")
+            docs_versioning.update_pr_row(path, "2026-11-17", "Federico Temporin", 86)
+            self.assertEqual(
+                docs_versioning.next_version(path, 86, "patch", "changes_requested"),
+                "0.1.5",
+            )
+            self.assertEqual(
+                docs_versioning.next_version(path, 86, "minor", "changes_requested"),
+                "0.1.5",
+            )
+            self.assertEqual(
+                docs_versioning.next_version(path, 86, "major", "changes_requested"),
+                "0.2.0",
+            )
+            for kind in ("major", "minor", "patch"):
+                self.assertEqual(
+                    docs_versioning.next_version(path, 86, kind, "approved"),
+                    "1.0.0",
+                )
 
     def test_next_version_requires_valid_label(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -135,16 +241,17 @@ class DocsVersioningTests(unittest.TestCase):
             r"On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin",
         )
         for state, kind, expected_ver, expected_status in (
-            ("approved", "minor", "1.2.4", "Approvato"),
-            ("approved", "major", "1.3.0", "Approvato"),
-            ("approved", "completed-milestone", "2.0.0", "Approvato"),
-            ("changes_requested", "completed-milestone", "2.0.0", "Bozza"),
+            ("approved", "patch", "1.2.4", "Approvato"),
+            ("approved", "minor", "1.3.0", "Approvato"),
+            ("approved", "major", "2.0.0", "Approvato"),
+            ("changes_requested", "major", "1.3.0", "Bozza"),
+            ("changes_requested", "minor", "1.2.4", "Bozza"),
+            ("changes_requested", "patch", "1.2.4", "Bozza"),
         ):
             with tempfile.TemporaryDirectory() as directory:
                 path = Path(directory) / "document.tex"
                 path.write_text(tex_client, encoding="utf-8")
-                row = docs_versioning.ChangeRow("-", "2026-11-17", "Federico Temporin", "PR", "-")
-                docs_versioning.update_pr_row(path, row, 86)
+                docs_versioning.update_pr_row(path, "2026-11-17", "Federico Temporin", 86)
                 args = argparse.Namespace(
                     base_sha="base",
                     head_sha="head",
@@ -158,7 +265,7 @@ class DocsVersioningTests(unittest.TestCase):
                 with patch.object(docs_versioning, "changed_documents", return_value=[path]):
                     self.assertEqual(docs_versioning.update_review(args), 1)
                 content = path.read_text(encoding="utf-8")
-                self.assertIn(f"{expected_ver} & 2026-11-17 & Federico Temporin & PR & Daniele Nuzzaci", content)
+                self.assertIn(f"{expected_ver} & 2026-11-17 & Federico Temporin & Aggiornata la norma & Daniele Nuzzaci", content)
                 if expected_status == "Approvato":
                     self.assertIn(f"{expected_ver} & 2026-11-25 & Approvato &", content)
                 else:
@@ -175,8 +282,7 @@ class DocsVersioningTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "document.tex"
             path.write_text(tex_client, encoding="utf-8")
-            row = docs_versioning.ChangeRow("-", "2026-11-17", "Federico Temporin", "PR", "-")
-            docs_versioning.update_pr_row(path, row, 86)
+            docs_versioning.update_pr_row(path, "2026-11-17", "Federico Temporin", 86)
             args = argparse.Namespace(
                 base_sha="base",
                 head_sha="head",
@@ -204,10 +310,7 @@ class DocsVersioningTests(unittest.TestCase):
         with patch.object(docs_versioning, "changed_documents", return_value=[]):
             self.assertEqual(docs_versioning.update_review(args_no_docs), 0)
 
-    def test_versioned_documents_and_has_docs(self):
-        import argparse
-        import io
-        from contextlib import redirect_stdout
+    def test_versioned_documents_filters_non_changelog_tex(self):
         from unittest.mock import patch
 
         with tempfile.TemporaryDirectory() as directory:
@@ -220,15 +323,6 @@ class DocsVersioningTests(unittest.TestCase):
                 docs_versioning, "changed_documents", return_value=[without_registry]
             ):
                 self.assertEqual(docs_versioning.versioned_documents("b", "h"), [])
-                buf = io.StringIO()
-                with redirect_stdout(buf):
-                    self.assertEqual(
-                        docs_versioning.has_docs(
-                            argparse.Namespace(base_sha="b", head_sha="h")
-                        ),
-                        0,
-                    )
-                self.assertEqual(buf.getvalue().strip(), "false")
 
             with patch.object(
                 docs_versioning,
@@ -238,22 +332,12 @@ class DocsVersioningTests(unittest.TestCase):
                 self.assertEqual(
                     docs_versioning.versioned_documents("b", "h"), [with_registry]
                 )
-                buf = io.StringIO()
-                with redirect_stdout(buf):
-                    self.assertEqual(
-                        docs_versioning.has_docs(
-                            argparse.Namespace(base_sha="b", head_sha="h")
-                        ),
-                        0,
-                    )
-                self.assertEqual(buf.getvalue().strip(), "true")
 
     def test_review_fills_version_and_verifier(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "document.tex"
             path.write_text(TEX, encoding="utf-8")
-            row = docs_versioning.ChangeRow("-", "2026-11-17", "Federico Temporin", "PR", "-")
-            docs_versioning.update_pr_row(path, row, 86)
+            docs_versioning.update_pr_row(path, "2026-11-17", "Federico Temporin", 86)
             self.assertTrue(
                 docs_versioning.update_review_row(
                     path, 86, "2.0.0", "Daniele Nuzzaci"
@@ -261,7 +345,7 @@ class DocsVersioningTests(unittest.TestCase):
             )
             content = path.read_text(encoding="utf-8")
             self.assertIn(
-                "2.0.0 & 2026-11-17 & Federico Temporin & PR & Daniele Nuzzaci",
+                "2.0.0 & 2026-11-17 & Federico Temporin & Aggiornata la norma & Daniele Nuzzaci",
                 content,
             )
 
@@ -368,77 +452,57 @@ class DocsVersioningTests(unittest.TestCase):
 
 
 
-    def test_extract_description_with_tag(self):
-        body = "Some PR text\n<!-- description -->\nAggiunti \\ucrefplain{struttura}\n<!-- /description -->\n"
-        self.assertEqual(
-            docs_versioning.extract_description(body),
-            "Aggiunti \\ucrefplain{struttura}",
-        )
+    def test_latex_description_in_tex_survives_pr_update(self):
+        """LaTeX commands written by the author in the .tex row must be preserved verbatim."""
+        latex_desc = r"Aggiunti \ucrefplain{struttura} \& \ucrefplain{elenco-ambienti}"
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "document.tex"
+            path.write_text(tex_with_description(latex_desc), encoding="utf-8")
+            docs_versioning.update_pr_row(path, "2026-11-22", "Shuhui Chen", 109)
+            content = path.read_text(encoding="utf-8")
+            self.assertIn(latex_desc, content)
+            self.assertNotIn("textbackslash", content)
+            self.assertIn("- & - & - & Descrizione mancante & - \\\\", content)
 
-    def test_extract_description_multiline_collapses_whitespace(self):
-        body = "<!-- description -->\n  Riga uno\n  Riga due  \n<!-- /description -->"
-        self.assertEqual(docs_versioning.extract_description(body), "Riga uno Riga due")
-
-    def test_extract_description_missing_tag(self):
-        self.assertEqual(docs_versioning.extract_description("Just a PR body"), "-")
-
-    def test_extract_description_empty_tag(self):
-        self.assertEqual(
-            docs_versioning.extract_description("<!-- description -->   <!-- /description -->"),
-            "-",
-        )
-
-    def test_extract_description_ignores_text_outside_tag(self):
-        body = (
-            "Testo normale della descrizione PR\n"
-            "<!-- description -->Contenuto LaTeX<!-- /description -->\n"
-            "Altro testo fuori dal tag"
-        )
-        self.assertEqual(docs_versioning.extract_description(body), "Contenuto LaTeX")
-
-    def test_description_escape_only_ampersand(self):
-        self.assertEqual(
-            docs_versioning.description_escape("A & B"),
-            r"A \& B",
-        )
-        self.assertEqual(
-            docs_versioning.description_escape(r"A \& B"),
-            r"A \& B",
-        )
-        self.assertEqual(
-            docs_versioning.description_escape("\\ucrefplain{struttura}"),
-            "\\ucrefplain{struttura}",
-        )
-
-    def test_latex_description_survives_row_line(self):
-        """LaTeX commands in description must not be escaped by row_line."""
-        row = docs_versioning.ChangeRow(
-            "-", "2026-11-22", "Shuhui Chen",
-            "Aggiunti \\ucrefplain{struttura} e \\ucrefplain{elenco-ambienti}",
-            "-",
-        )
-        line = docs_versioning.row_line(row, "        ", 109)
-        self.assertIn(
-            "Aggiunti \\ucrefplain{struttura} e \\ucrefplain{elenco-ambienti}",
-            line,
-        )
-        self.assertNotIn("textbackslash", line)
-
-    def test_full_pipeline_latex_in_pr_body(self):
-        """End-to-end: LaTeX in PR body → extract → escape → write → read back."""
-        body = "<!-- description -->Aggiunti \\ucrefplain{struttura} & stuff<!-- /description -->"
-        description = docs_versioning.description_escape(
-            docs_versioning.extract_description(body)
-        )
-        self.assertEqual(description, "Aggiunti \\ucrefplain{struttura} \\& stuff")
+    def test_strip_placeholder_removes_empty_row_for_compilation_only(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "document.tex"
             path.write_text(TEX, encoding="utf-8")
-            row = docs_versioning.ChangeRow("-", "2026-11-22", "Shuhui Chen", description, "-")
-            docs_versioning.update_pr_row(path, row, 109)
-            content = path.read_text(encoding="utf-8")
-            self.assertIn("Aggiunti \\ucrefplain{struttura} \\& stuff", content)
-            self.assertNotIn("textbackslash", content.split("change-log-pr: 109")[0].split("&")[3])
+            docs_versioning.update_pr_row(path, "2026-11-26", "Shuhui Chen", 109)
+            with_placeholder = path.read_text(encoding="utf-8")
+            self.assertIn("Descrizione mancante", with_placeholder)
+
+            stripped = strip_placeholder.strip_placeholder_rows(with_placeholder)
+            self.assertNotIn("Descrizione mancante", stripped)
+            self.assertIn("Aggiornata la norma", stripped)
+            self.assertIn("Vecchia modifica", stripped)
+            self.assertNotIn("\\hline\n\\hline", stripped)
+
+    def test_strip_placeholder_main_backs_up_and_preserves_files(self):
+        import os
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            tex_dir = root / "docs" / "tex"
+            tex_dir.mkdir(parents=True)
+            tex_file = tex_dir / "doc.tex"
+            content = "\\documentclass{article}\n" + tex_with_description("Descrizione mancante")
+            tex_file.write_text(content, encoding="utf-8")
+            file_list = root / "changed.txt"
+            file_list.write_text("docs/tex/doc.tex\n", encoding="utf-8")
+            backup_dir = root / "backup"
+            backup_dir.mkdir()
+
+            old_cwd = Path.cwd()
+            try:
+                os.chdir(root)
+                strip_placeholder.main(str(file_list), str(backup_dir))
+            finally:
+                os.chdir(old_cwd)
+
+            self.assertNotIn("Descrizione mancante", tex_file.read_text(encoding="utf-8"))
+            self.assertEqual((backup_dir / "docs" / "tex" / "doc.tex").read_text(encoding="utf-8"), content)
+            self.assertEqual((backup_dir / "files.txt").read_text(encoding="utf-8"), "docs/tex/doc.tex\n")
 
 
 if __name__ == "__main__":
