@@ -1,4 +1,21 @@
-	% MACRO %
+\documentclass[11pt, a4paper]{article}
+
+% --- PACCHETTI ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
+\usepackage{graphicx}               % Per inserire il logo
+\usepackage{tabularx}               % Per tabelle larghe quanto la pagina
+\usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
+\usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
+\usepackage{lmodern}      % Rende i font scalabili all'infinito
+\usepackage{anyfontsize}  % Permette di usare dimensioni personalizzate
+\usepackage{pgfgantt}   % Per diagramma Gantt
+\usepackage{float}
+\usepackage{array}
+\usepackage{parskip}
+
+% MACRO %
 \newcommand{\ds}{\textcolor{red}{da scrivere/aggiungere}} %segnaposto per testo mancante, appunto da scrivere
 
 %tabella ore
@@ -70,24 +87,7 @@
 		\caption{#1}\label{#2}
 	\end{table}
 }
-
-
-\documentclass[11pt, a4paper, draft]{article}
-
-% --- PACCHETTI ---
-\usepackage[utf8]{inputenc}
-\usepackage[italian]{babel}
-\usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
-\usepackage{graphicx}               % Per inserire il logo
-\usepackage{tabularx}               % Per tabelle larghe quanto la pagina
-\usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
-\usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
-\usepackage{lmodern}      % Rende i font scalabili all'infinito
-\usepackage{anyfontsize}  % Permette di usare dimensioni personalizzate
-\usepackage{pgfgantt}   % Per diagramma Gantt
-\usepackage{float}
-\usepackage{array}
-\usepackage{parskip}
+% END MACRO %
 
 \begin{document}
 	
@@ -384,6 +384,7 @@
 			\ganttbar{Documenti per la \textit{RTB}}{2026-12-07}{2027-01-08} \\
 			\ganttbar{Pausa festiva}{2026-12-24}{2027-01-06} \\
 			\ganttmilestone{\textit{SAL}}{2026-11-24} \\
+			
 			\ganttmilestone{Consegna \textit{RTB}}{2027-01-15}
 		\end{ganttchart}
 	\end{center}
