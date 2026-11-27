@@ -62,13 +62,22 @@ def pdf_info_title(pdf_path: Path) -> str | None:
     return None
 
 
-def version_for(pdf_path: Path) -> str | None:
+def tex_source_for(pdf_path: Path) -> Path | None:
+    """Return the .tex source for *pdf_path*, falling back past a -firmato suffix."""
     try:
         relative = pdf_path.relative_to(PDF_ROOT)
     except ValueError:
         return None
-    tex_path = TEX_ROOT / relative.with_suffix(".tex")
-    if not tex_path.exists():
+    candidates = [TEX_ROOT / relative.with_suffix(".tex")]
+    if relative.stem.endswith("-firmato"):
+        unsigned_name = f"{relative.stem.removesuffix('-firmato')}.tex"
+        candidates.append(TEX_ROOT / relative.with_name(unsigned_name))
+    return next((candidate for candidate in candidates if candidate.exists()), None)
+
+
+def version_for(pdf_path: Path) -> str | None:
+    tex_path = tex_source_for(pdf_path)
+    if tex_path is None:
         return None
 
     content = tex_path.read_text(encoding="utf-8")

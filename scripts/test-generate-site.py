@@ -109,6 +109,44 @@ class GenerateSiteTests(unittest.TestCase):
             finally:
                 generate_site.TEX_ROOT = old_tex_root
 
+    def test_version_is_resolved_for_signed_pdf_from_unsigned_tex(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            tex_dir = root / "verbali" / "esterni"
+            tex_dir.mkdir(parents=True)
+            path = tex_dir / "2026-11-12-ve.tex"
+            path.write_text(
+                r"""\textbf{Informazioni documento}
+\textbf{Versione}
+\hline
+1.0.0 & 2026/11/12 & Approvato & Destinatari \\
+\end{tabularx}
+""",
+                encoding="utf-8",
+            )
+            old_tex_root = generate_site.TEX_ROOT
+            generate_site.TEX_ROOT = root
+            try:
+                pdf_path = (
+                    generate_site.PDF_ROOT
+                    / "verbali"
+                    / "esterni"
+                    / "2026-11-12-ve-firmato.pdf"
+                )
+                self.assertEqual(generate_site.version_for(pdf_path), "1.0.0")
+            finally:
+                generate_site.TEX_ROOT = old_tex_root
+
+    def test_repository_signed_external_minutes_have_versions(self):
+        signed = [
+            item
+            for item in generate_site.documents()
+            if item.name.endswith("-ve-firmato.pdf")
+        ]
+        self.assertTrue(signed)
+        for item in signed:
+            self.assertIsNotNone(item.version, f"Versione mancante per {item.name}")
+
     def test_repository_documents_are_published_according_to_configuration(self):
         items = generate_site.documents()
         content = generate_site.generated_sections(items)
