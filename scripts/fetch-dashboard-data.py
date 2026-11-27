@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = ROOT / "scripts" / "budget-config.json"
-OUTPUT_PATH = ROOT / "website" / "cruscotto" / "data.json"
+OUTPUT_PATH = ROOT / "website" / "dashboard" / "data.json"
 GRAPHQL_URL = "https://api.github.com/graphql"
 
 SPRINT_RE = re.compile(r"^sprint-(\d+)$", re.IGNORECASE)
