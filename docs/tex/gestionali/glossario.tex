@@ -64,10 +64,7 @@
             \hline
             \rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
             \hline
-            1.0.1 & 2026/10/29 & Approvato & 
-            On-By-One \newline 
-            Prof. Tullio Vardanega \newline 
-            Prof. Riccardo Cardin \\
+            - & - & Bozza & On-By-One \newline Prof. Tullio Vardanega \newline Prof. Riccardo Cardin \\
             \hline
         \end{tabularx}
         \arrayrulecolor{black}
@@ -101,6 +98,8 @@
         \multicolumn{1}{c|}{\textbf{Verificatore}} \\
         \hline
         - & - & - & Descrizione mancante & - \\
+        \hline
+        - & 2026-11-27 & Daniele Nuzzaci & Modifica versionamento e descrizione tabella modifiche & - \\ % change-log-pr: 140
         \hline
         1.0.1 & 2026/10/29 & Sara Ballardin & Modifica path immagini e stile documento & Shuhui Chen \\
         \hline
@@ -157,7 +156,7 @@ Membro del gruppo a cui viene affidata la responsabilità operativa di portare a
 Unità elementare di lavoro pianificata dal gruppo per raggiungere un determinato obiettivo progettuale, documentale o tecnico. Ogni attività che comporta modifiche al \textit{repository} viene tracciata tramite una \textit{issue}, sviluppata su un \textit{branch dedicato} e valutata secondo i criteri della \textit{Definition of Done}.
 
 \subsection*{Autore}
-Membro del \textit{team} che redige o modifica un documento, scrive codice o apre una \textit{Pull Request}. L'autore è responsabile della qualità e della correttezza delle modifiche proposte, del rispetto della \textit{Definition of Done}, della compilazione dei campi di propria competenza nel \textit{Registro delle modifiche} e della risoluzione delle osservazioni ricevute durante la \textit{code review}.
+Membro del \textit{team} che redige o modifica un documento, scrive codice o apre una \textit{Pull Request}. L'autore è responsabile della qualità e della correttezza delle modifiche proposte, del rispetto della \textit{Definition of Done}, dell'applicazione delle \textit{label} richieste, della compilazione manuale della descrizione nella riga segnaposto del \textit{Registro delle modifiche} di ciascun file \texttt{.tex} interessato e della risoluzione delle osservazioni ricevute durante la \textit{code review}.
 
 \newpage
 
@@ -238,7 +237,7 @@ Linguaggio di stile utilizzato insieme a \textit{HTML} per definire l'aspetto gr
 Documento e insieme di criteri minimi di qualità, correttezza, formattazione, verifica tecnica e tracciabilità che qualsiasi attività deve soddisfare per poter essere considerata completata dal \textit{team} e pronta per essere integrata nel \textit{branch} principale del \textit{repository}.
 
 \subsection*{Destinatari}
-Campo della tabella \textit{Informazioni documento} presente nel frontespizio dei documenti formali, compilato dall'autore per indicare i soggetti a cui il documento è destinato (il gruppo \textbf{On-By-One}, i docenti del corso prof.\ Tullio Vardanega e prof.\ Riccardo Cardin ed eventualmente l'azienda \textit{proponente}).
+Campo della tabella \textit{Informazioni documento} presente nel frontespizio dei documenti formali, gestito automaticamente (tramite le \textit{label} \texttt{client} o \texttt{proposer}, oppure rilevato dal documento) per indicare i soggetti a cui il documento è destinato (il gruppo \textbf{On-By-One}, i docenti del corso prof.\ Tullio Vardanega e prof.\ Riccardo Cardin ed eventualmente l'azienda \textit{proponente}).
 
 \subsection*{Directory (Cartella)}
 Contenitore logico del \textit{file system} utilizzato per organizzare in modo gerarchico e strutturato i file all'interno del \textit{repository} (ad esempio separando i \textit{template} \textit{LaTeX}, la documentazione e i \textit{workflow} di configurazione).
@@ -327,6 +326,9 @@ Parola chiave riservata a cui un sistema informatico attribuisce una funzione sp
 \section*{L}
 \addcontentsline{toc}{section}{L}
 
+\subsection*{Label}
+Etichetta applicata su \textit{GitHub} a una \textit{issue} o a una \textit{Pull Request} per classificarne la natura e guidare i \textit{workflow} automatici. Nel processo di documentazione le \textit{label} \texttt{client} e \texttt{proposer} determinano i \textit{Destinatari}, mentre le \textit{label} \texttt{major}, \texttt{minor} e \texttt{patch} indicano l'entità della modifica per il calcolo della versione in fase di revisione e si applicano uniformemente a tutti i file \texttt{.tex} interessati dalla \textit{Pull Request}.
+
 \subsection*{LaTeX}
 Sistema di composizione tipografica basato su linguaggio di marcatura (file con estensione \texttt{.tex}), utilizzato dal gruppo tramite appositi \textit{template} condivisi per redigere tutta la documentazione ufficiale e i verbali destinati alla generazione in formato PDF.
 
@@ -348,6 +350,9 @@ Linguaggio di marcatura leggero (file con estensione \texttt{.md}) progettato pe
 
 \subsection*{Merge}
 Operazione di \textit{Git} che conclude il ciclo di vita di una \textit{Pull Request}, unendo le modifiche sviluppate su un \textit{branch dedicato} all'interno del \textit{branch di destinazione} (\texttt{main}), una volta ottenuta l'approvazione del \textit{revisore} e superati i controlli automatici.
+
+\subsection*{Milestone}
+Traguardo intermedio o finale del progetto che segna il completamento e il rilascio di un insieme significativo di attività o documenti. Nel versionamento documentale, le modifiche che portano al completamento di una \textit{milestone} vengono contrassegnate con la \textit{label} \texttt{major}.
 
 \newpage
 
@@ -382,7 +387,7 @@ Insieme di regole e direttive vincolanti adottate dal gruppo per disciplinare un
 Azienda o organizzazione esterna che presenta un capitolato d'appalto nell'ambito del corso di Ingegneria del Software e con cui il gruppo interagisce durante gli incontri documentati tramite \textit{verbali esterni}.
 
 \subsection*{Pull Request (PR)}
-Meccanismo offerto da \textit{GitHub} tramite il quale l'autore richiede formalmente di integrare le modifiche effettuate su un \textit{branch dedicato} all'interno del \textit{branch} \texttt{main}. La \textit{Pull Request} raccoglie la descrizione del lavoro svolto, il riferimento all'\textit{issue} associata, l'esito dei controlli automatici e tutti i commenti della \textit{code review} fino al \textit{merge}.
+Meccanismo offerto da \textit{GitHub} tramite il quale l'autore richiede formalmente di integrare le modifiche effettuate su un \textit{branch dedicato} all'interno del \textit{branch} \texttt{main}. La \textit{Pull Request} raccoglie la descrizione del lavoro svolto, il riferimento all'\textit{issue} associata, le \textit{label} (applicate uniformemente a tutti gli eventuali file \texttt{.tex} modificati nella PR), l'esito dei controlli automatici e tutti i commenti della \textit{code review} fino al \textit{merge}.
 
 \subsection*{Push}
 Operazione di \textit{Git} che invia e pubblica i \textit{commit} registrati sul computer locale di un membro del gruppo verso il \textit{repository} remoto ospitato su \textit{GitHub}. Secondo la strategia di \textit{branching} del gruppo, i \textit{push} sono consentiti solo sui \textit{branch di lavoro} e mai direttamente su \texttt{main}.
@@ -397,7 +402,7 @@ Operazione di \textit{Git} che invia e pubblica i \textit{commit} registrati sul
 File scritto in formato \textit{Markdown} collocato nella radice del \textit{repository} (o di una specifica \textit{directory}) che fornisce una panoramica immediata dei contenuti e delle istruzioni principali. Costituisce un'eccezione esplicita alla regola generale che prevede l'uso di sole lettere minuscole nei nomi dei file.
 
 \subsection*{Registro delle modifiche}
-Tabella presente nei documenti formali del gruppo che conserva la storia cronologica di tutte le modifiche apportate al documento stesso. Per ogni intervento registra cinque campi: \textit{Versione}, \textit{Data}, \textit{Autore}, \textit{Descrizione} e \textit{Verificatore}.
+Tabella presente nei documenti formali del gruppo che conserva la storia cronologica di tutte le modifiche apportate al documento stesso. Per ogni intervento registra cinque campi (\textit{Versione}, \textit{Data}, \textit{Autore}, \textit{Descrizione} e \textit{Verificatore}): l'autore compila manualmente la \textit{Descrizione} nella riga segnaposto (\texttt{- \& - \& - \& Descrizione mancante \& -}, nascosta durante la compilazione PDF), mentre i \textit{workflow} automatici valorizzano gli altri campi e aggiungono una nuova riga segnaposto per le modifiche future.
 
 \subsection*{Repository}
 Archivio digitale centralizzato, gestito tramite il sistema di controllo di versione \textit{Git} e ospitato su \textit{GitHub}, in cui sono conservati tutti i file del progetto (documenti \textit{Markdown} e \textit{LaTeX}, verbali, sito web, \textit{template} e \textit{workflow}) unitamente all'intera cronologia delle modifiche.
@@ -470,17 +475,17 @@ Documento ufficiale che riassume lo svolgimento e gli esiti di una riunione del 
 Insieme dei controlli manuali (\textit{code review}) e automatici (\textit{workflow}) eseguiti per accertare che un documento o una modifica tecnica rispetti i requisiti, non contenga errori di compilazione o di forma e soddisfi tutti i criteri della \textit{Definition of Done}.
 
 \subsection*{Verificatore}
-Ruolo riportato nella tabella \textit{Registro delle modifiche} dei documenti formali e nella tabella \textit{Informazioni documento}, ricoperto dal membro del gruppo (\textit{revisore}) che ha esaminato e validato le modifiche introdotte dall'autore e che compila il numero di versione e lo stato di approvazione del documento.
+Ruolo riportato nella tabella \textit{Registro delle modifiche} dei documenti formali, ricoperto dal membro del gruppo (\textit{revisore}) che ha esaminato le modifiche introdotte dall'autore; l'esito della sua revisione determina l'aggiornamento automatico della versione nel \textit{Registro delle modifiche} e, in caso di approvazione, il passaggio dello stato del documento ad \texttt{Approvato} nella tabella \textit{Informazioni documento}.
 
 \subsection*{Versionamento}
-Gestione strutturata dell'evoluzione nel tempo dei file e dei documenti del progetto, realizzata sia a livello tecnico tramite \textit{Git}, sia a livello documentale tramite il sistema di numerazione delle versioni nel \textit{Registro delle modifiche}.
+Gestione strutturata dell'evoluzione nel tempo dei file e dei documenti del progetto, realizzata sia a livello tecnico tramite \textit{Git}, sia a livello documentale tramite il sistema automatico di numerazione delle versioni nel \textit{Registro delle modifiche}.
 
 \subsection*{Versione}
 Identificativo numerico a tre cifre (\texttt{X.Y.Z}) che contraddistingue ogni stato evolutivo di un documento soggetto ad approvazione:
 \begin{itemize}
-    \item La prima modifica di un nuovo documento assume la versione iniziale \texttt{0.1.0}.
-    \item Ad ogni modifica successiva in stato di \texttt{Bozza} (o in caso di revisione non superata), viene incrementato di uno il contatore più a destra; se questo raggiunge \texttt{9}, l'incremento successivo lo azzera e incrementa di uno il contatore centrale.
-    \item Al superamento della revisione con approvazione del documento, il \textit{revisore} assegna la versione \texttt{1.0.0} (alla prima approvazione) oppure incrementa di uno il contatore più a sinistra azzerando gli altri due.
+    \item In caso di revisione non superata (\textit{Changes requested}), un nuovo documento parte dalla versione iniziale \texttt{0.1.0} (stato di bozza con \texttt{X = 0}); per ogni modifica successiva in stato di bozza o di revisione non superata, \texttt{patch} e \texttt{minor} incrementano \texttt{Z}, mentre \texttt{major} incrementa \texttt{Y} e azzera \texttt{Z}.
+    \item In caso di revisione superata (\textit{Approved}), un documento nuovo o in bozza (\texttt{X = 0}) passa a \texttt{1.0.0}; dalla versione \texttt{1.0.0} in poi, \texttt{patch} incrementa \texttt{Z} (piccole modifiche, ad esempio correzioni), \texttt{minor} incrementa \texttt{Y} e azzera \texttt{Z} (modifiche di media entità, ad esempio nuove sezioni o molte modifiche), e \texttt{major} incrementa \texttt{X} azzerando \texttt{Y} e \texttt{Z} (modifiche importanti e sostanziali, cambi di struttura o completamento di una \textit{milestone}).
+    \item I contatori possono assumere qualsiasi valore intero non negativo senza limite superiore.
 \end{itemize}
 
 \newpage
