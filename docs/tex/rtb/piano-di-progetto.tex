@@ -1,0 +1,543 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PACCHETTI ---
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[margin=2.5cm]{geometry} % Imposta i margini della pagina
+\usepackage{graphicx}               % Per inserire il logo
+\usepackage{tabularx}               % Per tabelle larghe quanto la pagina
+\usepackage[table]{xcolor}          % Per colorare le celle delle tabelle
+\usepackage[hidelinks]{hyperref}    % Per stile link cliccabili
+\usepackage{lmodern}      % Rende i font scalabili all'infinito
+\usepackage{anyfontsize}  % Permette di usare dimensioni personalizzate
+\usepackage{pgfgantt}   % Per diagramma Gantt
+\usepackage{float}
+\usepackage{array}
+
+% MACRO %
+\newcommand{\ds}{\textcolor{red}{da scrivere/aggiungere}} %segnaposto per testo mancante, appunto da scrivere
+
+%tabella ore
+\newcommand{\rigaore}[8]{#1 & #2 & #3 & #4 & #5 & #6 & #7 & #8 \\ \hline}
+\newcommand{\tabellaore}[3]{%
+	\begin{table}[H]
+		\centering
+		\renewcommand{\arraystretch}{1.3}\small
+		\setlength{\tabcolsep}{3pt}
+		\setlength{\arrayrulewidth}{0.8pt}
+		{\arrayrulecolor{gray!50}
+			\begin{tabular}{|l|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|>{\centering\arraybackslash}p{1.65cm}|c|}
+				\hline
+				\rowcolor{gray!10}
+				\textbf{Nome} &
+				\hspace{0pt}\textbf{Responsabile} &
+				\hspace{0pt}\textbf{Amministratore} &
+				\hspace{0pt}\textbf{Analista} &
+				\hspace{0pt}\textbf{Progettista} &
+				\hspace{0pt}\textbf{Programmatore} &
+				\hspace{0pt}\textbf{Verificatore} &
+				\textbf{Totale} \\ \hline
+				#3
+		\end{tabular}}
+		\caption{#1}\label{#2}
+	\end{table}
+}
+
+%schema comune di un rischio: codice, nome, descrizione, mitigazione, probabilita', impatto
+\newcommand{\rischio}[6]{%
+	\subsubsection{#2}\label{risk:#1}
+	\begin{center}
+		\arrayrulecolor{gray!50}\renewcommand{\arraystretch}{1.4}
+		\setlength{\arrayrulewidth}{0.8pt}
+		\begin{tabularx}{\textwidth}{|l|X|}
+			\hline
+			\rowcolor{gray!10} \textbf{Codice}   & #1 \\ \hline
+			\textbf{Nome}                        & #2 \\ \hline
+			\textbf{Descrizione}                 & #3 \\ \hline
+			\textbf{Mitigazione}                 & #4 \\ \hline
+			\textbf{Probabilità}                 & #5 \\ \hline
+			\textbf{Impatto}                     & #6 \\ \hline
+		\end{tabularx}
+		\arrayrulecolor{black}
+	\end{center}
+}
+
+%macro per il preventivo a finire (paf)
+\newcommand{\rigapaf}[7]{#1 & #2 & #3 & #4 & #5 & #6 & #7 \\ \hline}
+\newcommand{\tabellapaf}[3]{%
+	\begin{table}[H]
+		\centering
+		\renewcommand{\arraystretch}{1.4}\small
+		\setlength{\arrayrulewidth}{0.8pt}
+		\newcolumntype{C}{>{\centering\arraybackslash}X}
+		{\arrayrulecolor{gray!50}
+			\begin{tabularx}{\textwidth}{|l|C|C|C|C|C|C|}
+				\hline
+				\rowcolor{gray!10}
+				\textbf{Ruolo} &
+				\textbf{Ore preventivate} &
+				\textbf{Ore usate} &
+				\textbf{Ore residue} &
+				\textbf{Budget iniziale} &
+				\textbf{Speso nello sprint} &
+				\textbf{Budget residuo} \\ \hline
+				#3
+		\end{tabularx}}
+		\caption{#1}\label{#2}
+	\end{table}
+}
+% END MACRO %
+
+\begin{document}
+	
+	% ==============================================================================
+	% FRONTESPIZIO (PAGINA 1)
+	% ==============================================================================
+	\begin{titlepage}
+		\centering
+		\vspace*{0.5cm}
+		
+		% LOGHI
+		\includegraphics[width=0.45\textwidth]{assets/logo_unipd.jpg}
+		\hfill
+		\includegraphics[width=0.45\textwidth]{assets/logo.png}\par
+		\vspace{0.5cm}
+		
+		% NOME DEL GRUPPO
+		{\fontsize{45}{50}\sffamily\selectfont \textbf{On-By-One}\par}
+		\vspace{1cm}
+		
+		% TITOLO DEL DOCUMENTO
+		{\huge \bfseries Piano di progetto \par}
+		
+		\vspace{1.5cm}
+		
+		% MEMBRI DEL GRUPPO
+		{\large
+			\textbf{On-By-One}:\par
+			\vspace{0.3cm}
+			\begin{tabular}{l l}
+				Sara Ballardin    & 2101048 \\
+				Shuhui Chen       & 2138001 \\
+				Simone Giuliano   & 2145591 \\
+				Alvise Greggio    & 2141004 \\
+				Daniele Nuzzaci   & 2139039 \\
+				Federico Temporin & 2146764 \\
+				Tommaso Zorzetto  & 2148629 \\
+			\end{tabular}
+			\par}
+		
+		\vfill
+		
+		% TABELLA INFORMAZIONI DOCUMENTO E DESTINATARI
+		\begin{table}[h]
+			\centering
+			\arrayrulecolor{gray!50}
+			\renewcommand{\arraystretch}{1.5}
+			\begin{tabularx}{\textwidth}{|c|c|c|X|}
+				\hline
+				\rowcolor{gray!10} \multicolumn{4}{|c|}{\textbf{Informazioni documento}}                                          \\
+				\hline
+				\rowcolor{gray!10} \textbf{Versione} & \textbf{Data} & \textbf{Stato} & \multicolumn{1}{c|}{\textbf{Destinatari}} \\
+				\hline
+				1.0.0 & 2026-11-27 & Approvato &
+				On-By-One \newline
+				Prof. Tullio Vardanega \newline
+				Prof. Riccardo Cardin \newline
+				Vimar S.P.A.                                                                                                      \\
+				\hline
+			\end{tabularx}
+			\arrayrulecolor{black}
+		\end{table}
+		
+		\vspace{0.5cm}
+		
+		% CONTATTI
+		{\large Contatti: \href{mailto:onbyone.swe@gmail.com}{onbyone.swe@gmail.com} }
+		
+	\end{titlepage}
+	
+	\newpage
+	
+	% ==============================================================================
+	% REGISTRO DELLE MODIFICHE (PAGINA 2)
+	% ==============================================================================
+	\section*{Registro delle modifiche}
+	
+	\vspace{1cm}
+	\begin{center}
+		\arrayrulecolor{gray!50}
+		\renewcommand{\arraystretch}{1.5}
+		\begin{tabularx}{\textwidth}{|c|c|c|X|c|}
+			\hline
+			\rowcolor{gray!10}
+			\multicolumn{1}{|c|}{\textbf{Versione}}   &
+			\multicolumn{1}{c|}{\textbf{Data}}        &
+			\multicolumn{1}{c|}{\textbf{Autore}}      &
+			\multicolumn{1}{c|}{\textbf{Descrizione}} &
+			\multicolumn{1}{c|}{\textbf{Verificatore}} \\
+			\hline
+			1.0.0 & 2026-11-23 & Alvise Greggio & Compilate sezioni su rischi e pianificazione, aggiunto attività sprint 1 & Sara Ballardin \\
+			\hline
+			0.1.0 & 2026-11-09 & Sara Ballardin & Definizione struttura del documento & - \\
+			\hline
+		\end{tabularx}
+		\arrayrulecolor{black}
+	\end{center}
+	\vfill
+	\newpage
+	% ==============================================================================
+	% INDICE (PAGINA 3)
+	% ==============================================================================
+	\tableofcontents
+	\newpage
+	
+	
+	% ==============================================================================
+	% 1. INTRODUZIONE
+	% ==============================================================================
+	\section{Introduzione}
+	
+	\subsection{Scopo del documento}
+	Descrivere la finalità del Piano di Progetto: pianificare le attività operative, definire la scansione temporale, ripartire le risorse orarie ed economiche tra i ruoli e monitorare l'avanzamento dei lavori per tutta la durata del progetto.
+	
+	\subsection{Scopo del prodotto}
+	Riassumere in breve gli obiettivi del sistema da realizzare, evidenziando il problema che risolve, i destinatari e il valore atteso per la proponente.
+	
+	\subsection{Glossario}
+	Spiegare la convenzione tipografica adottata per evidenziare i termini tecnici, specialistici o ambigui e rimandare al documento esterno di Glossario.
+	
+	\subsection{Riferimenti}
+	\subsubsection{Riferimenti normativi}
+	Elencare i riferimenti vincolanti: regolamento del progetto didattico, Norme di Progetto, capitolato d'appalto e documento di candidatura (dichiarazione degli impegni).
+	
+	\subsubsection{Riferimenti informativi}
+	Elencare le fonti consultate per la gestione del progetto: slide del corso, testi su metodologie agili e documentazione tecnica di supporto.
+	
+	\newpage
+	
+	% ==============================================================================
+	% 2. ANALISI DEI RISCHI
+	% ==============================================================================
+	\section{Analisi dei rischi}
+	Per ridurre al minimo ritardi, sforamenti di costo e incomprensioni con la proponente, bisogna saper prevedere cosa potrebbe andare storto, compromettendo il corretto flusso di svolgimento del progetto. Il gruppo gestisce i rischi in quattro semplici passi:
+	\begin{enumerate}
+		\item \textbf{Identificazione}: elencazione degli eventi che possono compromettere il progetto;
+		\item \textbf{Analisi}: per ciascuno di questi eventi, stima della probabilità di occorrenza e dell'impatto su tre livelli (bassa/media/alta e basso/medio/alto);
+		\item \textbf{Pianificazione}: fase di determinazione in anticipo delle misure di mitigazione;
+		\item \textbf{Controllo}: indicazione a inizio sprint dei rischi attesi, a fine sprint dei rischi effettivamente occorsi e aggiornamento dell'elenco in retrospettiva.
+	\end{enumerate}
+	Ogni rischio è caratterizzato da un codice del tipo \texttt{R<categoria>-<n>}, dove la categoria può essere: \texttt{T} (tecnologico), \texttt{I} (interpersonale), \texttt{O} (organizzativo), \texttt{C} (requisiti e comunicazione) o \texttt{P} (personale). Le stime di probabilità e impatto sono solo una valutazione iniziale e vengono riviste con l'esperienza degli sprint.
+	
+	\subsection{Rischi tecnologici}
+	\rischio{RT-1}{Nuove tecnologie}
+	{Nessun membro ha esperienza con il \textit{Model Context Protocol} (\textit{MCP}) e con le \textit{API KNX IoT 3rd Party}; di conseguenza lo studio può richiedere più tempo del previsto e causare ritardi.}
+	{Lo studio comincia da subito ed è condiviso da tutto il gruppo, con maggior coinvolgimento degli analisti. Chi è più avanti aiuta gli altri e si organizzano formazioni interne per lo studio individuale seguite da una sessione di discussione collettiva dove ciascuno espone ciò che di rilevante ha assorbito dallo studio. Questo serve per suddividere e condividere informazioni che qualche componente potrebbe essersi lasciato sfuggire; se così non fosse sarà comunque un buon motivo di ripasso. Se un blocco dovesse riguardare la maggior parte del gruppo, si chiederanno chiarimenti alla proponente.}
+	{Alta}{Medio}
+	
+	\rischio{RT-2}{Complessità dell'infrastruttura}
+	{Adottare troppo presto servizi \textit{cloud} complicherebbe lo sviluppo iniziale.}
+	{Si parte da \textit{Docker} in locale mentre \textit{AWS} viene preso in considerazione solo nella fase dell'\textit{MVP}.}
+	{Media}{Medio}
+	
+	\rischio{RT-3}{Dipendenza dal kit hardware}
+	{Il kit fisico si trova in una sola sede. Le prove su impianto reale dipendono dalla disponibilità di chi lo custodisce, mentre gli altri usano le \textit{API} con l'account di amministrazione. Non è ammesso fare affidamento sulla dichiarazione d'onore del custode di "disponibilità continua e immediata" in quanto non umanamente possibile.}
+	{Lo sviluppo procede su un server \textit{mock} (\textit{Prism}) generato dalla specifica \textit{OpenAPI}. Quando strettamente necessario le prove sul kit vengono calendarizzate con il custode.}
+	{Media}{Medio}
+	
+	\subsection{Rischi interpersonali}
+	\rischio{RI-1}{Opinioni contrastanti}
+	{Su scelte organizzative (come la struttura dei \textit{repository}) possono emergere posizioni e opinioni diverse che rischiano di mettere in stallo l'avanzamento.}
+	{Confronto aperto e, qualora non si dovesse raggiungere un accordo, la situazione verrà gestita tramite votazione e con la mediazione del responsabile.}
+	{Alta}{Basso}
+	
+	\subsection{Rischi organizzativi}
+	\rischio{RO-1}{Stima ore imprecisa}
+	{Le ore necessarie per ruolo e attività possono essere sovrastimate o sottostimate, perché il gruppo non ha esperienza di pianificazione. Avendo stilato il preventivo prima dell'effettivo inizio del lavoro, ci si rende conto già verso la fine del primo sprint di qualche ora assegnata male nel preventivo.}
+	{A ogni sprint si confrontano preventivo e consuntivo e, se serve, si ripianifica in retrospettiva.}
+	{Alta}{Medio}
+	
+	\rischio{RO-2}{Squilibri nel carico di lavoro}
+	{Il lavoro può essere distribuito in modo disomogeneo tra ruoli e persone, con il rischio di superare il limite individuale di 85--90 ore. Banalmente può avvenire anche solo ruotando con leggerezza i ruoli, ad esempio assegnando alla stessa persona consecutivamente il ruolo (o uno dei ruoli) con il carico di lavoro maggiore in un determinato sprint.}
+	{Il responsabile controlla ogni settimana le ore registrate; i ruoli ruotano ragionevolmente.}
+	{Media}{Medio}
+	
+	\rischio{RO-3}{Ore non registrate in tempo}
+	{Registrazioni tardive o mancanti falserebbero il consuntivo di periodo.}
+	{Le ore si registrano entro il giorno dell'incontro fisso (il lunedì); il responsabile si assicura ogni settimana che tutti abbiano rendicontato correttamente le proprie ore.}
+	{Media}{Medio}
+	
+	\subsection{Rischi legati a requisiti e comunicazione}
+	\rischio{RC-1}{Malcomprensione dei requisiti}
+	{Il capitolato può essere interpretato in modo errato o incompleto, ad esempio sul livello di dettaglio atteso dei casi d'uso, ma anche non accorgendosi di possibili requisiti "impliciti" derivanti da determinate situazioni.}
+	{Validazione periodica con Vimar S.p.A. nei \textit{SAL}, raccolta dei dubbi da porre all'incontro successivo e discussione con i docenti (professori Vardanega e Cardin) sulle nostre proposte.}
+	{Media}{Alto}
+	
+	\rischio{RC-2}{Diffusione di materiale riservato}
+	{Documentazione riservata, credenziali o \textit{token} possono finire per errore nel \textit{repository} o in strumenti di intelligenza artificiale, contro quanto richiesto dal contratto di integrazione.}
+	{Nessun segreto nel \textit{repository}; i contenuti di \textit{account} e piattaforme Vimar non vengono mai forniti a strumenti di \textit{IA}. Il controllo è parte della revisione.}
+	{Bassa}{Alto}
+	
+	\rischio{RC-3}{Richieste troppo frequenti alle API}
+	{Il contratto di integrazione segnala che un uso intensivo (\textit{polling}) può essere dannoso per la piattaforma.}
+	{Ci si attiene alla frequenza massima di \textit{polling} indicata nella documentazione fornita da Vimar e si limitano le richieste nel codice.}
+	{Media}{Medio}
+	
+	\subsection{Rischi personali}
+	\rischio{RP-1}{Festività ed esami}
+	{La sessione d'esami e le festività tra dicembre e gennaio coincidono con la preparazione di \textit{RTB} e \textit{PoC}.}
+	{Anticipare le ore e congelare i documenti una settimana prima della consegna, così da non rischiare problemi all'ultimo minuto e riservare tempo adeguato alla sola revisione e verifica del tutto.}
+	{Alta}{Alto}
+	
+	\rischio{RP-2}{Indisponibilità di un membro}
+	{Un componente può avere impedimenti imprevisti, di qualsiasi natura.}
+	{Ruoli sostituibili grazie alla rotazione e documentazione condivisa.}
+	{Media}{Medio}
+	
+	\newpage
+	
+	% ==============================================================================
+	% 3. PIANIFICAZIONE GENERALE
+	% ==============================================================================
+	\section{Pianificazione generale}
+	
+	\subsection{Modello di sviluppo}
+	Il gruppo adotta un approccio \textit{Agile} ispirato a \textit{Scrum}. Il lavoro è diviso in \textit{sprint} di due settimane, allineati ai \textit{SAL} con Vimar S.p.A. per le prime quattro settimane, dopodiché gli \textit{sprint} diventano settimanali (rotazione dei ruoli non obbligatoria). Fino al \textit{PoC} i \textit{SAL} durano 60 minuti ogni due settimane, su \textit{Teams} o in presenza su richiesta; dopo il \textit{PoC} durano 30 minuti ogni settimana.
+	
+	Ogni \textit{sprint} prevede:
+	\begin{itemize}
+		\item \textbf{Pianificazione}: scelta delle attività dal \textit{backlog}, tenuto sulla \textit{board} \textit{GitHub} del progetto;
+		\item \textbf{Esecuzione e verifica}: le attività sono svolte dai membri e verificate da una persona diversa dall'autore;
+		\item \textbf{Consuntivazione}: ad ogni settimana (fine \textit{sprint} se settimanale e metà \textit{sprint} se bisettimanale) si riportano le ore effettive e si aggiorna il preventivo a finire;
+		\item \textbf{Retrospettiva}: riunione interna, verbalizzata, su punti di forza, difficoltà e azioni correttive.
+	\end{itemize}
+	Il modello è scelto perché i requisiti vanno chiariti progressivamente, la proponente offre \textit{feedback} frequenti e un gruppo senza esperienza quale siamo deve poter correggere il più presto possibile le proprie stime. I verbali degli incontri esterni sono controllati e firmati su \textit{Round Review}, la piattaforma di Vimar S.p.A..
+	
+	\subsection{Gestione e rotazione dei ruoli}
+	Il regolamento del progetto didattico prevede sei ruoli: responsabile, amministratore, analista, progettista, programmatore e verificatore. Ciascuno ha un costo orario fissato:
+	\begin{center}
+		\arrayrulecolor{gray!50}\renewcommand{\arraystretch}{1.3}
+		\begin{tabular}{|l|c|}
+			\hline
+			\rowcolor{gray!10} \textbf{Ruolo} & \textbf{Costo orario} \\ \hline
+			Responsabile   & 30 \texteuro/h \\ \hline
+			Amministratore & 20 \texteuro/h \\ \hline
+			Analista       & 25 \texteuro/h \\ \hline
+			Progettista    & 25 \texteuro/h \\ \hline
+			Programmatore  & 15 \texteuro/h \\ \hline
+			Verificatore   & 15 \texteuro/h \\ \hline
+		\end{tabular}
+		\arrayrulecolor{black}
+	\end{center}
+	% todo: descrizione sintetica delle responsabilità di ciascun ruolo, ripresa dalla dichiarazione degli impegni o meglio aggiornandola a quella più recente.
+	
+	\paragraph{Organigramma.} I ruoli ricoperti in ogni \textit{sprint} sono riportati nella tabella seguente.
+	\begin{center}
+		\arrayrulecolor{gray!50}\renewcommand{\arraystretch}{1.3}
+		\begin{tabularx}{\textwidth}{|l|X|}
+			\hline
+			\rowcolor{gray!10} \textbf{Ruolo (\textit{sprint} 1)} & \textbf{Componenti} \\ \hline
+			Responsabile   & Alvise Greggio \\ \hline
+			Amministratore & Federico Temporin \\ \hline
+			Analista       & Sara Ballardin, Shuhui Chen, Simone Giuliano \\ \hline
+			Verificatore   & Daniele Nuzzaci, Tommaso Zorzetto \\ \hline
+		\end{tabularx}
+		\arrayrulecolor{black}
+	\end{center}
+	
+	\paragraph{Rapporto analista--verificatore.} Il 2026-11-10 il gruppo ha stabilito che il verificatore non ripete l'indagine dell'analista: accerta la fondatezza logica e metodologica delle sue motivazioni, la coerenza formale del documento e l'assenza di contraddizioni.
+	
+	\paragraph{Conflitti di interesse.} Nessuno verifica il proprio lavoro; il principio è stato deciso all'unanimità.
+	
+	\subsection{Scadenziario di massima}
+	\begin{itemize}
+		\item \textbf{\textit{RTB}}: consegna prevista il 2027-01-15 (da confermare);
+		\item \textbf{\textit{PB}}: \ds;
+		\item \textbf{Consegna finale}: 2027-03-19.
+	\end{itemize}
+	Le attività dipendono l'una dall'altra in questa sequenza: accesso alle \textit{API} di Vimar S.p.A., \textit{PoC}, \textit{demo}, \textit{RTB}. Il diagramma di \textit{Gantt} mostra \textit{sprint}, attività principali, pausa festiva e \textit{SAL}.
+	
+	
+	\begin{center}
+		\renewcommand{\pgfcalendarmonthname}[1]{%
+			\ifcase#1\or Gennaio\or Febbraio\or Marzo\or Aprile\or Maggio\or Giugno\or
+			Luglio\or Agosto\or Settembre\or Ottobre\or Novembre\or Dicembre\fi}
+
+		\begin{ganttchart}[
+			time slot format=isodate,
+			x unit=0.16cm, y unit chart=0.55cm,
+			hgrid, vgrid={*{6}{draw=none}, dotted},
+			bar/.append style={fill=gray!40}
+			]{2026-11-09}{2027-01-17}
+			\gantttitlecalendar{year, month=name} \\
+			\ganttbar{\textit{Sprint} 1}{2026-11-09}{2026-11-22} \\
+			\ganttbar{\textit{Sprint} 2}{2026-11-23}{2026-12-06} \\
+			\ganttbar{\textit{Sprint} 3}{2026-12-07}{2026-12-13} \\
+			\ganttbar{\textit{Sprint} 4}{2026-12-14}{2026-12-20} \\
+			\ganttbar{\textit{Sprint} 5}{2026-12-21}{2026-12-27} \\
+			\ganttbar{\textit{Sprint} 6}{2026-12-28}{2027-01-03} \\
+			\ganttbar{\textit{Sprint} 7}{2027-01-04}{2027-01-10} \\
+			%possibili valori da modificare per coerenza
+			\ganttbar{Analisi dei requisiti}{2026-11-09}{2026-12-18} \\
+			\ganttbar{Studio tecnologie e \textit{PoC}}{2026-11-16}{2027-01-03} \\
+			\ganttbar{Documenti per la \textit{RTB}}{2026-12-07}{2027-01-08} \\
+			\ganttbar{Pausa festiva}{2026-12-24}{2027-01-06} \\
+			\ganttmilestone{\textit{SAL}}{2026-11-24} \\
+			
+			\ganttmilestone{Consegna \textit{RTB}}{2027-01-15}
+		\end{ganttchart}
+	\end{center}
+	% todo: SAL successivi (l'8 dicembre è festivo) e cammino critico, gantt dunque da aggiornare un po' volta per volta.
+	
+	\subsection{Pianificazione economica iniziale}
+	Il preventivo della candidatura prevede 620 ore produttive e 12.840 euro. Dividere 620 ore su sette persone dà circa 88,57 ore a testa: quattro membri hanno 89 ore e tre ne hanno 88, dentro il limite individuale di 85--90 ore.
+	
+	
+	\paragraph{Costi per ruolo.}
+	\begin{center}
+		\arrayrulecolor{gray!50}\renewcommand{\arraystretch}{1.3}
+		\begin{tabular}{|l|c|c|c|}
+			\hline
+			\rowcolor{gray!10} \textbf{Ruolo} & \textbf{Ore} & \textbf{Costo orario} & \textbf{Totale} \\ \hline
+			Responsabile   & 84 & 30 \texteuro/h & 2520 \texteuro \\ \hline
+			Amministratore & 64 & 20 \texteuro/h & 1280 \texteuro  \\ \hline
+			Analista       & 96 & 25 \texteuro/h & 2400 \texteuro  \\ \hline
+			Progettista    & 100 & 25 \texteuro/h & 2500 \texteuro  \\ \hline
+			Programmatore  & 128 & 15 \texteuro/h & 1920 \texteuro  \\ \hline
+			Verificatore   & 148 & 15 \texteuro/h & 2220 \texteuro  \\ \hline
+			\rowcolor{gray!10} \textbf{Totale} & 620 & - & 12.840 \texteuro \\ \hline
+		\end{tabular}
+		\arrayrulecolor{black}
+	\end{center}
+	I macro-periodi reali (analisi, \textit{RTB} e seguenti) non coincidono con le cinque tabelle da quattro settimane della candidatura. Le ore verranno quindi ridistribuite sui periodi effettivi senza cambiare i totali per ruolo né il costo complessivo; la differenza sarà spiegata qui. \ds
+	
+	\subsection{Meccanismi di controllo e rendicontazione}
+	\paragraph{Registrazione.} Ogni membro scrive le proprie ore su una vista dedicata chiamata "rendicontazione ore" su \textit{GitHub}, indicando, a partire dall'\textit{issue} collegata, ore produttive, settimana in cui si è svolta l'attività e aggiungendo le etichette del caso. Si registra al più tardi il lunedì, giorno dell'incontro fisso.
+	
+	\paragraph{Controllo.} Il responsabile si assicura ad ogni incontro settimanale che tutti i componenti del gruppo abbiano riempito la tabella di rendicontazione ore adeguatamente.
+	
+	\paragraph{Consuntivo e preventivo a finire.} A fine \textit{sprint} il consuntivo si ottiene sommando le ore per membro e ruolo e applicando le tariffe. Il preventivo a finire è la differenza tra il preventivo e quanto già speso, per ruolo, in ore e in euro; si verifica che il totale resti entro 620 ore e 12.840 euro.
+	
+	\paragraph{Soglia di allarme.} Se lo scostamento tra consuntivo e preventivo supera il 10\% per un ruolo o per una persona (soglia proposta, da confermare), si ripianifica in retrospettiva. Resta fermo il limite individuale di 85--90 ore.
+	
+	\paragraph{Collegamento con il Piano di Qualifica.} I dati di consuntivo alimentano le metriche \textit{SV} (scostamento dalla schedulazione), \textit{BV} (scostamento dal \textit{budget}) ed \textit{EAC} (stima a finire).
+	
+	\subsection{Pianificazione delle attività per la RTB}
+	Per la \textit{RTB} il gruppo deve fissare i requisiti, motivare le scelte tecnologiche e realizzare un \textit{PoC}. Le attività principali sono:
+	\begin{itemize}
+		\item \textbf{Analisi dei Requisiti}: individuazione di attori e scenari, definizione dei casi d'uso a partire dal capitolato e, da questi, dei requisiti funzionali, qualitativi e di vincolo. \ds
+		\item \textbf{Piano di Progetto}: scritto e aggiornato a ogni \textit{sprint}, perché rendiconta l'avanzamento; rischi, stime e preventivi si rivedono quando cambiano le informazioni.
+		\item \textbf{Piano di Qualifica}: obiettivi di qualità di processo e di prodotto, metriche con soglie e cruscotto di valutazione. Da stilare quando si ha un po' di retrospettiva e conoscenza sul come stiamo lavorando o come abbiamo lavorato. \ds
+		\item \textbf{Norme di Progetto}: regole e strumenti di lavoro del gruppo, aggiornate durante tutta la durata del progetto. \ds
+		\item \textbf{Glossario}: prima versione redatta in candidatura, poi continuamente aggiornata con i nuovi termini.
+		\item \textbf{Proof of Concept}: server \textit{MCP} minimale che dimostra l'accesso a un impianto, l'elenco degli impianti e la lettura dello stato di una luce. \ds
+	\end{itemize}
+	
+	\newpage
+	
+	% ==============================================================================
+	% 4. PERIODI DI AVANZAMENTO
+	% ==============================================================================
+	\section{Periodi di avanzamento}
+	Per ogni periodo si riportano attività programmate e svolte, rischi attesi e manifestati, consuntivo, preventivo a finire e retrospettiva.
+	
+	\subsection{Periodo di candidatura}
+	Prima dell'aggiudicazione il gruppo ha organizzato il \textit{repository} e il modo di lavorare, analizzato e valutato tutti i capitolati, scritto la lettera di presentazione, scritto la dichiarazione degli impegni e redatto i verbali. Le ore di questo periodo non sono rendicontate: il conteggio parte dall'aggiudicazione dell'appalto.
+	
+	\paragraph{Rischi manifestati.} Il gruppo, nuovo a \textit{Git}, ha avuto difficoltà con \textit{commit} e \textit{pull request} non conformi alle Norme di Progetto. Le difficoltà sono emerse e sono state corrette in revisione. Queste difficoltà erano dovute anche alla poca abitudine di tutti i componenti a conformarsi a delle regole scritte su un documento, le Norme di Progetto appunto, che devono essere seguite con rigore per evitare incoerenze.
+	
+	\subsection{Sprint 1 [2026-11-09 -- 2026-11-22]}
+	
+	\subsubsection{Attività programmate}
+	Obiettivo: avviare i documenti principali per la \textit{RTB} e iniziare lo studio delle tecnologie.
+	\begin{itemize}
+		\item studio preliminare delle tecnologie al gruppo sconosciute comparse nel capitolato (tutti);
+		\item \textit{kick-off} con Vimar del 2026-11-12, ritiro del kit e conoscenza dei referenti;
+		\item prima bozza dell'Analisi dei Requisiti (analisti);
+		\item impostazione del Piano di Progetto e del Piano di Qualifica (responsabile);
+		\item organizzazione del \textit{repository}: cartella \textit{RTB}, \textit{milestone} ed etichetta \texttt{sprint-1} (amministratore);
+		\item avvio del sistema di rendicontazione delle ore (amministratore);
+		\item tutte le attività di verifica e stesura di verbali (verificatori).
+	\end{itemize}
+	
+	
+	\subsubsection{Attività svolte}
+	\begin{itemize}
+		\item prima bozza strutturata dell'Analisi dei Requisiti, comprensiva dei requisiti ricavabili dal capitolato e introduzione ai casi d'uso;
+		\item avvio del sistema di rendicontazione delle ore per il consuntivo di fine \textit{sprint};
+		\item stesura prima bozza del Piano di Progetto con aggiornamento su sezione rischi, pianificazione e consuntivi di periodo vari;
+		\item creazione dei \textit{workflow} necessari per le procedure ritenute automatizzabili;
+		\item stesi verbali interni/esterni dello \textit{sprint} e verificate tutte le attività svolte dal gruppo.
+	\end{itemize}
+	
+	\subsubsection{Rischi attesi e manifestati}
+	Dal confronto con quanto occorso emergono per ora questi punti:
+	\begin{itemize}
+		\item la granularità dei casi d'uso, inizialmente non chiara per gli analisti (collegato a \hyperref[risk:RC-1]{RC-1});
+		\item l'automazione del registro modifiche ha rallentato alcune \textit{pull request}.
+		\item discussioni durante l'incontro settimanale del gruppo riguardo a scelte implementative contrastanti hanno portato al rallentamento dell'avanzamento più di una volta (collegato a \hyperref[risk:RI-1]{RI-1});
+		\item la prima settimana, dunque la prima metà del primo \textit{sprint}, il sistema di rendicontazione delle ore ancora non era stato avviato, pertanto per la compilazione di quella sezione di ore produttive si è andati a memoria riguardando le \textit{issue} completate (collegato a \hyperref[risk:RO-3]{RO-3}).
+	\end{itemize}
+	Le misure di mitigazione applicate sono state:
+	\begin{itemize}
+		\item confronto diretto e chiarimenti con il professore durante il diario di bordo e in seguito anche in chiamata con Vimar durante il \textit{SAL} per il livello specificità dei requisiti;
+		\item lavoro prioritario da parte dell'amministratore sull'automazione in corso per una risoluzione quanto più rapida possibile del problema; in attesa delle \textit{PR} bloccate, per quanto possibile i ruoli bloccati hanno continuato a lavorare in locale e su compiti che non dipendevano dal \textit{merge} della \textit{PR};
+		\item soluzione per votazione del gruppo con eventuale mediazione del responsabile per la chiusura della discussione in corso;
+		\item nessuna soluzione di mitigazione in particolare, si è andati a ritroso sulle \textit{issue} su cui si è lavorato per ricordare al meglio il tempo speso su ciascuna di esse.
+	\end{itemize}
+	
+	\subsubsection{Consuntivo di periodo}
+	\tabellaore{\textit{Sprint} 1 - ore previste per persona e ruolo}{tab:s1-prev}{
+		\rigaore{Sara Ballardin}{-}{-}{6.7}{-}{-}{-}{6.7}
+		\rigaore{Shuhui Chen}{-}{-}{6.7}{-}{-}{-}{6.7}
+		\rigaore{Simone Giuliano}{-}{-}{6.6}{-}{-}{-}{6.6}
+		\rigaore{Alvise Greggio}{12}{-}{-}{-}{-}{-}{12}
+		\rigaore{Daniele Nuzzaci}{-}{-}{-}{-}{-}{5}{5}
+		\rigaore{Federico Temporin}{-}{10}{-}{-}{-}{-}{10}
+		\rigaore{Tommaso Zorzetto}{-}{-}{-}{-}{-}{5}{5}
+		\rigaore{Non assegnati}{-}{-}{-}{6}{4}{-}{10}
+		\rowcolor{gray!10} \rigaore{\textbf{Totale}}{12}{10}{20}{6}{4}{10}{62}
+	}
+	
+	\tabellaore{\textit{Sprint} 1 - ore effettive per persona e ruolo}{tab:s1-eff}{
+		\rigaore{Sara Ballardin}{-}{-}{6.5}{-}{-}{-}{6.5}
+		\rigaore{Shuhui Chen}{-}{-}{5}{-}{-}{-}{5}
+		\rigaore{Simone Giuliano}{-}{-}{4.5}{-}{-}{-}{4.5}
+		\rigaore{Alvise Greggio}{9}{-}{-}{-}{-}{-}{9}
+		\rigaore{Daniele Nuzzaci}{-}{-}{-}{-}{-}{5}{5}
+		\rigaore{Federico Temporin}{-}{10}{-}{-}{-}{-}{10}
+		\rigaore{Tommaso Zorzetto}{-}{-}{-}{-}{-}{4}{4}
+		\rowcolor{gray!10} \rigaore{\textbf{Totale}}{9}{10}{16}{-}{-}{9}{44}
+	}
+	
+	Le 6 ore previste per il ruolo di progettista e le 4 ore per il programmatore non sono state svolte nello \textit{Sprint} 1 perché le attività di progettazione e implementazione del \textit{PoC} non erano ancora necessarie in questo periodo; ciò evidenzia un preventivo iniziale impreciso per lo \textit{sprint}, che richiederà di recuperare queste ore con un maggior carico di lavoro nei periodi successivi.
+	
+	\subsubsection{Preventivo a finire}
+	\tabellapaf{\textit{Sprint} 1 - preventivo a finire per ruolo}{tab:s1-paf}{
+		\rigapaf{Responsabile}{84}{9}{75}{2.520 \texteuro}{270 \texteuro}{2.250 \texteuro}
+		\rigapaf{Amministratore}{64}{10}{54}{1.280 \texteuro}{200 \texteuro}{1.080 \texteuro}
+		\rigapaf{Analista}{96}{16}{80}{2.400 \texteuro}{400 \texteuro}{2.000 \texteuro}
+		\rigapaf{Progettista}{100}{0}{100}{2.500 \texteuro}{0 \texteuro}{2.500 \texteuro}
+		\rigapaf{Programmatore}{128}{0}{128}{1.920 \texteuro}{0 \texteuro}{1.920 \texteuro}
+		\rigapaf{Verificatore}{148}{9}{139}{2.220 \texteuro}{135 \texteuro}{2.085 \texteuro}
+		\rowcolor{gray!10}
+		\rigapaf{\textbf{Totale}}{\textbf{620}}{\textbf{44}}{\textbf{576}}{\textbf{12.840 \texteuro}}{\textbf{1.005 \texteuro}}{\textbf{11.835 \texteuro}}
+	}
+	
+	Il totale complessivo previsto a finire rimane pari a 620 ore e 12.840 \texteuro, rispettando il vincolo economico prefissato.
+	
+	
+	\subsubsection{Retrospettiva}
+	Rispetto al preventivo dello \textit{sprint} 1, i ruoli di progettista (6 ore previste) e programmatore (4 ore previste) non hanno avuto ore effettive per una stima iniziale non allineata alle reali necessità del periodo (collegato a \hyperref[risk:RO-1]{RO-1}). Queste ore andranno recuperate lavorando con maggiore intensità negli \textit{sprint} futuri, tenendo comunque sotto controllo il limite individuale di 85-90 ore.
+	
+	Dal confronto di fine \textit{sprint} sono emerse inoltre alcune indicazioni operative per i ruoli (consigli utili da chi ha svolto il ruolo a chi lo sta per svolgere):
+	\begin{itemize}
+		\item \textbf{Responsabile:} monitorare regolarmente verbali, rischi e pianificazione, curare la rendicontazione e l'aggiornamento continuo del \textit{Piano di Progetto}, basandosi appunto sui verbali interni e sulle \textit{slide} del \textit{SAL} con Vimar per la sezione dedicata allo \textit{sprint} in corso; utilizzare le tabelle \textit{to-do} per \textit{Diario di Bordo} e \textit{SAL} e favorire un confronto aperto per evitare fraintendimenti;
+		\item \textbf{Amministratore:} valutare strumenti \textit{AI} con modalità di pianificazione per la gestione dei \textit{workflow} e avvisare tempestivamente il gruppo in caso di modifiche a strumenti o prassi operative;
+		\item \textbf{Analista:} partire da una visione d'insieme e dallo studio delle tecnologie coinvolte prima di redigere i casi d'uso, suddividendo il lavoro in modo equilibrato;
+		\item \textbf{Verificatore:} registrare o annotare con precisione le riunioni e tenere allineati rendicontazione, tabelle delle \textit{PR} verificate e \textit{issue} in stato \textit{draft} per evitare arretrati.
+	\end{itemize}
+	
+	Infine, a causa di criticità nello \textit{script} automatico del registro delle modifiche, l'automazione è stata temporaneamente sospesa a favore della compilazione manuale fino alla risoluzione dei problemi.
+	
+	\end{document}
