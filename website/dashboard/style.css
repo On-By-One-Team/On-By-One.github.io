@@ -1,0 +1,224 @@
+/* ==========================================================================
+   STILI SPECIFICI DASHBOARD (usa le variabili :root di ../style.css)
+   ========================================================================== */
+
+body.dashboard-page {
+    display: block;
+    background: var(--bg-body);
+    color: var(--text-main);
+    margin: 0;
+}
+
+.dashboard-header {
+    background: var(--bg-sidebar);
+    color: var(--text-sidebar);
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.dashboard-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.dashboard-header p {
+    color: var(--text-sidebar-muted);
+    font-size: 0.9rem;
+    margin: 0.25rem 0 0;
+}
+
+.dashboard-back-link {
+    color: var(--text-sidebar);
+    text-decoration: none;
+    border: 1px solid var(--btn-outline-border);
+    padding: 0.45rem 0.9rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+}
+
+.dashboard-back-link:hover {
+    background: var(--sidebar-hover-bg);
+}
+
+.dashboard-main {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.75rem 1.5rem 3rem;
+}
+
+.dashboard-banner {
+    background: var(--inprogress-bg);
+    color: var(--inprogress-text);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    margin-bottom: 1.25rem;
+    font-size: 0.9rem;
+}
+
+.dashboard-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    min-width: 200px;
+}
+
+.filter-group label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.filter-group select {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface);
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.kpi-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.15rem 1.25rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.kpi-label {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.kpi-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0.25rem 0;
+}
+
+.kpi-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.dash-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.dash-card h2 {
+    font-size: 1.05rem;
+    margin: 0 0 0.25rem;
+    color: var(--text-main);
+}
+
+.card-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0 0 1rem;
+}
+
+.chart-box {
+    position: relative;
+    height: 320px;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.dash-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+}
+
+.dash-table th,
+.dash-table td {
+    padding: 0.7rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dash-table th {
+    background: var(--accent-bg);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.dash-table td.num,
+.dash-table th.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.status-pill {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.status-ok {
+    background: var(--success-bg);
+    color: var(--success-text);
+}
+
+.status-warn {
+    background: var(--inprogress-bg);
+    color: var(--inprogress-text);
+}
+
+.status-over {
+    background: var(--notstarted-bg);
+    color: var(--notstarted-text);
+}
+
+@media (max-width: 600px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
