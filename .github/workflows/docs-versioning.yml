@@ -58,7 +58,6 @@ jobs:
             --base-sha "${{ github.event.pull_request.base.sha }}" \
             --head-sha "${{ github.event.pull_request.head.sha }}" \
             --pr-number "${{ github.event.pull_request.number }}" \
-            --title "${{ github.event.pull_request.title }}" \
             --author-id "${{ github.event.pull_request.user.id }}" \
             --date "${{ github.event.pull_request.updated_at }}" \
             "${RECIPIENT_ARGS[@]}"
@@ -137,22 +136,18 @@ jobs:
           if [[ -n "$RECIPIENT_TYPE" ]]; then
             RECIPIENT_ARGS=(--recipient-type "$RECIPIENT_TYPE")
           fi
-          KIND_ARGS=()
-          if [[ "${{ github.event.review.state }}" = "changes_requested" ]]; then
-            KIND=""
-            for label in major minor; do
-              if [[ " $PR_LABELS " == *" $label "* ]]; then
-                if [[ -n "$KIND" ]]; then
-                  echo "::error::Usare una sola label tra major e minor"
-                  exit 1
-                fi
-                KIND="$label"
+          KIND=""
+          for label in major minor patch; do
+            if [[ " $PR_LABELS " == *" $label "* ]]; then
+              if [[ -n "$KIND" ]]; then
+                echo "::error::Usare una sola label tra major, minor e patch"
+                exit 1
               fi
-            done
-            if [[ -z "$KIND" ]]; then
-              echo "::error::La PR deve avere la label major o minor"
-              exit 1
+              KIND="$label"
             fi
+          done
+          KIND_ARGS=()
+          if [[ -n "$KIND" ]]; then
             KIND_ARGS=(--kind "$KIND")
           fi
           CHANGELOG_ROOT="$GITHUB_WORKSPACE" python "$RUNNER_TEMP/docs-versioning.py" review \

@@ -29,6 +29,8 @@ ACCOUNT_NAMES = {
     "237098663": "Tommaso Zorzetto",
 }
 VERSION = re.compile(r"^\d+\.\d+\.\d+$")
+VERSION_KINDS = ("major", "minor", "patch")
+PLACEHOLDER_DESCRIPTION = "Descrizione mancante"
 
 
 @dataclass(frozen=True)
@@ -123,15 +125,23 @@ def information_bounds(lines: list[str]) -> tuple[int, int, int]:
             for index in range(start, len(lines))
             if r"\textbf{Destinatari}" in lines[index]
         )
-        separator = next(
+        table_end = next(
             index
             for index in range(header + 1, len(lines))
+            if r"\end{tabularx}" in lines[index]
+        )
+        separator = next(
+            index
+            for index in range(header + 1, table_end)
             if r"\hline" in lines[index]
         )
         end = next(
-            index
-            for index in range(separator + 1, len(lines))
-            if r"\hline" in lines[index]
+            (
+                index
+                for index in range(separator + 1, table_end)
+                if r"\hline" in lines[index]
+            ),
+            table_end,
         )
     except StopIteration as error:
         raise ValueError("Tabella Informazioni documento non trovata") from error
@@ -150,7 +160,7 @@ def row_line(row: ChangeRow, indentation: str, pr_number: int) -> str:
     return (
         f"{indentation}{latex_escape(row.version)} & "
         f"{latex_escape(row.date)} & {latex_escape(row.author)} & "
-        f"{latex_escape(row.description)} & {latex_escape(row.verifier)} "
+        f"{row.description} & {latex_escape(row.verifier)} "
         f"\\\\ {PR_MARKER} {pr_number}\n"
     )
 
@@ -168,26 +178,38 @@ def information_row_line(
     )
 
 
+def ensure_hline_after(lines: list[str], index: int, indentation: str) -> None:
+    for next_index in range(index + 1, len(lines)):
+        stripped = lines[next_index].strip()
+        if not stripped:
+            continue
+        if stripped.startswith(r"\hline"):
+            return
+        break
+    lines.insert(index + 1, f"{indentation}\\hline\n")
+
+
 def update_information(
     path: Path, version: str, date: str, status: str, recipient_type: str
 ) -> bool:
     date = iso_date(date)
-    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+    original = path.read_text(encoding="utf-8")
+    lines = original.splitlines(keepends=True)
     separator, end, _ = information_bounds(lines)
     indentation = re.match(r"\s*", lines[separator]).group(0)
     replacement = information_row_line(
         version, date, status, recipient_type, indentation
     )
     lines[separator + 1 : end] = [replacement]
+    ensure_hline_after(lines, separator + 1, indentation)
     updated = "".join(lines)
-    original = path.read_text(encoding="utf-8")
     if updated == original:
         return False
     path.write_text(updated, encoding="utf-8")
     return True
 
 
-def insert_row(lines: list[str], start: int, end: int, row: ChangeRow, pr_number: int) -> None:
+def header_separator_index(lines: list[str], start: int, end: int) -> int:
     header = next(
         (
             index
@@ -204,21 +226,89 @@ def insert_row(lines: list[str], start: int, end: int, row: ChangeRow, pr_number
     )
     if separator is None:
         raise ValueError("Separatore dell'intestazione non trovato")
+    return separator
+
+
+def is_placeholder_row(row: ChangeRow) -> bool:
+    return (
+        row.version == "-"
+        and row.date == "-"
+        and row.author == "-"
+        and row.description == PLACEHOLDER_DESCRIPTION
+        and row.verifier == "-"
+    )
+
+
+def is_unclaimed_row(line: str, row: ChangeRow) -> bool:
+    return (
+        PR_MARKER not in line
+        and row.version == "-"
+        and row.date == "-"
+        and row.author == "-"
+        and row.verifier == "-"
+    )
+
+
+def find_draft_row(lines: list[str], start: int, end: int) -> tuple[int, ChangeRow] | None:
+    for index in range(start, end):
+        if PR_MARKER in lines[index]:
+            continue
+        row = row_from_line(lines[index])
+        if row and is_unclaimed_row(lines[index], row):
+            if row.description not in ("", "-", PLACEHOLDER_DESCRIPTION):
+                return index, row
+    return None
+
+
+def ensure_placeholder_row(lines: list[str], start: int, end: int) -> None:
+    for index in range(start, end):
+        if PR_MARKER in lines[index]:
+            continue
+        row = row_from_line(lines[index])
+        if row and is_placeholder_row(row):
+            indentation = re.match(r"\s*", lines[index]).group(0)
+            ensure_hline_after(lines, index, indentation)
+            return
+    separator = header_separator_index(lines, start, end)
     indentation = re.match(r"\s*", lines[separator]).group(0)
-    lines.insert(separator + 1, row_line(row, indentation, pr_number))
+    placeholder = (
+        f"{indentation}- & - & - & {PLACEHOLDER_DESCRIPTION} & - \\\\\n"
+    )
+    lines.insert(separator + 1, placeholder)
+    ensure_hline_after(lines, separator + 1, indentation)
 
 
-def update_pr_row(path: Path, row: ChangeRow, pr_number: int) -> bool:
-    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+def update_pr_row(path: Path, date: str, author: str, pr_number: int) -> bool:
+    original = path.read_text(encoding="utf-8")
+    lines = original.splitlines(keepends=True)
     start, end = registry_bounds(lines)
     existing = marker_line(lines, start, end, pr_number)
     if existing is None:
-        insert_row(lines, start, end, row, pr_number)
+        found = find_draft_row(lines, start, end)
+        if found is None:
+            raise ValueError(
+                f"Descrizione mancante nel registro delle modifiche di {path.name}"
+            )
+        target_index, row = found
     else:
-        indentation = re.match(r"\s*", lines[existing]).group(0)
-        lines[existing] = row_line(row, indentation, pr_number)
+        target_index = existing
+        row = row_from_line(lines[target_index])
+        if row is None:
+            raise ValueError(f"Riga della PR #{pr_number} non interpretabile in {path}")
+        if row.description in ("", "-", PLACEHOLDER_DESCRIPTION):
+            raise ValueError(
+                f"Descrizione mancante nel registro delle modifiche di {path.name}"
+            )
+    indentation = re.match(r"\s*", lines[target_index]).group(0)
+    lines[target_index] = row_line(
+        ChangeRow("-", date, author, row.description, "-"),
+        indentation,
+        pr_number,
+    )
+    ensure_hline_after(lines, target_index, indentation)
+    start, end = registry_bounds(lines)
+    ensure_placeholder_row(lines, start, end)
     updated = "".join(lines)
-    original = path.read_text(encoding="utf-8")
     if updated == original:
         return False
     path.write_text(updated, encoding="utf-8")
@@ -244,6 +334,17 @@ def changed_documents(base_sha: str, head_sha: str) -> list[Path]:
             and not path.is_relative_to(TEMPLATES_ROOT)
         ):
             documents.append(path)
+    return documents
+
+
+def versioned_documents(base_sha: str, head_sha: str) -> list[Path]:
+    documents = []
+    for path in changed_documents(base_sha, head_sha):
+        try:
+            registry_bounds(path.read_text(encoding="utf-8").splitlines(keepends=True))
+        except ValueError:
+            continue
+        documents.append(path)
     return documents
 
 
@@ -313,32 +414,36 @@ def numeric_versions(path: Path, pr_number: int) -> list[tuple[int, int, int]]:
     return versions
 
 
-def approved_version(path: Path, pr_number: int) -> str:
+def next_version(
+    path: Path, pr_number: int, kind: str | None, state: str = "approved"
+) -> str:
+    """Compute the next X.Y.Z version from the latest registry version, *kind*, and *state*."""
+    if kind not in VERSION_KINDS:
+        raise ValueError(
+            "La Pull Request deve avere esattamente una label tra "
+            "major, minor e patch"
+        )
     versions = numeric_versions(path, pr_number)
-    if not versions:
-        return "1.0.0"
-    major, _, _ = versions[0]
-    return f"{major + 1}.0.0"
-
-
-def failed_review_version(path: Path, pr_number: int, kind: str) -> str:
-    versions = numeric_versions(path, pr_number)
-    if not versions:
-        if kind == "major":
+    if state == "changes_requested":
+        if not versions:
             return "0.1.0"
-        if kind == "minor":
-            return "0.0.1"
-        raise ValueError("La Pull Request deve avere esattamente la label major o minor")
+        major, minor, patch = versions[0]
+        if kind == "major":
+            return f"{major}.{minor + 1}.0"
+        return f"{major}.{minor}.{patch + 1}"
+    if not versions or versions[0][0] == 0:
+        return "1.0.0"
     major, minor, patch = versions[0]
     if kind == "major":
-        return f"{major}.{minor + 1}.0"
+        return f"{major + 1}.0.0"
     if kind == "minor":
-        return f"{major}.{minor}.{patch + 1}"
-    raise ValueError("La Pull Request deve avere esattamente la label major o minor")
+        return f"{major}.{minor + 1}.0"
+    return f"{major}.{minor}.{patch + 1}"
 
 
 def update_review_row(path: Path, pr_number: int, version: str, verifier: str) -> bool:
-    lines = path.read_text(encoding="utf-8").splitlines(keepends=True)
+    original = path.read_text(encoding="utf-8")
+    lines = original.splitlines(keepends=True)
     start, end = registry_bounds(lines)
     index = marker_line(lines, start, end, pr_number)
     if index is None:
@@ -348,31 +453,22 @@ def update_review_row(path: Path, pr_number: int, version: str, verifier: str) -
         raise ValueError(f"Riga della PR #{pr_number} non interpretabile in {path}")
     updated_row = ChangeRow(version, row.date, row.author, row.description, verifier)
     indentation = re.match(r"\s*", lines[index]).group(0)
-    replacement = row_line(updated_row, indentation, pr_number)
-    if replacement == lines[index]:
+    lines[index] = row_line(updated_row, indentation, pr_number)
+    ensure_hline_after(lines, index, indentation)
+    updated = "".join(lines)
+    if updated == original:
         return False
-    lines[index] = replacement
-    path.write_text("".join(lines), encoding="utf-8")
+    path.write_text(updated, encoding="utf-8")
     return True
 
 
 def update_pr(args: argparse.Namespace) -> int:
     author = author_name(args.author_id)
-    description = args.title.strip() or args.fallback_description.strip()
-    if not description:
-        raise ValueError("Titolo PR e fallback del commit non possono essere vuoti")
+    date = iso_date(args.date)
     changed = False
-    for path in changed_documents(args.base_sha, args.head_sha):
-        try:
-            registry_bounds(path.read_text(encoding="utf-8").splitlines(keepends=True))
-        except ValueError:
-            continue
+    for path in versioned_documents(args.base_sha, args.head_sha):
         recipient_type = resolve_recipient_type(path, args.recipient_type)
-        changed |= update_pr_row(
-            path,
-            ChangeRow("-", iso_date(args.date), author, description, "-"),
-            args.pr_number,
-        )
+        changed |= update_pr_row(path, date, author, args.pr_number)
         changed |= update_information(
             path, "-", "-", "Bozza", recipient_type
         )
@@ -381,19 +477,10 @@ def update_pr(args: argparse.Namespace) -> int:
 
 def update_review(args: argparse.Namespace) -> int:
     verifier = author_name(args.reviewer_id)
-    paths = changed_documents(args.base_sha, args.head_sha)
     changed = False
-    for path in paths:
-        try:
-            registry_bounds(path.read_text(encoding="utf-8").splitlines(keepends=True))
-        except ValueError:
-            continue
+    for path in versioned_documents(args.base_sha, args.head_sha):
         recipient_type = resolve_recipient_type(path, args.recipient_type)
-        version = (
-            approved_version(path, args.pr_number)
-            if args.state == "approved"
-            else failed_review_version(path, args.pr_number, args.kind)
-        )
+        version = next_version(path, args.pr_number, args.kind, args.state)
         changed |= update_review_row(path, args.pr_number, version, verifier)
         if args.state == "approved":
             changed |= update_information(
@@ -413,8 +500,6 @@ def parser() -> argparse.ArgumentParser:
     pr.add_argument("--base-sha", required=True)
     pr.add_argument("--head-sha", required=True)
     pr.add_argument("--pr-number", type=int, required=True)
-    pr.add_argument("--title", required=True)
-    pr.add_argument("--fallback-description", default="")
     pr.add_argument("--author-id", required=True)
     pr.add_argument("--date", required=True)
     pr.add_argument("--recipient-type", default="")
@@ -425,7 +510,7 @@ def parser() -> argparse.ArgumentParser:
     review.add_argument("--pr-number", type=int, required=True)
     review.add_argument("--reviewer-id", required=True)
     review.add_argument("--state", choices=("approved", "changes_requested"), required=True)
-    review.add_argument("--kind", choices=("major", "minor"))
+    review.add_argument("--kind", choices=VERSION_KINDS)
     review.add_argument("--date", required=True)
     review.add_argument("--recipient-type", default="")
     review.set_defaults(function=update_review)
