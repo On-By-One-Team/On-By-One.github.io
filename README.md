@@ -7,6 +7,15 @@
 <p>Questo <em>repository</em> ospita la documentazione del gruppo <strong>On-By-One</strong> (Gruppo 1) del primo lotto del corso di Ingegneria del Software (A.A. 2026/27, Università degli Studi di Padova).</p>
 <p>I documenti possono essere consultati tramite il nostro <a href="https://on-by-one-team.github.io/On-By-One.github.io/"><strong>sito internet dedicato</strong></a>.</p>
 
+<h2>Cruscotto Ore e Budget</h2>
+<p>Lo stato di avanzamento dettagliato (con filtri per settimana, sprint, blocco e ripartizione per membro) è consultabile sul <a href="https://on-by-one-team.github.io/On-By-One.github.io/dashboard/"><strong>cruscotto interattivo</strong></a>.</p>
+<!-- DASHBOARD-SUMMARY:START -->
+<p align="center">
+  <img src="assets/dashboard-kpi.svg" alt="Avanzamento ore e consumo budget" width="760">
+</p>
+<p align="center"><sub>Dati complessivi di progetto · Aggiornato il 27/11/2026 22:37 UTC</sub></p>
+<!-- DASHBOARD-SUMMARY:END -->
+
 <h2>Contatti</h2>
 <p>Puoi contattarci all'indirizzo email <a href="mailto:onbyone.swe@gmail.com">onbyone.swe@gmail.com</a>.</p>
 

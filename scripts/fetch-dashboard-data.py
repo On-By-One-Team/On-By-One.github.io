@@ -280,6 +280,142 @@ def main() -> None:
     OUTPUT_PATH.write_text(json.dumps(output, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Salvato {OUTPUT_PATH} ({len(entries)} voci).")
 
+def _gauge_color(pct: float) -> str:
+    if pct > 100:
+        return "#dc2626"
+    if pct >= 85:
+        return "#d97706"
+    return "#5d3a9b"
 
+
+def _render_gauge_card(
+    x: int,
+    title: str,
+    pct: float,
+    subtitle: str,
+) -> str:
+    import math
+
+    cx = x + 180
+    cy = 142
+    r = 72
+    circ = math.pi * r
+    clamped = max(0.0, min(100.0, pct))
+    color = _gauge_color(pct)
+
+    # Arco di progresso (semicerchio superiore da sinistra a destra)
+    arc_path = f"M {cx - r} {cy} A {r} {r} 0 0 1 {cx + r} {cy}"
+    progress_svg = ""
+    if clamped > 0:
+        filled = (clamped / 100.0) * circ
+        progress_svg = (
+            f'<path d="{arc_path}" fill="none" stroke="{color}" '
+            f'stroke-width="18" stroke-linecap="butt" '
+            f'stroke-dasharray="{filled:.2f} {circ:.2f}" />'
+        )
+
+    # Lancetta tachimetro (0% a sinistra, 50% in alto, 100% a destra)
+    angle = math.pi + (clamped / 100.0) * math.pi
+    dx, dy = math.cos(angle), math.sin(angle)
+    needle_len = 76
+    bw = 4.5
+    tip_x, tip_y = cx + dx * needle_len, cy + dy * needle_len
+    b1_x, b1_y = cx - dy * bw, cy + dx * bw
+    b2_x, b2_y = cx + dy * bw, cy - dx * bw
+
+    return f"""
+  <g>
+    <rect x="{x}" y="10" width="360" height="215" rx="14" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5" />
+    <text x="{cx}" y="38" text-anchor="middle" font-size="12" font-weight="700" fill="#64748b" letter-spacing="0.8">{title}</text>
+    <path d="{arc_path}" fill="none" stroke="#e2e8f0" stroke-width="18" stroke-linecap="butt" />
+    {progress_svg}
+    <polygon points="{b1_x:.1f},{b1_y:.1f} {tip_x:.1f},{tip_y:.1f} {b2_x:.1f},{b2_y:.1f}" fill="#1e293b" />
+    <circle cx="{cx}" cy="{cy}" r="6.5" fill="#1e293b" />
+    <circle cx="{cx}" cy="{cy}" r="2.8" fill="#ffffff" />
+    <text x="{cx - r}" y="{cy + 16}" text-anchor="middle" font-size="10" font-weight="600" fill="#64748b">0%</text>
+    <text x="{cx + r}" y="{cy + 16}" text-anchor="middle" font-size="10" font-weight="600" fill="#64748b">100%</text>
+    <text x="{cx}" y="{cy + 44}" text-anchor="middle" font-size="26" font-weight="700" fill="{color}">{pct:.1f}%</text>
+    <text x="{cx}" y="{cy + 66}" text-anchor="middle" font-size="12" fill="#475569">{subtitle}</text>
+  </g>"""
+
+
+def generate_readme_gauges() -> None:
+    import json
+    import re
+    from datetime import datetime
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parent.parent
+    data_path = root / "website" / "dashboard" / "data.json"
+    svg_path = root / "assets" / "dashboard-kpi.svg"
+    readme_path = root / "README.md"
+
+    raw = json.loads(data_path.read_text(encoding="utf-8"))
+    budget = raw["budget"]
+    roles = budget["roles"]
+    valid_entries = [
+        e for e in raw.get("entries", [])
+        if e.get("role") in roles and (e.get("week_number") or 0) >= 1
+    ]
+
+    total_planned_hours = sum(r["total_hours"] for r in roles.values())
+    total_actual_hours = sum(e["hours"] for e in valid_entries)
+    total_actual_cost = sum(
+        e["hours"] * roles[e["role"]]["hourly_rate"] for e in valid_entries
+    )
+    total_budget_eur = budget["total_budget_eur"]
+
+    hours_pct = (total_actual_hours / total_planned_hours * 100.0) if total_planned_hours > 0 else 0.0
+    cost_pct = (total_actual_cost / total_budget_eur * 100.0) if total_budget_eur > 0 else 0.0
+
+    hours_card = _render_gauge_card(
+        x=10,
+        title="AVANZAMENTO ORE",
+        pct=hours_pct,
+        subtitle=f"{total_actual_hours:.1f} h fatte su {total_planned_hours:.0f} h preventivate",
+    )
+    cost_card = _render_gauge_card(
+        x=390,
+        title="CONSUMO BUDGET",
+        pct=cost_pct,
+        subtitle=f"€ {total_actual_cost:.0f} spesi su € {total_budget_eur:.0f} preventivati",
+    )
+
+    svg = f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 235" width="760" height="235" role="img" aria-label="Avanzamento ore e consumo budget del progetto">
+  <style>
+    text {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }}
+  </style>
+  {hours_card}
+  {cost_card}
+</svg>
+"""
+    svg_path.parent.mkdir(parents=True, exist_ok=True)
+    svg_path.write_text(svg, encoding="utf-8")
+
+    start_tag = "<!-- DASHBOARD-SUMMARY:START -->"
+    end_tag = "<!-- DASHBOARD-SUMMARY:END -->"
+    if readme_path.exists():
+        content = readme_path.read_text(encoding="utf-8")
+        if start_tag in content and end_tag in content:
+            gen_raw = raw.get("generated_at", "")
+            try:
+                dt = datetime.fromisoformat(gen_raw.replace("Z", "+00:00"))
+                updated_str = dt.strftime("%d/%m/%Y %H:%M UTC")
+            except ValueError:
+                updated_str = gen_raw
+
+            block = (
+                f"{start_tag}\n"
+                f'<p align="center">\n'
+                f'  <img src="assets/dashboard-kpi.svg" alt="Avanzamento ore e consumo budget" width="760">\n'
+                f"</p>\n"
+                f'<p align="center"><sub>Dati complessivi di progetto · Aggiornato il {updated_str}</sub></p>\n'
+                f"{end_tag}"
+            )
+            pattern = re.compile(rf"{re.escape(start_tag)}.*?{re.escape(end_tag)}", re.DOTALL)
+            readme_path.write_text(pattern.sub(lambda _: block, content, count=1), encoding="utf-8")
+
+            
 if __name__ == "__main__":
     main()
+    generate_readme_gauges()
