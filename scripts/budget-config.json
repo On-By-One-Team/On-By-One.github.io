@@ -3,6 +3,7 @@
   "project_number": 1,
   "project_weeks": 20,
   "target_hours_per_member": 88,
+  "max_hours_per_member": 95,
   "total_budget_eur": 12840,
   "fields": {
     "status": "Status",

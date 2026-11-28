@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fetch productive hours from GitHub Projects V2 and build website/cruscotto/data.json."""
+"""Fetch productive hours from GitHub Projects V2 and build website/dashboard/data.json."""
 
 from __future__ import annotations
 
@@ -20,6 +20,7 @@ GRAPHQL_URL = "https://api.github.com/graphql"
 
 SPRINT_RE = re.compile(r"^sprint-(\d+)$", re.IGNORECASE)
 WEEK_RE = re.compile(r"(\d+)")
+DRAFT_VERIFICATION_RE = re.compile(r"\bverifica\b.*\bpr\b", re.IGNORECASE)
 
 QUERY = """
 query($org: String!, $number: Int!, $cursor: String) {
@@ -120,6 +121,7 @@ def extract_items(config: dict, token: str) -> tuple[str, list[dict]]:
     cursor = None
     project_title = "Rendicontazione ore"
     entries: list[dict] = []
+    skipped_no_role = 0
 
     while True:
         data = graphql_request(token, {"org": org, "number": number, "cursor": cursor})
@@ -135,7 +137,7 @@ def extract_items(config: dict, token: str) -> tuple[str, list[dict]]:
                 continue
 
             status = None
-            week_label = "No Settimana"
+            week_label = None
             week_number = None
             week_start = None
             hours = 0.0
@@ -157,30 +159,38 @@ def extract_items(config: dict, token: str) -> tuple[str, list[dict]]:
                     if fv.get("startDate"):
                         week_start = fv["startDate"]
 
-            # Considera solo voci completate (o draft) con ore > 0
-            if hours <= 0:
+            # Esclude voci senza ore o precedenti alla Settimana 1
+            if hours <= 0 or week_number is None or week_number < 1:
                 continue
-            if week_number is None or week_number < 1:
-                continue
+
             is_draft = content.get("__typename") == "DraftIssue"
             if not is_draft and status != fields_cfg["done_value"] and content.get("state") != "CLOSED":
                 continue
 
             labels = [lbl["name"] for lbl in (content.get("labels") or {}).get("nodes", [])]
-            sprint = "Nessuno sprint"
-            role = "unassigned"
+            sprint = None
+            role = None
             for lbl in labels:
                 low = lbl.lower()
-                if SPRINT_RE.match(low):
-                    sprint = low
+                sprint_match = SPRINT_RE.match(low)
+                if sprint_match:
+                    sprint = f"Sprint {sprint_match.group(1)}"
                 elif low in known_roles:
                     role = low
 
+            if is_draft and role is None:
+                if DRAFT_VERIFICATION_RE.search(content.get("title", "")):
+                    role = "verification"
+                    
+            # Ignora voci prive di una label di ruolo valida
+            if role is None:
+                skipped_no_role += 1
+                continue
+
             assignees = [a["login"] for a in (content.get("assignees") or {}).get("nodes", [])]
             if not assignees:
-                assignees = ["unassigned"]
+                continue
 
-            # Se più persone sono assegnate alla stessa issue, suddivide equamente le ore
             split_hours = round(hours / len(assignees), 2)
             for login in assignees:
                 entries.append(
@@ -203,20 +213,36 @@ def extract_items(config: dict, token: str) -> tuple[str, list[dict]]:
             break
         cursor = items["pageInfo"]["endCursor"]
 
+    if skipped_no_role:
+        print(
+            f"Avviso: ignorate {skipped_no_role} voci con ore ma senza label di ruolo.",
+            file=sys.stderr,
+        )
+
     return project_title, entries
 
 
 def mock_entries(config: dict) -> list[dict]:
-    """Dati fittizi per testare grafici e filtri in locale prima di collegare il token."""
+    """Dati di esempio su 3 settimane (2 sprint) con rotazione ruoli per test locale."""
     return [
-        {"title": "Stesura bozza Analisi dei Requisiti", "url": None, "issue_number": 62, "member_login": "simonegiuliano", "member_name": "Simone Giuliano", "role": "analysis", "sprint": "sprint-1", "week": "Settimana 1", "week_number": 1, "week_start": "2026-11-09", "hours": 3.0},
-        {"title": "Stesura introduzione ai casi d'uso", "url": None, "issue_number": 113, "member_login": "simonegiuliano", "member_name": "Simone Giuliano", "role": "analysis", "sprint": "sprint-1", "week": "Settimana 2", "week_number": 2, "week_start": "2026-11-16", "hours": 1.5},
-        {"title": "Casi d'uso autenticazione", "url": None, "issue_number": 97, "member_login": "username-sara", "member_name": "Sara Ballardin", "role": "analysis", "sprint": "sprint-1", "week": "Settimana 1", "week_number": 1, "week_start": "2026-11-09", "hours": 5.0},
-        {"title": "Casi d'uso struttura impianto", "url": None, "issue_number": 105, "member_login": "username-shuhui", "member_name": "Shuhui Chen", "role": "analysis", "sprint": "sprint-1", "week": "Settimana 2", "week_number": 2, "week_start": "2026-11-16", "hours": 4.5},
-        {"title": "Setup CI/CD e repository", "url": None, "issue_number": 40, "member_login": "username-alvise", "member_name": "Alvise Greggio", "role": "administration", "sprint": "sprint-1", "week": "Settimana 1", "week_number": 1, "week_start": "2026-11-09", "hours": 4.0},
-        {"title": "Coordinamento sprint 1 e verbale", "url": None, "issue_number": 51, "member_login": "username-tommaso", "member_name": "Tommaso Zorzetto", "role": "representative", "sprint": "sprint-1", "week": "Settimana 1", "week_number": 1, "week_start": "2026-11-09", "hours": 5.0},
-        {"title": "Verifica documenti candidatura e AdR", "url": None, "issue_number": 88, "member_login": "username-daniele", "member_name": "Daniele Nuzzaci", "role": "verification", "sprint": "sprint-1", "week": "Settimana 2", "week_number": 2, "week_start": "2026-11-16", "hours": 4.0},
-        {"title": "Verifica casi d'uso autenticazione", "url": None, "issue_number": 99, "member_login": "username-federico", "member_name": "Federico Temporin", "role": "verification", "sprint": "sprint-1", "week": "Settimana 2", "week_number": 2, "week_start": "2026-11-16", "hours": 3.5},
+        # Settimana 1 - Sprint 1
+        {"title": "Stesura bozza Analisi dei Requisiti", "url": None, "issue_number": 62, "member_login": "simonegiuliano", "member_name": "Simone Giuliano", "role": "analysis", "sprint": "Sprint 1", "week": "Settimana 1", "week_number": 1, "week_start": "2026-11-09", "hours": 4.0},
+        {"title": "Casi d'uso autenticazione", "url": None, "issue_number": 97, "member_login": "username-sara", "member_name": "Sara Ballardin", "role": "analysis", "sprint": "Sprint 1", "week": "Settimana 1", "week_number": 1, "week_start": "2026-11-09", "hours": 5.0},
+        {"title": "Setup CI/CD e repository", "url": None, "issue_number": 40, "member_login": "username-alvise", "member_name": "Alvise Greggio", "role": "administration", "sprint": "Sprint 1", "week": "Settimana 1", "week_number": 1, "week_start": "2026-11-09", "hours": 4.5},
+        {"title": "Coordinamento sprint 1", "url": None, "issue_number": 51, "member_login": "username-tommaso", "member_name": "Tommaso Zorzetto", "role": "representative", "sprint": "Sprint 1", "week": "Settimana 1", "week_number": 1, "week_start": "2026-11-09", "hours": 5.0},
+        {"title": "Verifica struttura documenti", "url": None, "issue_number": 70, "member_login": "username-daniele", "member_name": "Daniele Nuzzaci", "role": "verification", "sprint": "Sprint 1", "week": "Settimana 1", "week_number": 1, "week_start": "2026-11-09", "hours": 4.0},
+        # Settimana 2 - Sprint 1
+        {"title": "Stesura introduzione ai casi d'uso", "url": None, "issue_number": 113, "member_login": "simonegiuliano", "member_name": "Simone Giuliano", "role": "analysis", "sprint": "Sprint 1", "week": "Settimana 2", "week_number": 2, "week_start": "2026-11-16", "hours": 3.5},
+        {"title": "Casi d'uso struttura impianto", "url": None, "issue_number": 105, "member_login": "username-shuhui", "member_name": "Shuhui Chen", "role": "analysis", "sprint": "Sprint 1", "week": "Settimana 2", "week_number": 2, "week_start": "2026-11-16", "hours": 5.5},
+        {"title": "Verifica casi d'uso autenticazione", "url": None, "issue_number": 99, "member_login": "username-federico", "member_name": "Federico Temporin", "role": "verification", "sprint": "Sprint 1", "week": "Settimana 2", "week_number": 2, "week_start": "2026-11-16", "hours": 4.5},
+        {"title": "Prototipo iniziale server MCP", "url": None, "issue_number": 118, "member_login": "username-alvise", "member_name": "Alvise Greggio", "role": "development", "sprint": "Sprint 1", "week": "Settimana 2", "week_number": 2, "week_start": "2026-11-16", "hours": 3.0},
+        # Settimana 3 - Sprint 2 (cambio ruoli!)
+        {"title": "Implementazione cruscotto ore", "url": None, "issue_number": 135, "member_login": "simonegiuliano", "member_name": "Simone Giuliano", "role": "administration", "sprint": "Sprint 2", "week": "Settimana 3", "week_number": 3, "week_start": "2026-11-23", "hours": 5.0},
+        {"title": "Architettura connettore KNX", "url": None, "issue_number": 136, "member_login": "username-sara", "member_name": "Sara Ballardin", "role": "design", "sprint": "Sprint 2", "week": "Settimana 3", "week_number": 3, "week_start": "2026-11-23", "hours": 4.0},
+        {"title": "Sviluppo client MCP base", "url": None, "issue_number": 137, "member_login": "username-tommaso", "member_name": "Tommaso Zorzetto", "role": "development", "sprint": "Sprint 2", "week": "Settimana 3", "week_number": 3, "week_start": "2026-11-23", "hours": 4.5},
+        {"title": "Coordinamento sprint 2", "url": None, "issue_number": 138, "member_login": "username-daniele", "member_name": "Daniele Nuzzaci", "role": "representative", "sprint": "Sprint 2", "week": "Settimana 3", "week_number": 3, "week_start": "2026-11-23", "hours": 4.0},
+        {"title": "Verifica Analisi dei Requisiti", "url": None, "issue_number": 139, "member_login": "username-shuhui", "member_name": "Shuhui Chen", "role": "verification", "sprint": "Sprint 2", "week": "Settimana 3", "week_number": 3, "week_start": "2026-11-23", "hours": 5.0},
+        {"title": "Test integrazione OAuth2", "url": None, "issue_number": 140, "member_login": "username-federico", "member_name": "Federico Temporin", "role": "development", "sprint": "Sprint 2", "week": "Settimana 3", "week_number": 3, "week_start": "2026-11-23", "hours": 4.0},
     ]
 
 
@@ -242,6 +268,7 @@ def main() -> None:
         "budget": {
             "project_weeks": config["project_weeks"],
             "target_hours_per_member": config["target_hours_per_member"],
+            "max_hours_per_member": config.get("max_hours_per_member", 95),
             "total_budget_eur": config["total_budget_eur"],
             "roles": config["roles"],
         },
