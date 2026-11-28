@@ -1,0 +1,49 @@
+name: Aggiorna Cruscotto
+
+on:
+  schedule:
+    # Ogni giorno alle 02:00 UTC (03:00 CET / 04:00 CEST)
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-dashboard
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Scarica dati da GitHub Projects
+        env:
+          GH_PROJECT_TOKEN: ${{ secrets.GH_PROJECT_TOKEN }}
+        run: python3 scripts/fetch-dashboard-data.py
+
+      - name: Commit e push solo se ci sono modifiche
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add website/dashboard/data.json
+          if [ -f assets/dashboard-kpi.svg ]; then
+            git add assets/dashboard-kpi.svg
+          fi
+          if [ -f README.md ]; then
+            git add README.md
+          fi
+          if git diff --cached --quiet; then
+            echo "Nessun cambiamento nei dati del cruscotto."
+          else
+            git commit -m "chore(dashboard): aggiorna dati cruscotto"
+            git push
+          fi

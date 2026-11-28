@@ -2,7 +2,7 @@ name: CI/CD Sito Web
 
 on:
   workflow_run:
-    workflows: ["Controllo Link Sito"]
+    workflows: ["Controllo Link Sito", "Aggiorna Cruscotto"]
     types:
       - completed
   workflow_dispatch:
@@ -31,7 +31,7 @@ jobs:
         run: python scripts/generate-site.py
 
       - name: Validazione HTML5
-        run: npx --yes htmlhint website/index.html
+        run: npx --yes htmlhint website/index.html website/dashboard/index.html
 
       - name: Validazione CSS3
         run: |
@@ -50,7 +50,7 @@ jobs:
             }
           }
           EOF
-          npx --yes stylelint "website/style.css"
+          npx --yes stylelint "website/style.css" "website/dashboard/style.css"
 
   cd-build:
     needs: ci-validate
@@ -67,10 +67,23 @@ jobs:
       - name: Genera indice del sito dai PDF
         run: python scripts/generate-site.py
 
-      - name: Prepara index.html e style.css nella root per il deploy
+      - name: Aggiorna dati cruscotto da GitHub Projects
+        env:
+          GH_PROJECT_TOKEN: ${{ secrets.GH_PROJECT_TOKEN }}
+        run: |
+          if [ -n "$GH_PROJECT_TOKEN" ]; then
+            python scripts/fetch-dashboard-data.py
+          else
+            echo "GH_PROJECT_TOKEN non configurato: uso il data.json già presente nel repository."
+          fi
+
+      - name: Prepara index.html, style.css e dashboard nella root per il deploy
         run: |
           cp website/index.html website/style.css .
+          rm -rf dashboard
+          cp -r website/dashboard .
           sed -i 's|\.\./assets/|assets/|g; s|\.\./docs/|docs/|g' index.html
+          sed -i 's|\.\./\.\./assets/|../assets/|g' dashboard/index.html
 
       - name: Configura GitHub Pages
         uses: actions/configure-pages@v5

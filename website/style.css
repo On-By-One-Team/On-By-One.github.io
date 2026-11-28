@@ -162,9 +162,21 @@ summary:focus-visible {
 
 .external-links {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.5rem;
-    margin-top: 0.5rem;
+}
+
+.external-links .btn-outline {
+    text-align: center;
+    justify-content: center;
+}
+
+.external-links a:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+}
+
+.external-links a:first-child:nth-last-child(3):hover {
+    opacity: 0.92;
 }
 
 .btn-outline {
