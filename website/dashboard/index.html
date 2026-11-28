@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Cruscotto ore e budget del gruppo On-By-One per il progetto AURA.">
+    <title>Cruscotto Ore — On-By-One</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="../../assets/logo.ico" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js" defer></script>
+    <script src="./dashboard.js" defer></script>
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="brand">
+            <img src="../../assets/logo-512x512.png" alt="Logo del gruppo On-By-One" class="logo">
+            <div>
+                <h1 class="group-name">On-By-One</h1>
+                <p class="course-tag">SWE 2026/2027</p>
+            </div>
+        </div>
+
+        <nav class="main-nav" aria-label="Indice cruscotto">
+            <p class="nav-title">Indice pagina</p>
+            <ul>
+                <li><a href="#panoramica"><span class="step-num">01</span> Panoramica e budget</a></li>
+                <li><a href="#grafici-ruoli"><span class="step-num">02</span> Ruoli e membri</a></li>
+                <li><a href="#andamento-settimanale"><span class="step-num">03</span> Andamento settimanale</a></li>
+                <li><a href="#tabella-persone"><span class="step-num">04</span> Ore e costi per persona</a></li>
+                <li><a href="#tabella-ruoli"><span class="step-num">05</span> Riepilogo per ruolo</a></li>
+            </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="meta-block">
+                <span class="meta-label">Capitolato</span>
+                <span class="meta-value">C1 - AURA</span>
+            </div>
+            <div class="meta-block">
+                <span class="meta-label">Proponente</span>
+                <span class="meta-value">VIMAR S.p.A.</span>
+            </div>
+            <div class="meta-block">
+                <span class="meta-label">Committenti</span>
+                <span class="meta-value">Prof. T. Vardanega<br>Prof. R. Cardin</span>
+            </div>
+            <div class="external-links">
+                <a href="../index.html" class="btn-outline">Torna al portale</a>
+                <a href="https://github.com/On-By-One-Team/On-By-One.github.io" target="_blank" rel="noopener noreferrer" class="btn-outline">Repository GitHub</a>
+                <a href="mailto:onbyone.swe@gmail.com" class="btn-outline">Contattaci</a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="content">
+        <section class="hero-card" aria-labelledby="dashboard-title">
+            <span class="badge badge-active">Monitoraggio progetto</span>
+            <h2 id="dashboard-title">Cruscotto Ore e Preventivo</h2>
+            <p class="hero-desc" id="meta-info">Caricamento dati...</p>
+        </section>
+
+        <div id="mock-banner" class="dashboard-banner" hidden>
+            Stai visualizzando <strong>dati di esempio</strong> (<code>--mock</code>). Quando imposterai il token GitHub, vedrai i dati reali di GitHub Projects.
+        </div>
+
+        <section class="dashboard-filters" aria-label="Filtro periodo">
+            <div class="filter-controls">
+                <div class="mode-switcher" role="group" aria-label="Tipo di visualizzazione">
+                    <button type="button" class="mode-btn is-active" data-mode="all" aria-pressed="true">Tutto</button>
+                    <button type="button" class="mode-btn" data-mode="week" aria-pressed="false">Settimana</button>
+                    <button type="button" class="mode-btn" data-mode="sprint" aria-pressed="false">Sprint</button>
+                    <button type="button" class="mode-btn" data-mode="block" aria-pressed="false">Blocco (4 sett.)</button>
+                </div>
+
+                <div class="filter-group period-select-wrap" id="period-select-wrap" hidden>
+                    <label for="period-select" id="period-select-label">Periodo</label>
+                    <select id="period-select"></select>
+                </div>
+            </div>
+            <div class="filter-hint" id="filter-sprint-info"></div>
+        </section>
+
+        <!-- 01. PANORAMICA E BUDGET -->
+        <section id="panoramica" class="milestone-section" aria-labelledby="title-panoramica">
+            <div class="milestone-header">
+                <div>
+                    <span class="milestone-tag">Sezione 01</span>
+                    <h2 id="title-panoramica">Panoramica e budget</h2>
+                </div>
+            </div>
+
+            <div class="hero-grid">
+                <div class="gauge-card">
+                    <div class="kpi-label">Avanzamento Ore</div>
+                    <div class="gauge-box"><canvas id="hoursGauge"></canvas></div>
+                    <div class="gauge-pct" id="gauge-hours-pct">—</div>
+                    <div class="kpi-sub" id="gauge-hours-sub">—</div>
+                </div>
+
+                <div class="gauge-card">
+                    <div class="kpi-label">Consumo Budget</div>
+                    <div class="gauge-box"><canvas id="costGauge"></canvas></div>
+                    <div class="gauge-pct" id="gauge-cost-pct">—</div>
+                    <div class="kpi-sub" id="gauge-cost-sub">—</div>
+                </div>
+
+                <div class="summary-card">
+                    <div class="kpi-label">Ore medie lavorate a settimana</div>
+                    <div class="summary-main" id="kpi-weekly-avg">—</div>
+                    <div class="kpi-sub" id="kpi-weekly-sub">—</div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-row">
+                        <span>Media ore / membro</span>
+                        <strong id="kpi-member-avg">—</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Target / Max individuale</span>
+                        <strong id="kpi-member-target">—</strong>
+                    </div>
+                    <div class="summary-row">
+                        <span>Ore residue periodo</span>
+                        <strong id="kpi-hours-remaining">—</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 02. RUOLI E MEMBRI -->
+        <section id="grafici-ruoli" class="milestone-section" aria-labelledby="title-grafici-ruoli">
+            <div class="milestone-header">
+                <div>
+                    <span class="milestone-tag">Sezione 02</span>
+                    <h2 id="title-grafici-ruoli">Ruoli e membri</h2>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="dash-card">
+                    <h3>Preventivo vs Consuntivo per Ruolo</h3>
+                    <p class="card-desc" id="role-chart-desc">Confronto ore per ruolo</p>
+                    <div class="chart-box"><canvas id="roleChart"></canvas></div>
+                </div>
+
+                <div class="dash-card">
+                    <h3>Carico per Singolo Membro</h3>
+                    <p class="card-desc" id="member-chart-desc">Ore complessive svolte rispetto al target (88 h) e al limite massimo (95 h)</p>
+                    <div class="chart-box"><canvas id="memberChart"></canvas></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03. ANDAMENTO SETTIMANALE -->
+        <section id="andamento-settimanale" class="milestone-section" aria-labelledby="title-andamento-settimanale">
+            <div class="milestone-header">
+                <div>
+                    <span class="milestone-tag">Sezione 03</span>
+                    <h2 id="title-andamento-settimanale">Andamento settimanale</h2>
+                </div>
+            </div>
+
+            <div class="dash-card">
+                <h3 id="trend-chart-title">Consuntivo vs Preventivo settimanale</h3>
+                <p class="card-desc" id="trend-chart-desc">Andamento pianificato su tutte le 20 settimane rispetto alle ore rendicontate</p>
+                <div class="chart-box"><canvas id="weekChart"></canvas></div>
+            </div>
+        </section>
+
+        <!-- 04. ORE E COSTI PER PERSONA -->
+        <section id="tabella-persone" class="milestone-section" aria-labelledby="title-tabella-persone">
+            <div class="milestone-header">
+                <div>
+                    <span class="milestone-tag">Sezione 04</span>
+                    <h2 id="title-tabella-persone">Ore e costi per persona</h2>
+                </div>
+            </div>
+
+            <div class="dash-card">
+                <p class="card-desc">Suddivisione delle ore svolte da ogni membro in ciascun ruolo e costo effettivo calcolato sulle tariffe orarie</p>
+                <div class="table-wrapper">
+                    <table class="dash-table">
+                        <thead id="member-table-head"></thead>
+                        <tbody id="member-table-body"></tbody>
+                        <tfoot id="member-table-foot"></tfoot>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 05. RIEPILOGO PER RUOLO -->
+        <section id="tabella-ruoli" class="milestone-section" aria-labelledby="title-tabella-ruoli">
+            <div class="milestone-header">
+                <div>
+                    <span class="milestone-tag">Sezione 05</span>
+                    <h2 id="title-tabella-ruoli">Riepilogo per ruolo</h2>
+                </div>
+            </div>
+
+            <div class="dash-card">
+                <p class="card-desc">Confronto tra ore preventivate, consuntivate, residue e costo maturato per ruolo</p>
+                <div class="table-wrapper">
+                    <table class="dash-table">
+                        <thead>
+                            <tr>
+                                <th>Ruolo</th>
+                                <th class="num">Tariffa (€/h)</th>
+                                <th class="num">Preventivo (h)</th>
+                                <th class="num">Consuntivo (h)</th>
+                                <th class="num">Residuo (h)</th>
+                                <th class="num">Costo (€)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="role-table-body"></tbody>
+                        <tfoot id="role-table-foot"></tfoot>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <p>Sito web del gruppo 1 del progetto del corso di Ingegneria del Software (SWE)</p>
+            <p>Università di Padova • Corso di Laurea in Informatica • Ingegneria del Software • A.A. 2026/2027</p>
+            <p id="copyright">&copy; 2026 On-By-One. Tutti i diritti riservati.</p>
+        </footer>
+    </main>
+</body>
+</html>

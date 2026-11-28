@@ -1,0 +1,309 @@
+/* ==========================================================================
+   STILI SPECIFICI DASHBOARD (estende ../style.css, zero scroll orizzontale)
+   ========================================================================== */
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+.content {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: clip;
+}
+
+.dashboard-banner {
+    background: var(--inprogress-bg);
+    color: var(--inprogress-text);
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    margin: 1.25rem 0;
+    font-size: 0.9rem;
+}
+
+.dashboard-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.9rem 1.25rem;
+    margin: 1.25rem 0;
+    box-shadow: var(--shadow-sm);
+}
+
+.filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    max-width: 100%;
+}
+
+.filter-group label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.filter-group select {
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface);
+    color: var(--text-main);
+    font-size: 0.95rem;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.filter-hint {
+    font-size: 0.88rem;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 1.25rem;
+}
+
+.gauge-card,
+.summary-card,
+.dash-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 1.2rem 1.25rem;
+    box-shadow: var(--shadow-sm);
+    min-width: 0;
+    max-width: 100%;
+}
+
+.gauge-card,
+.summary-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.gauge-card {
+    align-items: center;
+    text-align: center;
+}
+
+.kpi-label {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.gauge-box {
+    position: relative;
+    width: 100%;
+    max-width: 220px;
+    height: 130px;
+    margin-top: 0.4rem;
+}
+
+.gauge-pct {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-top: 0.15rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.kpi-sub {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+}
+
+.summary-main {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin: 0.5rem 0 0.1rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.summary-divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 0.85rem 0;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    padding: 0.22rem 0;
+}
+
+.summary-row strong {
+    color: var(--text-main);
+    font-variant-numeric: tabular-nums;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 1.25rem;
+}
+
+.table-section {
+    margin-bottom: 1.5rem;
+}
+
+.dash-card h3 {
+    font-size: 1.05rem;
+    margin: 0 0 0.25rem;
+    color: var(--text-main);
+}
+
+.card-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0 0 1rem;
+}
+
+.chart-box {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    min-width: 0;
+}
+
+.chart-box canvas {
+    max-width: 100%;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.dash-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+}
+
+.dash-table th,
+.dash-table td {
+    padding: 0.55rem 0.45rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.dash-table th {
+    background: var(--accent-bg);
+    color: var(--primary);
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.dash-table th small {
+    display: block;
+    font-weight: 500;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    white-space: nowrap;
+}
+
+.dash-table td.num,
+.dash-table th.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.dash-table td.num {
+    white-space: nowrap;
+}
+
+.dash-table td.muted-zero {
+    color: var(--border-color);
+}
+
+.dash-table tfoot td {
+    background: var(--accent-bg);
+    font-weight: 700;
+    color: var(--text-main);
+    border-top: 2px solid var(--primary);
+    border-bottom: none;
+}
+
+.filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.85rem;
+    max-width: 100%;
+}
+
+.mode-switcher {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    background: var(--accent-bg);
+    padding: 0.25rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+}
+
+.mode-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.4rem 0.75rem;
+    border-radius: calc(var(--radius-sm) - 2px);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.mode-btn:hover {
+    color: var(--primary);
+}
+
+.mode-btn.is-active {
+    background: var(--primary);
+    color: #ffffff;
+}
+
+.period-select-wrap[hidden] {
+    display: none;
+}
+
+@media (max-width: 720px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-group {
+        width: 100%;
+    }
+
+    .filter-group select {
+        width: 100%;
+    }
+}
