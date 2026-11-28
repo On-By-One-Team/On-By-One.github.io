@@ -65,27 +65,62 @@ def iso_date(value: str) -> str:
             parsed = datetime.strptime(value, "%Y/%m/%d")
         except ValueError as error:
             raise ValueError(f"Data non interpretabile: {value}") from error
-    return parsed.date().strftime("%Y/%m/%d")
+    return parsed.date().isoformat()
 
 
-def split_cells(row: str) -> list[str]:
-    cells: list[str] = []
-    current: list[str] = []
+def unescaped_ampersand_positions(row: str) -> list[int]:
+    positions: list[int] = []
     escaped = False
-    for character in row:
+    for index, character in enumerate(row):
         if character == "&" and not escaped:
-            cells.append("".join(current).strip())
-            current = []
-        else:
-            current.append(character)
+            positions.append(index)
         escaped = character == "\\" and not escaped
         if character != "\\":
             escaped = False
-    value = "".join(current).strip()
+    return positions
+
+
+def split_cells(row: str) -> list[str]:
+    positions = unescaped_ampersand_positions(row)
+    cells: list[str] = []
+    start = 0
+    for position in positions:
+        cells.append(row[start:position].strip())
+        start = position + 1
+    value = row[start:].strip()
     if value.endswith(r"\\"):
         value = value[:-2].rstrip()
     cells.append(value)
     return cells
+
+
+def normalize_row_date(line: str) -> str:
+    """Normalize a changelog row's date cell to YYYY-MM-DD without altering other cells."""
+    row = row_from_line(line)
+    if row is None or row.date == "-":
+        return line
+    try:
+        normalized = iso_date(row.date)
+    except ValueError:
+        return line
+    if normalized == row.date:
+        return line
+    positions = unescaped_ampersand_positions(line)
+    if len(positions) < 2:
+        return line
+    first_sep, second_sep = positions[0], positions[1]
+    date_segment = line[first_sep + 1 : second_sep]
+    return (
+        line[: first_sep + 1]
+        + date_segment.replace(row.date, normalized, 1)
+        + line[second_sep:]
+    )
+
+
+def normalize_registry_dates(lines: list[str], start: int, end: int) -> None:
+    """Normalize all changelog row dates within the registry bounds to YYYY-MM-DD."""
+    for index in range(start + 1, end):
+        lines[index] = normalize_row_date(lines[index])
 
 
 def row_from_line(line: str) -> ChangeRow | None:
@@ -282,6 +317,7 @@ def ensure_placeholder_row(lines: list[str], start: int, end: int) -> None:
 
 
 def update_pr_row(path: Path, date: str, author: str, pr_number: int) -> bool:
+    date = iso_date(date)
     original = path.read_text(encoding="utf-8")
     lines = original.splitlines(keepends=True)
     start, end = registry_bounds(lines)
@@ -311,6 +347,8 @@ def update_pr_row(path: Path, date: str, author: str, pr_number: int) -> bool:
     ensure_hline_after(lines, target_index, indentation)
     start, end = registry_bounds(lines)
     ensure_placeholder_row(lines, start, end)
+    start, end = registry_bounds(lines)
+    normalize_registry_dates(lines, start, end)
     updated = "".join(lines)
     if updated == original:
         return False
@@ -458,6 +496,8 @@ def update_review_row(path: Path, pr_number: int, version: str, verifier: str) -
     indentation = re.match(r"\s*", lines[index]).group(0)
     lines[index] = row_line(updated_row, indentation, pr_number)
     ensure_hline_after(lines, index, indentation)
+    start, end = registry_bounds(lines)
+    normalize_registry_dates(lines, start, end)
     updated = "".join(lines)
     if updated == original:
         return False
