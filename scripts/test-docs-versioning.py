@@ -376,6 +376,55 @@ class DocsVersioningTests(unittest.TestCase):
             content = path.read_text(encoding="utf-8")
             self.assertIn("2.0.0 & 2026-11-17 & Approvato &", content)
 
+    def test_iso_date_normalizes_to_yyyy_mm_dd_and_preserves_dash(self):
+        self.assertEqual(docs_versioning.iso_date("2026-11-17T16:13:45+01:00"), "2026-11-17")
+        self.assertEqual(docs_versioning.iso_date("2026/10/29"), "2026-10-29")
+        self.assertEqual(docs_versioning.iso_date("2026-10-29"), "2026-10-29")
+        self.assertEqual(docs_versioning.iso_date("-"), "-")
+
+    def test_update_pr_and_review_normalize_slash_dates_in_registry(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "document.tex"
+            mixed_dates = TEX.replace(
+                "1.2.3 & 2026-11-01 & Sara Ballardin & Vecchia modifica & Daniele Nuzzaci \\\\",
+                r"1.0.1 & 2026/10/29 & Sara Ballardin & Modifica path \& stile & Shuhui Chen \\",
+            )
+            path.write_text(mixed_dates, encoding="utf-8")
+            self.assertTrue(
+                docs_versioning.update_pr_row(path, "2026/11/28", "Federico Temporin", 86)
+            )
+            content = path.read_text(encoding="utf-8")
+            self.assertNotIn("2026/10/29", content)
+            self.assertNotIn("2026/11/28", content)
+            self.assertIn(
+                "- & 2026-11-28 & Federico Temporin & Aggiornata la norma & - \\\\ % change-log-pr: 86",
+                content,
+            )
+            self.assertIn(
+                r"1.0.1 & 2026-10-29 & Sara Ballardin & Modifica path \& stile & Shuhui Chen \\",
+                content,
+            )
+
+            # Simulate a PR row still having slash date before review
+            path.write_text(
+                content.replace("2026-11-28", "2026/11/28").replace("2026-10-29", "2026/10/29"),
+                encoding="utf-8",
+            )
+            self.assertTrue(
+                docs_versioning.update_review_row(path, 86, "2.0.0", "Daniele Nuzzaci")
+            )
+            reviewed = path.read_text(encoding="utf-8")
+            self.assertNotIn("2026/11/28", reviewed)
+            self.assertNotIn("2026/10/29", reviewed)
+            self.assertIn(
+                "2.0.0 & 2026-11-28 & Federico Temporin & Aggiornata la norma & Daniele Nuzzaci \\\\ % change-log-pr: 86",
+                reviewed,
+            )
+            self.assertIn(
+                r"1.0.1 & 2026-10-29 & Sara Ballardin & Modifica path \& stile & Shuhui Chen \\",
+                reviewed,
+            )
+
     def test_current_recipient_type_detects_client(self):
         tex_client = TEX.replace(
             "Team",
